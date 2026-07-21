@@ -268,7 +268,7 @@ The framework is implemented in Python (3.13) using scanpy/anndata, squidpy, pya
 NumPy/SciPy, and Matplotlib, with an interactive Streamlit dashboard exposing the
 spatial, simulation, optimization, and molecular-viewer modes. Spatial data: Xenium
 GSE274673; CosMx from Mendeley Data (doi:10.17632/kx6b69n3cb.1) [20]. All analysis
-code is available at [repository URL].
+code is available at https://github.com/kusi81/pdac-coexistence-control.
 
 ---
 
@@ -579,7 +579,7 @@ tumor-immune balance parameters. *(assets/sensitivity.png)*
 - [x] Ref [G3]: resolved (Farrokhian et al., Sci Adv 2022;8:eabm7212)
 - [x] Build Supplementary Table S1 (parameters + citations) — S1_parameters.md
 - [x] Verify all in-text citation numbers against reference list — all 20 cited, all valid, no orphans
-- [ ] Author/affiliation block; corresponding author; ORCID; repository URL; license  *(needs author info)*
+- [x] Author/affiliation block, corresponding author, ORCID, repository URL (§2.9), license (MIT) — complete
 - [ ] Decide Abstract numeric inclusion (3.4–3.6 values) per target journal word limit  *(journal-dependent)*
 - [ ] Target journal selection → convert citation style; fix figure numbering to house style  *(journal-dependent)*
 - [ ] Define "arbitrary units" toxicity; cross-ref Methods §2.5/2.7
