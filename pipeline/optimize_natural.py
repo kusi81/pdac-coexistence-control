@@ -89,9 +89,21 @@ def main():
     return results
 
 
+def _mk(typ):
+    return "o" if typ == "natural-adaptive" else ("s" if typ == "conventional" else "^")
+
+
 def _figure(results, n0):
-    fig, (axA, axB) = plt.subplots(1, 2, figsize=(14, 5.4))
-    # A: 대표 궤적 (무처치, 젬시타빈, 상위 자연물 2개)
+    from matplotlib import gridspec
+    from matplotlib.lines import Line2D
+    fig = plt.figure(figsize=(15, 5.9))
+    gs = gridspec.GridSpec(2, 2, width_ratios=[1, 1.08],
+                           height_ratios=[1.25, 2.5], hspace=0.07, wspace=0.26)
+    axA = fig.add_subplot(gs[:, 0])       # trajectory (spans both rows)
+    axT = fig.add_subplot(gs[0, 1])       # broken top: censored (TTP=150)
+    axB = fig.add_subplot(gs[1, 1], sharex=axT)   # broken bottom: Untreated
+
+    # ---- Panel A: representative trajectories ----
     nat = [r for r in results if r[1] == "natural-adaptive"]
     nat_sorted = sorted(nat, key=lambda r: -r[3]["control_score"])
     show = [r for r in results if r[0] == UNTREATED] + nat_sorted[:2] + \
@@ -103,26 +115,64 @@ def _figure(results, n0):
     axA.axhline(1.5, color="#E74C3C", ls=":", lw=1)
     axA.text(2, 1.53, "progression threshold 1.5x", fontsize=8, color="#E74C3C")
     axA.set_xlabel("Time (days)"); axA.set_ylabel("Tumor / initial")
-    axA.set_title("Tumor trajectory — natural adaptive regimens (green) control at low burden",
-                  fontsize=10.5, fontweight="bold")
+    axA.set_title("a  Tumor trajectory — natural adaptive regimens (green)\n"
+                  "control at low burden", fontsize=10.5, fontweight="bold")
     axA.legend(frameon=False, fontsize=8)
 
-    # B: 트레이드오프 프론티어 — TTP(통제 지속) vs 독성(부담).
+    # ---- Panel B: broken-axis frontier (top=censored cluster, bottom=Untreated) ----
     for name, typ, h, m, col in results:
-        mk = "o" if typ == "natural-adaptive" else ("s" if typ == "conventional" else "^")
-        axB.scatter(m["cum_toxicity"], m["ttp_days"], s=95, color=col,
-                    marker=mk, edgecolor="black", linewidth=0.8, zorder=3)
-        axB.annotate(name, (m["cum_toxicity"], m["ttp_days"]), fontsize=7.5,
-                     xytext=(5, 3), textcoords="offset points")
-    axB.axhline(DAYS, color="#27AE60", ls=":", lw=1)
-    axB.text(60, DAYS - 6, "controlled over full horizon (no progression)",
-             fontsize=8, color="#27AE60")
+        ax = axT if m["ttp_days"] >= DAYS - 1 else axB
+        ax.scatter(m["cum_toxicity"], m["ttp_days"], s=95, color=col,
+                   marker=_mk(typ), edgecolor="black", linewidth=0.8, zorder=4)
+    axT.set_ylim(149.4, 154.2); axB.set_ylim(96, 112)
+    axT.set_yticks([150]); axB.set_yticks([100, 105, 110])
+    axT.axhline(DAYS, color="#27AE60", ls=":", lw=1, zorder=1)
+
+    # staggered labels + leader lines for the censored natural cluster
+    SHORT = {"Garlic": "Garlic", "Wild ginseng": "W.ginseng",
+             "Garlic + Mugwort": "Gar+Mug",
+             "Ginseng + Garlic + Mugwort": "Gin+Gar+Mug",
+             "Curcumin + Garlic + Rg3": "Cur+Gar+Rg3",
+             "5-compound mix": "5-mix", "Curcumin": "Curcumin",
+             "Mugwort (anti-CAF)": "Mugwort",
+             "Danshen + Astragaloside (anti-fibrotic)": "Dan+Astra"}
+    nat_tox = sorted([r for r in results if r[3]["ttp_days"] >= DAYS - 1
+                      and r[1] == "natural-adaptive"],
+                     key=lambda r: r[3]["cum_toxicity"])
+    xslots = np.linspace(3, 66, len(nat_tox))
+    hts = [150.85, 151.75, 152.65, 153.55]
+    for i, (name, typ, h, m, col) in enumerate(nat_tox):
+        axT.annotate(SHORT.get(name, name), xy=(m["cum_toxicity"], 150.05),
+                     xytext=(xslots[i], hts[i % 4]), fontsize=7.3,
+                     ha="center", va="bottom", color="#1E6B3A",
+                     arrowprops=dict(arrowstyle="-", color="#AAB", lw=0.6))
+    for name, typ, h, m, col in results:      # gemcitabine + untreated
+        if typ == "conventional":
+            axT.annotate(name, xy=(m["cum_toxicity"], 150), xytext=(0, 8),
+                         textcoords="offset points", ha="center",
+                         fontsize=7.5, color="#8B2E2E")
+        elif typ == "none":
+            axB.annotate(f"{name} (progressed)", xy=(m["cum_toxicity"], m["ttp_days"]),
+                         xytext=(6, 4), textcoords="offset points",
+                         fontsize=7.5, color="#555")
+
+    # broken-axis diagonal marks
+    axT.spines["bottom"].set_visible(False); axB.spines["top"].set_visible(False)
+    axT.tick_params(bottom=False, labelbottom=False)
+    dd = .012
+    kw = dict(color="k", clip_on=False, lw=1.1)
+    axT.plot((-dd, +dd), (-dd * 3, +dd * 3), transform=axT.transAxes, **kw)
+    axT.plot((1 - dd, 1 + dd), (-dd * 3, +dd * 3), transform=axT.transAxes, **kw)
+    axB.plot((-dd, +dd), (1 - dd * 1.4, 1 + dd * 1.4), transform=axB.transAxes, **kw)
+    axB.plot((1 - dd, 1 + dd), (1 - dd * 1.4, 1 + dd * 1.4), transform=axB.transAxes, **kw)
+
+    axT.set_xlim(-6, 140); axB.set_xlim(-6, 140)
     axB.set_xlabel("Cumulative toxicity (patient burden)  →  lower is better")
-    axB.set_ylabel("Time-to-progression (days)  →  longer is better")
-    axB.set_title("Burden vs control-duration frontier\n"
-                  "(upper-left = long control at low burden)",
-                  fontsize=11, fontweight="bold")
-    from matplotlib.lines import Line2D
+    fig.text(0.558, 0.5, "Time-to-progression (days)  →  longer is better",
+             rotation=90, va="center", ha="center", fontsize=9)
+    axT.set_title("b  Burden vs control-duration frontier (broken y-axis)\n"
+                  "upper-left = long control at low burden", fontsize=10,
+                  fontweight="bold")
     axB.legend(handles=[
         Line2D([0], [0], marker="o", color="w", markerfacecolor="#27AE60",
                markeredgecolor="k", markersize=9, label="Natural, adaptive"),
