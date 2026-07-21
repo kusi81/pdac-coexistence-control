@@ -10,3 +10,4 @@ streamlit
 # anndata
 # scanpy
 # squidpy
+python-docx
