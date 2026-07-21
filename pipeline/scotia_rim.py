@@ -110,7 +110,7 @@ def _figure(present, data, naive, crt):
     ax.axvline(0, color="black", lw=1)
     ax.axvline(2, color="#888", ls="--", lw=1)
     ax.axvline(-2, color="#888", ls="--", lw=1)
-    ax.set_xlabel("종양 rim(30µm) 농축 z  (>2 인접, <−2 배제) · 점=개별 시료")
+    ax.set_xlabel("종양 rim(30µm) 농축 z  (>2 인접, <-2 배제) · 점=개별 시료")
     ax.set_title("SCOTIA 저자주석 — 종양 주변 세포 농축 (Untreated vs CRT)\n"
                  "양성대조 15/16 통과 · 대형패널 CosMx", fontsize=12.5,
                  fontweight="bold")

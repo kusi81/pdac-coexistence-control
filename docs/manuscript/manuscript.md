@@ -544,6 +544,28 @@ tumor-immune balance parameters. *(assets/sensitivity.png)*
 
 ---
 
+## Declarations
+
+**Data availability.** All datasets analyzed are from public repositories: Xenium
+PDAC (GEO GSE274673), CosMx SMI PDAC (Mendeley Data doi:10.17632/kx6b69n3cb.1). All
+analysis code and derived result tables are available at
+https://github.com/kusi81/pdac-coexistence-control.
+
+**Ethics.** This study used only publicly available, de-identified datasets; no new
+human or animal experiments were performed. No ethical approval was required.
+
+**Funding.** The author received no specific funding for this work.
+
+**Competing interests.** The author declares no competing interests.
+
+**Author contributions (CRediT).** Seung-Il Kim: conceptualization, methodology,
+software, formal analysis, investigation, data curation, visualization,
+writing – original draft, writing – review & editing.
+
+**Acknowledgments.** [optional]
+
+---
+
 ## References
 
 1. Siegel RL, Kratzer TB, et al. Cancer statistics, 2025. *CA Cancer J Clin* 2025;75(1):10-45. PMID: 39817679. doi:10.3322/caac.21871
