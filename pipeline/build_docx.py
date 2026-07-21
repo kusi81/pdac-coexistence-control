@@ -14,7 +14,9 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MD = os.path.join(ROOT, "docs", "manuscript", "manuscript.md")
-OUT = os.path.join(ROOT, "docs", "manuscript", "manuscript.docx")
+CLEAN = "--clean" in sys.argv   # 제출용: 내부 메모(draft note, 편집 체크리스트) 제외
+OUT = os.path.join(ROOT, "docs", "manuscript",
+                   "manuscript_clean.docx" if CLEAN else "manuscript.docx")
 INLINE = re.compile(r"(\*\*.+?\*\*|\*[^*]+?\*|`.+?`|\[.+?\]\(.+?\))")
 
 
@@ -85,6 +87,11 @@ def main():
     st.paragraph_format.line_spacing = 1.4; st.paragraph_format.space_after = Pt(6)
 
     for kind, pl in blocks(open(MD, encoding="utf-8").read().splitlines()):
+        # 제출용 클린: 내부 메모 제외
+        if CLEAN and kind == "h" and "Master editorial checklist" in pl[1]:
+            break   # 이후(체크리스트) 전부 생략
+        if CLEAN and kind == "p" and pl.lstrip("*").startswith("Draft manuscript"):
+            continue
         if kind == "h":
             lvl, txt = pl
             add_runs(doc.add_heading("", level=min(lvl - 1, 4)), txt)
