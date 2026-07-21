@@ -168,7 +168,8 @@ def _figure(results, n0):
 
     axT.set_xlim(-6, 140); axB.set_xlim(-6, 140)
     axB.set_xlabel("Cumulative toxicity (patient burden)  →  lower is better")
-    fig.text(0.558, 0.5, "Time-to-progression (days)  →  longer is better",
+    # y-axis caption fully outside the plot on the left (in the inter-panel gap)
+    fig.text(0.503, 0.5, "Time-to-progression (days)  →  longer is better",
              rotation=90, va="center", ha="center", fontsize=9)
     axT.set_title("b  Burden vs control-duration frontier (broken y-axis)\n"
                   "upper-left = long control at low burden", fontsize=10,
@@ -180,7 +181,7 @@ def _figure(results, n0):
                markeredgecolor="k", markersize=9, label="Standard chemo (continuous)"),
         Line2D([0], [0], marker="^", color="w", markerfacecolor="#7F8C8D",
                markeredgecolor="k", markersize=9, label="Untreated")],
-        frameon=False, fontsize=8, loc="upper right")
+        frameon=False, fontsize=8, loc="lower right")
 
     fig.suptitle("Food-medicine-homology regimens × adaptive optimization — "
                  "low-toxicity tumor coexistence (in-silico)", fontsize=12)
