@@ -1,0 +1,12 @@
+# Core — always required (dashboard + containment metrics run on these alone)
+numpy
+scipy
+pandas
+matplotlib
+streamlit
+
+# Optional — enables metric 1 (neighborhood enrichment) & metric 4 (co-occurrence)
+# and .h5ad upload. The dashboard degrades gracefully if these are absent.
+# anndata
+# scanpy
+# squidpy

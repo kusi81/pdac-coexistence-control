@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large raw / downloaded data — regenerate via data/README.md
+# (small derived CSVs under data/ and data/scotia/ remain tracked)
+data/xenium/
+data/zhou/
+data/pdb/
+*.h5ad
+*.tar.gz
+*.zip
+
+# Scratch / logs
+*.log
+scratch/

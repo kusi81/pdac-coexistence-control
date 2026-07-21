@@ -1,0 +1,352 @@
+{
+  "1_siegel_stats": {
+    "38230766": {
+      "pmid": "38230766",
+      "title": "Cancer statistics, 2024.",
+      "journal": "CA Cancer J Clin",
+      "year": "2024",
+      "vol": "74",
+      "issue": "1",
+      "pages": "12-49",
+      "authors": "Siegel RL, Giaquinto AN, Jemal A",
+      "doi": "10.3322/caac.21820"
+    },
+    "39817679": {
+      "pmid": "39817679",
+      "title": "Cancer statistics, 2025.",
+      "journal": "CA Cancer J Clin",
+      "year": "2025",
+      "vol": "75",
+      "issue": "1",
+      "pages": "10-45",
+      "authors": "Siegel RL, Kratzer TB, Giaquinto AN, et al.",
+      "doi": "10.1016/S1470-2045(24)00157-8"
+    },
+    "38572751": {
+      "pmid": "38572751",
+      "title": "Global cancer statistics 2022: GLOBOCAN estimates of incidence and mortality worldwide for 36 cancers in 185 countries.",
+      "journal": "CA Cancer J Clin",
+      "year": "2024",
+      "vol": "74",
+      "issue": "3",
+      "pages": "229-263",
+      "authors": "Bray F, Laversanne M, Sung H, et al.",
+      "doi": "10.3322/caac.21834"
+    }
+  },
+  "3_ohlund_2017": {},
+  "4_biffi_2019": {
+    "31197017": {
+      "pmid": "31197017",
+      "title": "Cross-Species Single-Cell Analysis of Pancreatic Ductal Adenocarcinoma Reveals Antigen-Presenting Cancer-Associated Fibroblasts.",
+      "journal": "Cancer Discov",
+      "year": "2019",
+      "vol": "9",
+      "issue": "8",
+      "pages": "1102-1123",
+      "authors": "Elyada E, Bolisetty M, Laise P, et al.",
+      "doi": "10.1038/nbt.2859"
+    },
+    "30366930": {
+      "pmid": "30366930",
+      "title": "IL1-Induced JAK/STAT Signaling Is Antagonized by TGFβ to Shape CAF Heterogeneity in Pancreatic Ductal Adenocarcinoma.",
+      "journal": "Cancer Discov",
+      "year": "2019",
+      "vol": "9",
+      "issue": "2",
+      "pages": "282-301",
+      "authors": "Biffi G, Oni TE, Spielman B, et al.",
+      "doi": "10.1073/pnas.0506580102"
+    },
+    "31043410": {
+      "pmid": "31043410",
+      "title": "A FATal Combination: Fibroblast-Derived Lipids and Cancer-Derived Autotaxin Promote Pancreatic Cancer Growth.",
+      "journal": "Cancer Discov",
+      "year": "2019",
+      "vol": "9",
+      "issue": "5",
+      "pages": "578-580",
+      "authors": "Biffi G, Tuveson DA",
+      "doi": "10.1158/2159-8290.CD-19-0273"
+    }
+  },
+  "5_rhim_2014": {
+    "24856585": {
+      "pmid": "24856585",
+      "title": "Stromal elements act to restrain, rather than support, pancreatic ductal adenocarcinoma.",
+      "journal": "Cancer Cell",
+      "year": "2014",
+      "vol": "25",
+      "issue": "6",
+      "pages": "735-47",
+      "authors": "Rhim AD, Oberstein PE, Thomas DH, et al.",
+      "doi": "10.1016/j.ccr.2014.04.021"
+    }
+  },
+  "6_ozdemir_2014": {},
+  "9_adaptive_evol": {
+    "19487300": {
+      "pmid": "19487300",
+      "title": "Adaptive therapy.",
+      "journal": "Cancer Res",
+      "year": "2009",
+      "vol": "69",
+      "issue": "11",
+      "pages": "4894-903",
+      "authors": "Gatenby RA, Silva AS, Gillies RJ, et al.",
+      "doi": "10.1158/0008-5472.CAN-08-3658"
+    },
+    "41813900": {
+      "pmid": "41813900",
+      "title": "Risk-adaptive therapy guided by dynamic ctDNA in nasopharyngeal carcinoma.",
+      "journal": "Nature",
+      "year": "2026",
+      "vol": "652",
+      "issue": "8110",
+      "pages": "731-739",
+      "authors": "Lv J, Zheng DX, Liang JH, et al.",
+      "doi": "10.2471/BLT.15.164418"
+    },
+    "31948939": {
+      "pmid": "31948939",
+      "title": "Towards Multidrug Adaptive Therapy.",
+      "journal": "Cancer Res",
+      "year": "2020",
+      "vol": "80",
+      "issue": "7",
+      "pages": "1578-1589",
+      "authors": "West J, You L, Zhang J, et al.",
+      "doi": "10.1158/0008-5472.CAN-19-2669"
+    },
+    "30278037": {
+      "pmid": "30278037",
+      "title": "Is adaptive therapy natural?",
+      "journal": "PLoS Biol",
+      "year": "2018",
+      "vol": "16",
+      "issue": "10",
+      "pages": "e2007066",
+      "authors": "Thomas F, Donnadieu E, Charriere GM, et al.",
+      "doi": "10.1158/0008-5472.CAN-15-0159"
+    },
+    "37898477": {
+      "pmid": "37898477",
+      "title": "Adaptive therapy: a tumor therapy strategy based on Darwinian evolution theory.",
+      "journal": "Crit Rev Oncol Hematol",
+      "year": "2023",
+      "vol": "192",
+      "issue": "",
+      "pages": "104192",
+      "authors": "Zhang L, Ma J, Liu L, et al.",
+      "doi": "10.1016/j.critrevonc.2023.104192"
+    }
+  },
+  "10_intermittent_npj_2024": {
+    "27885969": {
+      "pmid": "27885969",
+      "title": "36th International Symposium on Intensive Care and Emergency Medicine : Brussels, Belgium. 15-18 March 2016.",
+      "journal": "Crit Care",
+      "year": "2016",
+      "vol": "20",
+      "issue": "Suppl 2",
+      "pages": "94",
+      "authors": "Bateman RM, Sharpe MD, Jagger JE, et al.",
+      "doi": "10.1186/s13054-016-1208-6"
+    },
+    "39614108": {
+      "pmid": "39614108",
+      "title": "A mathematical framework for comparison of intermittent versus continuous adaptive chemotherapy dosing in cancer.",
+      "journal": "NPJ Syst Biol Appl",
+      "year": "2024",
+      "vol": "10",
+      "issue": "1",
+      "pages": "140",
+      "authors": "McGehee C, Mori Y",
+      "doi": "10.1371/journal.pone.0243386"
+    },
+    "7993834": {
+      "pmid": "7993834",
+      "title": "Suramin for breast and prostate cancer: a pilot study of intermittent short infusions without adaptive control.",
+      "journal": "Ann Oncol",
+      "year": "1994",
+      "vol": "5",
+      "issue": "7",
+      "pages": "597-600",
+      "authors": "Woll PJ, Ranson M, Margison J, et al.",
+      "doi": "10.1093/oxfordjournals.annonc.a058930"
+    },
+    "42200011": {
+      "pmid": "42200011",
+      "title": "Continuous adaptive chemotherapy dosing by using planet-formation-inspired dynamics: analytical and in silico insights.",
+      "journal": "Front Oncol",
+      "year": "2026",
+      "vol": "16",
+      "issue": "",
+      "pages": "1761791",
+      "authors": "Soares Dos Santos MP, Santos SXF, Bernardo RMC, et al.",
+      "doi": "10.1038/s41598-019-46926-x"
+    }
+  },
+  "12_healthstrengthening_2018": {
+    "30469422": {
+      "pmid": "30469422",
+      "title": "Network Pharmacology to Unveil the Biological Basis of Health-Strengthening Herbal Medicine in Cancer Treatment.",
+      "journal": "Cancers (Basel)",
+      "year": "2018",
+      "vol": "10",
+      "issue": "11",
+      "pages": "",
+      "authors": "Zheng J, Wu M, Wang H, et al.",
+      "doi": "10.1186/1752-0509-5-79"
+    }
+  },
+  "13_medfood_anticancer_review": {
+    "38915462": {
+      "pmid": "38915462",
+      "title": "Hawthorn with \"homology of medicine and food\": a review of anticancer effects and mechanisms.",
+      "journal": "Front Pharmacol",
+      "year": "2024",
+      "vol": "15",
+      "issue": "",
+      "pages": "1384189",
+      "authors": "Zhou Z, Nan Y, Li X, et al.",
+      "doi": "10.3390/molecules26092656"
+    },
+    "37298878": {
+      "pmid": "37298878",
+      "title": "The Ethnopharmacological, Phytochemical, and Pharmacological Review of Euryale ferox Salisb.: A Chinese Medicine Food Homology.",
+      "journal": "Molecules",
+      "year": "2023",
+      "vol": "28",
+      "issue": "11",
+      "pages": "",
+      "authors": "Jiang J, Ou H, Chen R, et al.",
+      "doi": "10.5530/ajbls.2020.9.47"
+    },
+    "39314630": {
+      "pmid": "39314630",
+      "title": "Lonicerae Japonicae Flos with the homology of medicine and food: a review of active ingredients, anticancer mechanisms, pharmacokinetics, quality control, toxicity and applications.",
+      "journal": "Front Oncol",
+      "year": "2024",
+      "vol": "14",
+      "issue": "",
+      "pages": "1446328",
+      "authors": "Ma P, Yuan L, Jia S, et al.",
+      "doi": "10.2174/1568009616666151207105851"
+    },
+    "37396128": {
+      "pmid": "37396128",
+      "title": "\"Medicine food homology\" plants promote periodontal health: antimicrobial, anti-inflammatory, and inhibition of bone resorption.",
+      "journal": "Front Nutr",
+      "year": "2023",
+      "vol": "10",
+      "issue": "",
+      "pages": "1193289",
+      "authors": "Qu S, Yu S, Ma X, et al.",
+      "doi": "10.1155/2021/5510174"
+    }
+  },
+  "17_multiscale_abm_2019": {
+    "30701168": {
+      "pmid": "30701168",
+      "title": "Multiscale Agent-Based and Hybrid Modeling of the Tumor Immune Microenvironment.",
+      "journal": "Processes (Basel)",
+      "year": "2019",
+      "vol": "7",
+      "issue": "1",
+      "pages": "",
+      "authors": "Norton KA, Gong C, Jamalian S, et al.",
+      "doi": "10.3390/pr7010037"
+    },
+    "38426105": {
+      "pmid": "38426105",
+      "title": "Tumor-immune metaphenotypes orchestrate an evolutionary bottleneck that promotes metabolic transformation.",
+      "journal": "Front Immunol",
+      "year": "2024",
+      "vol": "15",
+      "issue": "",
+      "pages": "1323319",
+      "authors": "West J, Rentzeperis F, Adam C, et al.",
+      "doi": "10.1016/j.tibtech.2023.01.004"
+    },
+    "41322398": {
+      "pmid": "41322398",
+      "title": "Optimization of Immune Checkpoint Blockade via a Multiscale Model System.",
+      "journal": "Comput Syst Oncol",
+      "year": "2025",
+      "vol": "5",
+      "issue": "2",
+      "pages": "e70007",
+      "authors": "Talkington AM, Kearsley AJ",
+      "doi": "10.1038/s41590-023-01578-y"
+    },
+    "28032590": {
+      "pmid": "28032590",
+      "title": "Predicting the impact of combined therapies on myeloma cell growth using a hybrid multi-scale agent-based model.",
+      "journal": "Oncotarget",
+      "year": "2017",
+      "vol": "8",
+      "issue": "5",
+      "pages": "7647-7665",
+      "authors": "Ji Z, Su J, Wu D, et al.",
+      "doi": "10.18632/oncotarget.11745"
+    }
+  },
+  "18_spatial_pdac_model": {
+    "39227743": {
+      "pmid": "39227743",
+      "title": "Spatially resolved analysis of pancreatic cancer identifies therapy-associated remodeling of the tumor microenvironment.",
+      "journal": "Nat Genet",
+      "year": "2024",
+      "vol": "56",
+      "issue": "11",
+      "pages": "2466-2478",
+      "authors": "Shiau C, Cao J, Gong D, et al.",
+      "doi": "10.1101/2022.10.19.512902"
+    },
+    "31740819": {
+      "pmid": "31740819",
+      "title": "Fast, sensitive and accurate integration of single-cell data with Harmony.",
+      "journal": "Nat Methods",
+      "year": "2019",
+      "vol": "16",
+      "issue": "12",
+      "pages": "1289-1296",
+      "authors": "Korsunsky I, Millard N, Fan J, et al.",
+      "doi": "10.5061/dryad.8t8s248"
+    },
+    "33544846": {
+      "pmid": "33544846",
+      "title": "SPOTlight: seeded NMF regression to deconvolute spatial transcriptomics spots with single-cell transcriptomes.",
+      "journal": "Nucleic Acids Res",
+      "year": "2021",
+      "vol": "49",
+      "issue": "9",
+      "pages": "e50",
+      "authors": "Elosua-Bayes M, Nieto P, Mereu E, et al.",
+      "doi": "10.1101/762773"
+    },
+    "40481363": {
+      "pmid": "40481363",
+      "title": "CellNEST reveals cell-cell relay networks using attention mechanisms on spatial transcriptomics.",
+      "journal": "Nat Methods",
+      "year": "2025",
+      "vol": "22",
+      "issue": "7",
+      "pages": "1505-1519",
+      "authors": "Zohora FT, Paliwal D, Flores-Figueroa E, et al.",
+      "doi": "10.1038/s41592-025-02721-3"
+    },
+    "41701125": {
+      "pmid": "41701125",
+      "title": "Single-Cell Analysis of Chemotherapy-induced Remodeling Reveals CD276-driven Basal-like Chemoresistance in Pancreatic Cancer.",
+      "journal": "Gastroenterology",
+      "year": "2026",
+      "vol": "170",
+      "issue": "4",
+      "pages": "769-786",
+      "authors": "Zhang Y, Du Y, Wang J, et al.",
+      "doi": "10.1053/j.gastro.2025.09.043"
+    }
+  }
+}
