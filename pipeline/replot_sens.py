@@ -27,26 +27,26 @@ fig, axs = plt.subplots(1, 2, figsize=(13.5, 5.6))
 # ── a: resistance_cost — 이점 강건 + 내성 억제가 진짜 역할 ──
 ax = axs[0]
 ax.plot(sw.resistance_cost, sw.adapt_cs, "o-", color="#27AE60", lw=2,
-        label="적응형 control_score")
+        label="adaptive control_score")
 ax.plot(sw.resistance_cost, sw.cont_cs, "s-", color="#C0392B", lw=2,
-        label="연속 control_score")
+        label="continuous control_score")
 ax.axvspan(0.20, 0.30, color="#3498DB", alpha=0.10)
-ax.text(0.25, 5.0, "문헌범위\n0.2-0.3", ha="center", fontsize=8, color="#2471A3")
-ax.set_xlabel("resistance_cost (내성 적합도 비용)")
-ax.set_ylabel("control_score (통제기간/(독성+1))")
+ax.text(0.25, 5.0, "literature\nrange 0.2-0.3", ha="center", fontsize=8, color="#2471A3")
+ax.set_xlabel("resistance_cost (resistant fitness cost)")
+ax.set_ylabel("control_score (control time / (toxicity+1))")
 ax.set_ylim(0, 10)
 ax2 = ax.twinx()
 ax2.plot(sw.resistance_cost, sw.adapt_res, "^--", color="#8E44AD", lw=1.8,
-         label="적응형 최종 내성분율")
-ax2.set_ylabel("최종 내성 분율", color="#8E44AD")
+         label="adaptive final resistant frac.")
+ax2.set_ylabel("final resistant fraction", color="#8E44AD")
 ax2.tick_params(axis="y", labelcolor="#8E44AD")
 ax2.set_ylim(0, 0.25)
 l1, la = ax.get_legend_handles_labels()
 l2, lb = ax2.get_legend_handles_labels()
 ax.legend(l1 + l2, la + lb, frameon=False, fontsize=8, loc="center right")
-ax.set_title("a  적응형 저독성 통제는 cost 전범위서 강건(연속 대비 CS 4.5~5.9 vs 1.2)\n"
-             "resistance_cost의 역할 = 내성 억제: cost 0→0.20, cost≥0.1→<0.05",
-             fontsize=9.8, fontweight="bold")
+ax.set_title("a  Adaptive low-toxicity control is robust across all cost (vs continuous CS 4.5-5.9 vs 1.2)\n"
+             "resistance_cost's role = suppressing resistance: cost 0->0.20, cost>=0.1->< 0.05",
+             fontsize=9.3, fontweight="bold")
 
 # ── b: 토네이도 ──
 ax = axs[1]
@@ -59,15 +59,15 @@ for i, (_, r) in enumerate(tor.iterrows()):
                label="2×" if i == 0 else None)
 ax.axvline(BASE_CS, color="black", ls="--", lw=1.2, label="baseline")
 ax.set_yticks(y); ax.set_yticklabels(tor.param)
-ax.set_xlabel("적응형 control_score")
-ax.set_title("b  OAT 민감도(±50%): 결과는 종양-면역 균형에 지배\n"
-             "(k_prolif·cd8_barrier_alpha·k_kill) · 내성 파라미터는 부차적",
-             fontsize=9.8, fontweight="bold")
+ax.set_xlabel("adaptive control_score")
+ax.set_title("b  OAT sensitivity (±50%): outcome governed by tumor-immune balance\n"
+             "(k_prolif · cd8_barrier_alpha · k_kill) · resistance parameters secondary",
+             fontsize=9.5, fontweight="bold")
 ax.legend(frameon=False, fontsize=8, loc="lower right")
 
-fig.suptitle("Figure S3 — 민감도분석: 적응형 저독성 통제는 파라미터에 강건; "
-             "결과 민감도는 종양-면역 균형에 집중(→ 우선 실측 대상)",
-             fontsize=11.5, fontweight="bold")
+fig.suptitle("Figure S3 — Sensitivity analysis: adaptive low-toxicity control is robust to parameters; "
+             "outcome sensitivity concentrates in tumor-immune balance (-> priority for calibration)",
+             fontsize=11, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.95])
 out = os.path.join(ROOT, "assets", "sensitivity.png")
 fig.savefig(out, dpi=118, bbox_inches="tight")

@@ -52,7 +52,7 @@ growth and using the myCAF barrier to keep it contained, so patients feel better
 and live longer? To explore this safely and cheaply, we built a computer simulation
 of pancreatic tumor tissue based on real spatial measurements of where each cell
 sits. Into this simulation we added compounds that are eaten as food and used as
-traditional medicine in East Asia. The model lets us test many combinations,
+traditional medicine in Northeast Asia. The model lets us test many combinations,
 timings, and doses in silico and rank the most promising, low-toxicity strategies.
 These predictions are hypotheses meant to guide future laboratory experiments, not
 to replace them.
@@ -100,7 +100,7 @@ CAF-mediated containment has not been integrated into such control frameworks.
 
 A complementary opportunity lies in the compounds available for long-term,
 low-toxicity control. "Food-medicine homology" (medicine-food homology)
-substances—plant and animal materials used in East Asian traditions as both food
+substances—plant and animal materials used in Northeast Asian traditions as both food
 and remedy (e.g., garlic, ginseng, Platycodon, mugwort, hawthorn)—offer
 multi-target activity with favorable safety and accessibility, making them
 attractive backbones for chronic control regimens rather than acute cytotoxic

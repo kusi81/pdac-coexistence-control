@@ -38,11 +38,11 @@ for grp, off, alpha in [(naive, +h/2, 0.55), (crt, -h/2, 1.0)]:
 ax.set_yticks(y); ax.set_yticklabels(CTS); ax.invert_yaxis()
 ax.axvline(0, color="black", lw=1)
 ax.axvline(2, color="#888", ls="--", lw=1); ax.axvline(-2, color="#888", ls="--", lw=1)
-ax.set_xlabel("종양 rim(30µm) 농축 z  (>2 인접, <-2 배제) · 점=개별 시료")
-ax.set_title("SCOTIA 저자주석 — 종양 주변 세포 농축 (Untreated vs CRT)\n"
-             "양성대조 15/16 통과 · 대형패널 CosMx", fontsize=12.5, fontweight="bold")
-ax.legend(handles=[Patch(facecolor="#888", alpha=0.55, label="치료 전(Untreated)"),
-                   Patch(facecolor="#888", alpha=1.0, label="CRT 치료후")],
+ax.set_xlabel("Tumor-rim (30µm) enrichment z  (>2 adjacent, <-2 excluded) · dots = individual samples")
+ax.set_title("SCOTIA author annotation — peritumoral cell enrichment (Untreated vs CRT)\n"
+             "positive control 15/16 pass · large-panel CosMx", fontsize=12.5, fontweight="bold")
+ax.legend(handles=[Patch(facecolor="#888", alpha=0.55, label="Untreated"),
+                   Patch(facecolor="#888", alpha=1.0, label="CRT-treated")],
           frameon=False, fontsize=9, loc="lower right")
 fig.tight_layout()
 out = os.path.join(ROOT, "assets", "rim_scotia.png")

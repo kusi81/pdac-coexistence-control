@@ -48,12 +48,12 @@ def parse_pdb(path, lig_resn=None):
 
 
 PANELS = [
-    ("1M17.pdb", "AQ4", "#7FB3D5", "에를로티닙",
-     "[실험] EGFR + 에를로티닙 (1M17)\n약물이 ATP 주머니에 실측", "#1E8449", None),
-    ("1P62.pdb", "GEO", "#82C4B0", "젬시타빈",
-     "[실험] dCK + 젬시타빈 (1P62)\n약물이 활성화효소에 실측", "#1E8449", None),
+    ("1M17.pdb", "AQ4", "#7FB3D5", "Erlotinib",
+     "[Experimental] EGFR + erlotinib (1M17)\ndrug resolved in ATP pocket", "#1E8449", None),
+    ("1P62.pdb", "GEO", "#82C4B0", "Gemcitabine",
+     "[Experimental] dCK + gemcitabine (1P62)\ndrug resolved in activating kinase", "#1E8449", None),
     ("1BG1.pdb", None, "#F5B7B1", None,
-     "[도킹 예측] STAT3 + 커큐민 (1BG1)\n약물 없음, 예측 잔기만", "#B9770E",
+     "[Docking prediction] STAT3 + curcumin (1BG1)\nno drug present, predicted residues only", "#B9770E",
      (474, 325, 324, 252, 258, 250)),
 ]
 
@@ -77,22 +77,23 @@ def main():
             L = np.array(lig)
             ax.scatter(L[:, 0], L[:, 1], L[:, 2], color="#27AE60", s=55,
                        edgecolor="black", linewidth=0.3,
-                       label=f"{drug} (실측, {len(L)}원자)")
-            print(f"{pdb}: CA {len(ca)}, {drug}({lig_resn}) {len(lig)}원자")
+                       label=f"{drug} (resolved, {len(L)} atoms)")
+            print(f"{pdb}: CA {len(ca)}, {drug}({lig_resn}) {len(lig)} atoms")
         if hi_res:
             hs = [r for r in hi_res if r in ca]
             if hs:
                 H = np.array([ca[r] for r in hs])
                 ax.scatter(H[:, 0], H[:, 1], H[:, 2], color="#C0392B", s=75,
                            edgecolor="black", linewidth=0.4,
-                           label=f"도킹 예측 잔기 ({len(hs)})")
-            print(f"{pdb}: CA {len(ca)}, 예측잔기 {hs}")
+                           label=f"docking-predicted residues ({len(hs)})")
+            print(f"{pdb}: CA {len(ca)}, predicted residues {hs}")
         ax.set_title(title, fontsize=10.5, fontweight="bold", color=tcol)
         ax.legend(fontsize=8, loc="upper left")
         _clean(ax)
 
-    fig.suptitle("에를로티닙·젬시타빈(실험) vs 커큐민(도킹) — 초록 약물이 보이면 자세 신뢰, "
-                 "빨강 예측 잔기만이면 가설", fontsize=12.5)
+    fig.suptitle("Erlotinib & gemcitabine (experimental) vs curcumin (docking) — "
+                 "green drug visible = pose trusted; red predicted residues only = hypothesis",
+                 fontsize=11.5)
     fig.tight_layout(rect=[0, 0, 1, 0.94])
     out = os.path.normpath(os.path.join(PDB_DIR, "..", "..", "assets",
                                         "drug_structures_3d.png"))

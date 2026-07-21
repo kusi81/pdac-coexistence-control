@@ -89,8 +89,8 @@ def _figure(tox, fin, controlled, best):
         ax.set_xticks(range(len(DOSE_GRID)))
         ax.set_xticklabels([f"{d:.0%}" for d in DOSE_GRID])
         ax.set_yticks(range(len(OFF_GRID))); ax.set_yticklabels(OFF_GRID)
-        ax.set_xlabel("용량 (전량 대비)")
-        ax.set_ylabel("adapt_off (휴약 배수)")
+        ax.set_xlabel("Dose (fraction of full)")
+        ax.set_ylabel("adapt_off (drug-holiday threshold)")
         ax.set_title(title, fontsize=11, fontweight="bold")
         for io in range(len(OFF_GRID)):
             for jd in range(len(DOSE_GRID)):
@@ -101,16 +101,17 @@ def _figure(tox, fin, controlled, best):
                                                edgecolor="#27AE60", lw=2.5))
         fig.colorbar(im, ax=ax, fraction=0.046)
 
-    heat(a1, tox, "누적 독성(부담) — 초록테두리=통제됨\n낮을수록 좋음", "YlOrRd", "{:.0f}")
-    heat(a2, fin, "최종 종양(초기 대비 배수)\n통제 여부", "RdYlGn_r", "{:.1f}")
+    heat(a1, tox, "Cumulative toxicity (burden) — green border = controlled\nlower is better", "YlOrRd", "{:.0f}")
+    heat(a2, fin, "Final tumor (fold vs initial)\ncontrol status", "RdYlGn_r", "{:.1f}")
     if best:
         jb = DOSE_GRID.index(best[1]); ib = OFF_GRID.index(best[2])
         for ax in (a1, a2):
             ax.scatter([jb], [ib], marker="*", s=380, color="#2E86AB",
                        edgecolor="white", linewidth=1.3, zorder=5)
-    fig.suptitle(f"용량 × band 동시 최적화 (커큐민+마늘+Rg3) — ★ 통제 유지 최소 부담: "
-                 f"용량 {best[1]:.0%}/off {best[2]} (독성 {best[0]:.0f})"
-                 if best else "용량 × band 최적화", fontsize=12)
+    fig.suptitle(f"Dose × drug-holiday optimization (Curcumin+Garlic+Rg3) — "
+                 f"★ minimal burden that retains control: "
+                 f"dose {best[1]:.0%}/off {best[2]} (toxicity {best[0]:.0f})"
+                 if best else "Dose × drug-holiday optimization", fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, 0.94])
     out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        "assets", "dose_band_optimization.png")

@@ -44,8 +44,8 @@ def main():
                      adaptive=True, adapt_on=ADAPT_ON, adapt_off=ADAPT_OFF,
                      snapshots=(0.0, 1.0))
     n0 = h0[0]["n_tumor"]
-    runs = [("무처치", h0, "#7F8C8D"), ("연속 최대투여", hc, "#C0392B"),
-            ("적응형 on/off", ha, "#27AE60")]
+    runs = [("Untreated", h0, "#7F8C8D"), ("Continuous max-dose", hc, "#C0392B"),
+            ("Adaptive on/off", ha, "#27AE60")]
 
     print(f"{'전략':<14}{'TTP':>8}{'최종배수':>9}{'내성분율':>9}{'독성':>7}{'통제점수':>9}")
     for name, h, _c in runs:
@@ -64,28 +64,30 @@ def main():
     for tt in on:
         axs[0].axvspan(tt, tt + PARAMS.get("dt_days", 0.5), color="#27AE60", alpha=0.04)
     axs[0].axhline(1.0, color="#CCC", ls=":", lw=1)
-    axs[0].axhline(1.5, color="#E74C3C", ls="--", lw=1, label="진행 임계(1.5x)")
-    axs[0].set_xlabel("시간 (days)"); axs[0].set_ylabel("종양 / 초기")
-    axs[0].set_title("종양 부담 — 적응형은 band에 통제(공존)", fontsize=11, fontweight="bold")
+    axs[0].axhline(1.5, color="#E74C3C", ls="--", lw=1, label="progression threshold (1.5x)")
+    axs[0].set_xlabel("Time (days)"); axs[0].set_ylabel("Tumor / initial")
+    axs[0].set_title("Tumor burden — adaptive holds within a band (coexistence)",
+                     fontsize=10.5, fontweight="bold")
     axs[0].legend(frameon=False, fontsize=8)
-    # B. 내성 분율 (경쟁적 방출)
+    # B. resistant fraction (competitive release)
     for name, h, col in runs:
         t = [x["t"] for x in h]; y = [x["resistant_frac"] for x in h]
         axs[1].plot(t, y, lw=2, color=col, label=name)
-    axs[1].set_xlabel("시간 (days)"); axs[1].set_ylabel("내성 종양 분율")
-    axs[1].set_title("내성 분율 추이 (더 공격적 체제선 연속투여가 내성 장악)",
+    axs[1].set_xlabel("Time (days)"); axs[1].set_ylabel("Resistant tumor fraction")
+    axs[1].set_title("Resistant fraction over time (continuous selects resistance)",
                      fontsize=10.5, fontweight="bold")
     axs[1].legend(frameon=False, fontsize=8)
-    # C. 누적 독성
+    # C. cumulative toxicity
     for name, h, col in runs:
         t = [x["t"] for x in h]; y = [x["cum_toxicity"] for x in h]
         axs[2].plot(t, y, lw=2, color=col, label=name)
-    axs[2].set_xlabel("시간 (days)"); axs[2].set_ylabel("누적 독성(환자 부담)")
-    axs[2].set_title("누적 부담 — 적응형이 더 적게", fontsize=11, fontweight="bold")
+    axs[2].set_xlabel("Time (days)"); axs[2].set_ylabel("Cumulative toxicity (patient burden)")
+    axs[2].set_title("Cumulative burden — lower for adaptive", fontsize=11, fontweight="bold")
     axs[2].legend(frameon=False, fontsize=8)
 
-    fig.suptitle("통제·공존 전략 비교 (저항성 포함 ABM) — 적응형: 종양 0.7x 공존을 "
-                 "1/5 독성으로 (연속=박멸이나 부담 최대)", fontsize=11.5)
+    fig.suptitle("Control/coexistence strategy comparison (ABM with resistance) — "
+                 "adaptive: 0.8x coexistence at ~1/5 the toxicity (continuous eradicates at max burden)",
+                 fontsize=11.5)
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        "assets", "control_strategies.png")

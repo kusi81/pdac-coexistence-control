@@ -45,7 +45,7 @@ def _scatter(ax, mode, title):
                    label=ct, alpha=0.7, linewidths=0)
     ax.set_xticks([]); ax.set_yticks([]); ax.set_aspect("equal")
     zt = f"barrier z = {z:+.1f}" if z is not None else "barrier z = n/a"
-    verdict = "장벽 개재(containment)" if (z or 0) > 2 else "무작위(장벽 없음)"
+    verdict = "barrier interposed (containment)" if (z or 0) > 2 else "random (no barrier)"
     ax.set_title(f"{title}\n{zt}  ·  {verdict}", fontsize=10, fontweight="bold")
     return ax
 
@@ -65,7 +65,7 @@ def _strip(ax, rows, title, xlim, note):
         seen[grp] = 1
     npass = sum(1 for _, _, d in rows if d < 0)
     ax.set_xlim(*xlim); ax.set_ylim(-0.6, 0.6); ax.set_yticks([])
-    ax.set_title(f"{title}  ({npass}/{len(rows)} 양성대조 통과)",
+    ax.set_title(f"{title}  ({npass}/{len(rows)} pass positive control)",
                  fontsize=10.5, fontweight="bold")
     ax.legend(fontsize=7.5, loc="upper left", frameon=False)
 
@@ -79,26 +79,26 @@ def main():
                            hspace=0.42, wspace=0.22)
     # 2a
     _scatter(fig.add_subplot(gs[0, 0]), "contained",
-             "a  합성: contained (myCAF 링)")
+             "a  Synthetic: contained (myCAF ring)")
     axd = _scatter(fig.add_subplot(gs[1, 0]), "diffuse",
-                   "합성: diffuse (무작위)")
+                   "Synthetic: diffuse (random)")
     axd.legend(fontsize=7.5, loc="upper right", frameon=False,
                markerscale=2, ncol=3, bbox_to_anchor=(1.0, -0.02))
     # 2b SCOTIA
     XR = (-78, 80)
     _strip(fig.add_subplot(gs[0, 1]), scotia_rows,
-           "b  SCOTIA 저자주석 (CosMx)", XR, "통과")
+           "b  SCOTIA author annotation (CosMx)", XR, "pass")
     # 2c Xenium
     ax2c = fig.add_subplot(gs[1, 1])
     _strip(ax2c, [(s, ("CRT" if g == "CRT" else "Untreated"), d)
                   for s, g, d in XENIUM],
-           "c  Xenium module-score 주석", XR, "실패")
-    ax2c.set_xlabel("myCAF - iCAF 종양까지 거리 (µm)  ·  "
-                    "<0 = myCAF가 더 가까움(정답)", fontsize=9.5)
+           "c  Xenium module-score annotation", XR, "fail")
+    ax2c.set_xlabel("myCAF - iCAF distance to tumor (µm)  ·  "
+                    "<0 = myCAF closer (correct)", fontsize=9.5)
 
-    fig.suptitle("Figure 2 — containment 지표는 정상, 관건은 주석 "
-                 "(합성 특이도 · SCOTIA 양성대조 재현 · Xenium 주석 실패)",
-                 fontsize=12.5, fontweight="bold", y=0.99)
+    fig.suptitle("Figure 2 — the containment metric is sound; annotation is the limiting factor "
+                 "(synthetic specificity · SCOTIA positive control · Xenium annotation failure)",
+                 fontsize=11.5, fontweight="bold", y=0.99)
     out = os.path.join(ROOT, "assets", "fig2_validation.png")
     fig.savefig(out, dpi=120, bbox_inches="tight")
     print("wrote", out)

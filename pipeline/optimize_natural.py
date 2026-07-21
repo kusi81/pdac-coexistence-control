@@ -32,23 +32,24 @@ PARAMS = dict(k_prolif=0.15, cd8_recruit=10, k_kill=0.5, k_caf_activate=0.10,
 DAYS = 150
 ADAPT_ON, ADAPT_OFF = 1.1, 0.7
 
-# 자연물 후보 배합 (기전 기반). 전부 저독성 전통식품 성분.
+# Food-medicine-homology candidate regimens (mechanism-based); all low-toxicity.
 NATURAL = {
-    "커큐민": [("curcumin", 1.0)],
-    "마늘": [("garlic", 1.0)],
-    "쑥(항CAF)": [("mugwort", 1.0)],
-    "산삼": [("wild_ginseng", 1.0)],
-    "마늘+쑥": [("garlic", 1.0), ("mugwort", 1.0)],
-    "산삼+마늘+쑥": [("wild_ginseng", 1.0), ("garlic", 1.0), ("mugwort", 1.0)],
-    "커큐민+마늘+Rg3": [("curcumin", 1.0), ("garlic", 1.0), ("ginsenoside_rg3", 1.0)],
-    "단삼+황기(항섬유)": [("danshen", 1.0), ("astragaloside", 1.0)],
-    "종합5종": [("curcumin", 1.0), ("garlic", 1.0), ("mugwort", 1.0),
-                ("ginsenoside_rg3", 1.0), ("sea_cucumber", 1.0)],
+    "Curcumin": [("curcumin", 1.0)],
+    "Garlic": [("garlic", 1.0)],
+    "Mugwort (anti-CAF)": [("mugwort", 1.0)],
+    "Wild ginseng": [("wild_ginseng", 1.0)],
+    "Garlic + Mugwort": [("garlic", 1.0), ("mugwort", 1.0)],
+    "Ginseng + Garlic + Mugwort": [("wild_ginseng", 1.0), ("garlic", 1.0), ("mugwort", 1.0)],
+    "Curcumin + Garlic + Rg3": [("curcumin", 1.0), ("garlic", 1.0), ("ginsenoside_rg3", 1.0)],
+    "Danshen + Astragaloside (anti-fibrotic)": [("danshen", 1.0), ("astragaloside", 1.0)],
+    "5-compound mix": [("curcumin", 1.0), ("garlic", 1.0), ("mugwort", 1.0),
+                       ("ginsenoside_rg3", 1.0), ("sea_cucumber", 1.0)],
 }
-# 관행 벤치마크
+# Standard-of-care benchmark
 BENCH = {
-    "젬시타빈(연속,관행)": [("gemcitabine", 1.0)],
+    "Gemcitabine (continuous)": [("gemcitabine", 1.0)],
 }
+UNTREATED = "Untreated"
 
 
 def main():
@@ -61,7 +62,7 @@ def main():
     results = []
     # 무처치
     h0, _ = simulate(c, l, days=DAYS, params=PARAMS, snapshots=(0.0, 1.0))
-    results.append(("무처치", "none", h0, control_metrics(h0, n0=n0), "#7F8C8D"))
+    results.append((UNTREATED, "none", h0, control_metrics(h0, n0=n0), "#7F8C8D"))
     # 자연물: 적응형
     for name, reg in NATURAL.items():
         h, _ = simulate(c, l, days=DAYS, params=PARAMS, regimen_subs=reg,
@@ -93,16 +94,17 @@ def _figure(results, n0):
     # A: 대표 궤적 (무처치, 젬시타빈, 상위 자연물 2개)
     nat = [r for r in results if r[1] == "natural-adaptive"]
     nat_sorted = sorted(nat, key=lambda r: -r[3]["control_score"])
-    show = [r for r in results if r[0] == "무처치"] + nat_sorted[:2] + \
+    show = [r for r in results if r[0] == UNTREATED] + nat_sorted[:2] + \
            [r for r in results if r[1] == "conventional"]
     for name, typ, h, m, col in show:
         t = [x["t"] for x in h]; y = [x["n_tumor"] / n0 for x in h]
         ls = "-" if typ != "conventional" else "--"
         axA.plot(t, y, ls, lw=2, color=col, label=f"{name}")
     axA.axhline(1.5, color="#E74C3C", ls=":", lw=1)
-    axA.text(2, 1.53, "진행 임계 1.5x", fontsize=8, color="#E74C3C")
-    axA.set_xlabel("시간 (days)"); axA.set_ylabel("종양 / 초기")
-    axA.set_title("종양 궤적 — 자연물 적응형(초록)이 저부담으로 통제", fontsize=11, fontweight="bold")
+    axA.text(2, 1.53, "progression threshold 1.5x", fontsize=8, color="#E74C3C")
+    axA.set_xlabel("Time (days)"); axA.set_ylabel("Tumor / initial")
+    axA.set_title("Tumor trajectory — natural adaptive regimens (green) control at low burden",
+                  fontsize=10.5, fontweight="bold")
     axA.legend(frameon=False, fontsize=8)
 
     # B: 트레이드오프 프론티어 — TTP(통제 지속) vs 독성(부담).
@@ -113,23 +115,25 @@ def _figure(results, n0):
         axB.annotate(name, (m["cum_toxicity"], m["ttp_days"]), fontsize=7.5,
                      xytext=(5, 3), textcoords="offset points")
     axB.axhline(DAYS, color="#27AE60", ls=":", lw=1)
-    axB.text(60, DAYS - 6, "관측기간 내내 통제(진행 없음)", fontsize=8, color="#27AE60")
-    axB.set_xlabel("누적 독성 (환자 부담) →  낮을수록 좋음")
-    axB.set_ylabel("진행까지 시간 TTP (days) →  길수록 좋음")
-    axB.set_title("부담 vs 통제 지속 프론티어\n(왼쪽 위 = 적은 부담으로 오래 통제)",
+    axB.text(60, DAYS - 6, "controlled over full horizon (no progression)",
+             fontsize=8, color="#27AE60")
+    axB.set_xlabel("Cumulative toxicity (patient burden)  →  lower is better")
+    axB.set_ylabel("Time-to-progression (days)  →  longer is better")
+    axB.set_title("Burden vs control-duration frontier\n"
+                  "(upper-left = long control at low burden)",
                   fontsize=11, fontweight="bold")
     from matplotlib.lines import Line2D
     axB.legend(handles=[
         Line2D([0], [0], marker="o", color="w", markerfacecolor="#27AE60",
-               markeredgecolor="k", markersize=9, label="자연물 적응형"),
+               markeredgecolor="k", markersize=9, label="Natural, adaptive"),
         Line2D([0], [0], marker="s", color="w", markerfacecolor="#C0392B",
-               markeredgecolor="k", markersize=9, label="관행 화학요법(연속)"),
+               markeredgecolor="k", markersize=9, label="Standard chemo (continuous)"),
         Line2D([0], [0], marker="^", color="w", markerfacecolor="#7F8C8D",
-               markeredgecolor="k", markersize=9, label="무처치")],
+               markeredgecolor="k", markersize=9, label="Untreated")],
         frameon=False, fontsize=8, loc="upper right")
 
-    fig.suptitle("자연물 배합 × 적응형 최적화 — 저독성 전통식품 성분으로 '종양과의 공존' "
-                 "(가설 샌드박스)", fontsize=12)
+    fig.suptitle("Food-medicine-homology regimens × adaptive optimization — "
+                 "low-toxicity tumor coexistence (in-silico)", fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        "assets", "natural_adaptive_optim.png")
