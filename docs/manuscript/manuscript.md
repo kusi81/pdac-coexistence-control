@@ -423,43 +423,41 @@ regime.
 ### 3.5 Adaptive scheduling achieves tumor coexistence at a fraction of the toxicity of continuous dosing
 On a controllable-but-not-eradicable tumor, we compared no treatment, continuous
 maximum-dose therapy, and adaptive on/off dosing (Fig. 5). Continuous dosing drove the
-sensitive population to extinction (final burden 0.00× baseline) but at the highest
-cumulative toxicity (120 units) and left a purely resistant residue. Adaptive dosing
-held the tumor at a stable 0.82× baseline—coexistence rather than eradication—at
-roughly one-fifth the toxicity (25 units), keeping the resistant fraction low (0.03);
-both treated arms remained below the progression threshold over 150 days, whereas the
-untreated tumor progressed at day 103. Because our `control_score` is artifactually
-high for the zero-toxicity untreated arm, we rank by progression control first and then
-by toxicity, under which adaptive scheduling is preferred (control_score 5.7 vs 1.2).
+sensitive population to extinction (final burden 0.00× baseline) at the highest
+cumulative exposure (120 units), leaving a purely resistant residue. Adaptive dosing
+held the tumor low (0.16× baseline) at roughly one-fifth the exposure (22 units), with a
+modest resistant fraction (0.14); both treated arms remained below the progression
+threshold over 150 days, whereas the untreated tumor progressed at day 127. Because our
+`control_score` is artifactually high for the zero-exposure untreated arm, we rank by
+progression control first and then by exposure, under which adaptive scheduling is
+preferred (control_score 6.6 vs 1.2).
 
-### 3.6 Food-medicine-homology regimens control tumor burden at low predicted toxicity, with anti-CAF agents minimizing resistance
+### 3.6 Food-medicine-homology regimens control tumor burden at low modeled exposure, with resistance staying low
 We evaluated single agents and combinations under adaptive scheduling, benchmarked
-against continuous gemcitabine (Fig. 6; in-silico predictions). Every natural regimen
-maintained control at markedly lower predicted toxicity than gemcitabine (5–38 vs 128
-units). The most favorable control-per-toxicity profiles were single anti-CAF/
-immunomodulatory agents—garlic (toxicity 5, 1.0× burden, resistant 0.05, control_score
-25.0) and wild ginseng (toxicity 5, 0.9×, 24.0)—stabilizing the tumor near baseline at
-~1/25 the toxicity of gemcitabine. Two patterns stand out. First, deeper suppression
-did not equate to better control: an aggressive combination (garlic + mugwort) reduced
-burden to 0.4× but at a sharply elevated resistant fraction (0.34), an in-silico
-illustration of competitive release. The balanced combination curcumin + garlic +
-ginsenoside-Rg3 achieved moderate suppression (0.8×) with the lowest resistance (0.01)
-at modest toxicity (11), and was carried forward for dose optimization (§3.7). Second,
-anti-fibrotic activity alone was insufficient: a purely anti-fibrotic pairing (danshen
-+ astragaloside) barely held the tumor (1.2×) at the highest natural-arm toxicity (38).
-These results support a control-oriented design principle—pair a low-toxicity anti-CAF
-backbone with a resistance-sparing anti-proliferative partner rather than maximizing
-cytotoxic pressure.
+against continuous gemcitabine (Fig. 6; in-silico predictions under assumed exposure
+weights). Every natural regimen maintained control at markedly lower modeled exposure
+than gemcitabine (3–10 vs 128 units). The most favorable control-per-exposure profiles
+were single low-exposure agents—garlic (exposure 3, 0.0× burden, resistant 0.00,
+control_score 38), curcumin (4, 1.0×, 32), and wild ginseng (5, 0.6×, 26)—controlling
+the tumor at roughly 1/13 to 1/40 the exposure of gemcitabine, with resistance remaining
+low across regimens (0.00–0.05). Notably, because anti-fibrotic agents reduce the myCAF
+barrier, a purely anti-fibrotic pairing (danshen + astragaloside) also controlled the
+tumor in this regime (0.3×, exposure 9)—consistent with the phase map, where reducing
+stroma aids control when immune exclusion is the dominant cost (§3.4). This
+regime-dependence is itself a caution: the compound ranking is contingent on the stromal
+regime, and the same anti-fibrotic that helps here would release confinement where
+containment dominates. The balanced combination curcumin + garlic + ginsenoside-Rg3
+(0.0×, exposure 7, resistant 0.00) was carried forward for dose optimization (§3.7).
 
 ### 3.7 Dose and drug-holiday optimization further lowers predicted toxicity
 For the lead combination (curcumin + garlic + ginsenoside-Rg3), a seed-averaged grid
 search over dose intensity and off-threshold under adaptive scheduling (200 days;
-Fig. 7) found an optimum at 80% dose with an off-threshold of 0.5, achieving control at
-cumulative toxicity 27 (resistant 0.02, final 0.8× baseline). This modestly but
-consistently outperformed full-dose adaptive scheduling (toxicity 32 at comparable
-control), indicating that a sub-maximal, adaptively timed dose preserves control while
-further trimming toxicity—reinforcing that, under a control objective, less drug
-delivered adaptively can be better.
+Fig. 7) found an optimum at 40% dose with an off-threshold of 0.4, achieving control at
+cumulative exposure 17 (resistant 0.04, final 0.8× baseline). This markedly undercut
+full-dose adaptive scheduling (exposure 27 at comparable control), indicating that a
+sub-maximal, adaptively timed dose preserves control while further trimming exposure—
+reinforcing that, under a control objective, less drug delivered adaptively can be
+better.
 
 ### 3.8 Multiscale molecular grounding links compounds to model parameters under a transparent evidence hierarchy
 Each compound is annotated with its principal target(s) and an explicit evidence tier—
@@ -578,7 +576,7 @@ real-data spatial claims rest on the CosMx cohort and remain associations in a m
 sample (n = 15). Fourth, simulations used a single synthetic architecture and an
 arbitrary-unit toxicity scale that is not clinically calibrated. Fifth, even
 low-toxicity natural combinations can select for resistance under aggressive
-suppression (competitive release; §3.6). Finally, the novelty survey is PubMed-
+suppression (competitive release, seen in aggressive-suppression regimes). Finally, the novelty survey is PubMed-
 restricted, and the molecular grounding for most food-medicine-homology compounds rests
 on pathway-level mechanistic inference rather than solved compound-bound structures
 (§3.8).
@@ -643,8 +641,8 @@ at ~1/5 the toxicity of continuous. *(assets/control_strategies.png)*
 **Figure 6. Food-medicine-homology regimens** ranked by control, toxicity, and
 resistance vs continuous gemcitabine. *(assets/natural_adaptive_optim.png)*
 
-**Figure 7. Dose × drug-holiday optimization** for the lead combination; optimum at 80%
-dose / 0.5 off-threshold. *(assets/dose_band_optimization.png)*
+**Figure 7. Dose × drug-holiday optimization** for the lead combination; optimum at 40%
+dose / 0.4 off-threshold. *(assets/dose_band_optimization.png)*
 
 **Figure 8. Multiscale molecular grounding** with evidence tiers (experimental vs
 docking vs mechanistic). *(assets/drug_structures_3d.png)*
