@@ -23,16 +23,19 @@ is essentially absent. Our framework builds a spatial agent-based model of the
 PDAC tumor–myCAF–immune ecosystem, grounded in single-cell spatial transcriptomics
 (Xenium and CosMx), and encodes food-medicine-homology compounds (e.g., garlic,
 ginseng, Platycodon, mugwort) as mechanistic parameter perturbations across a
-molecular-to-cellular-to-tissue hierarchy. Rather than optimizing for eradication,
-we define a coexistence-control objective that leverages the myCAF barrier and
-explicitly represents resistance dynamics with a resistance fitness cost. In
-simulation, adaptive schedules achieved tumor containment comparable to continuous
-maximum-dose regimens at substantially lower predicted toxicity, and compound
-combinations with sequential myCAF-modulating and anti-proliferative phases
-outperformed single agents, with anti-CAF components predicted to minimize
-resistance emergence. We stress that these outputs are testable hypotheses—ranked
-candidate combinations and schedules—intended to focus, not replace, experimental
-validation. The framework offers a reproducible route from real spatial data to
+molecular-to-cellular-to-tissue hierarchy. Critically, the model represents the myCAF
+barrier physically—local stroma confines tumor expansion but also excludes cytotoxic
+T cells and impairs drug delivery—so preserving stroma is not universally beneficial.
+Under a coexistence-control objective with explicit resistance dynamics, a phase
+analysis shows that treating myCAF as a resource to modulate (rather than deplete) is
+favored only where physical confinement outweighs immunosuppression; where
+immunosuppression dominates, stromal reduction is preferred, making the optimal
+stromal state—not depletion or preservation per se—the control target. Within this
+framework, adaptively scheduled, low-exposure food-medicine-homology regimens
+controlled tumor burden under specified conditions, though any regimen's advantage
+depends on assumed compound weights and the stromal regime. We stress that these
+outputs are testable hypotheses—candidate stromal targets, combinations, and
+schedules—intended to focus, not replace, experimental validation. The framework offers a reproducible route from real spatial data to
 prioritized, low-toxicity control strategies for PDAC coexistence.
 
 **Keywords:** pancreatic ductal adenocarcinoma; cancer-associated fibroblasts;
@@ -81,10 +84,12 @@ both supports and physically constrains the tumor. This duality has a critical
 therapeutic corollary: attempts to *ablate* the stroma in preclinical PDAC
 paradoxically accelerated disease and worsened survival [6,7], reframing the
 field's question from "should CAFs be deleted?" to "should they be reeducated?"
-[8]. We take this further and treat the myCAF-derived barrier not as an obstacle to
-be removed but as a *controllable resource*—a containment structure that, if
-strategically preserved and modulated, may be leveraged to restrain rather than
-merely attack the tumor.
+[8]. We take this further and ask whether the myCAF-derived barrier can act as a
+*controllable resource*—a containment structure whose value is conditional: its
+physical confinement of the tumor is a benefit, but the same density excludes
+cytotoxic T cells and impairs drug delivery, which are costs. Whether preserving or
+reducing stroma aids control therefore depends on which force dominates locally—a
+trade-off we make explicit in the model and map, rather than assume.
 
 This perspective aligns naturally with a shift in therapeutic philosophy from
 maximum-tolerated-dose (MTD) eradication toward evolutionary *control*. Adaptive
@@ -130,14 +135,18 @@ Here we present an in-silico framework that occupies precisely this gap. We buil
 spatial agent-based model of the PDAC tumor–myCAF–immune ecosystem, grounded in
 real single-cell spatial transcriptomics (Xenium and CosMx) [20], in which
 food-medicine-homology compounds are encoded as mechanistic parameter perturbations
-acting across a molecular-to-cellular-to-tissue hierarchy. Rather than optimizing
-for eradication, we define a *coexistence-control* objective that exploits the
-myCAF barrier and explicitly models resistance dynamics and a resistance fitness
-cost, and we use it to prioritize combinations, sequences, and doses under adaptive
-scheduling. We emphasize that the framework is a hypothesis-*generating* and
-hypothesis-*prioritizing* engine: its outputs are testable predictions—candidate
-compound combinations and schedules ranked by predicted control and toxicity—
-intended to focus, not replace, subsequent experimental validation.
+acting across a molecular-to-cellular-to-tissue hierarchy. The model represents the
+myCAF barrier physically—local stromal density confines tumor expansion, excludes
+cytotoxic T cells, and impairs drug penetration—so that stromal modulation carries an
+explicit benefit–cost trade-off. Rather than optimizing for eradication, we define a
+*coexistence-control* objective with explicit resistance dynamics and a resistance
+fitness cost, and we first map, over the confinement-versus-immunosuppression
+trade-off, the conditions under which preserving/modulating the stroma outperforms
+depleting it; we then prioritize compound combinations, sequences, and doses under
+adaptive scheduling within that landscape. We emphasize that the framework is a
+hypothesis-*generating* and hypothesis-*prioritizing* engine: its outputs are testable
+predictions—candidate stromal targets, compound combinations, and schedules—intended
+to focus, not replace, subsequent experimental validation.
 
 ---
 
@@ -422,19 +431,28 @@ this gap: single-axis literature is abundant, yet queries requiring all three ax
 returned only off-target hits (§3.1, Fig. 1). The contribution is therefore
 integrative—a spatially grounded, adaptive-control model in which food-medicine-
 homology compounds are encoded as mechanistic perturbations and optimized against a
-coexistence objective that treats the myCAF barrier as a resource rather than an
-obstacle.
+coexistence objective. Crucially, the model implements the myCAF barrier physically,
+with an explicit trade-off between its confinement of the tumor and its
+immunosuppressive and drug-shielding costs; rather than assuming the stroma is a
+resource, it maps the conditions under which preserving/modulating versus reducing it
+best controls the tumor (§3.x, Fig. [phase]).
 
 ### 4.2 Biological plausibility
 Several results align with independent biology. On author-annotated CosMx data, our
 metric reproduced the myCAF-proximal/iCAF-distal architecture in 15 of 16 tumors and
 showed the myCAF barrier tightening under chemoradiation while cytotoxic T cells
-remained excluded (§3.3)—consistent with the paradoxical worsening of PDAC after
-stromal ablation [6,7] and with the reframing of myCAF as a containment structure. In
-simulation, adaptive scheduling achieved durable coexistence at a fraction of the
-toxicity of continuous dosing (§3.4), and our sensitivity analysis showed that the
-resistance fitness cost governs competitive suppression of resistant clones (§S3),
-mirroring the adaptive-therapy rationale [9–12].
+remained excluded (§3.3). We are careful in interpreting this: a denser peritumoral
+myCAF rim with persistent T-cell exclusion is equally consistent with an
+*immunosuppressive* barrier as with a tumor-*containing* one—the observation is a
+necessary, not sufficient, condition for containment. This ambiguity is precisely
+what our phase analysis formalizes: whether such a barrier aids or harms control
+depends on the balance of physical confinement against immunosuppression, and both
+the paradoxical worsening of PDAC after stromal ablation [6,7] and reports that CAF
+depletion can improve immunotherapy response fall out as different regimes of the same
+trade-off. In simulation, adaptive scheduling reduced tumor burden at lower cumulative
+exposure than continuous dosing under the tested conditions (§3.4), and our sensitivity
+analysis showed that the resistance fitness cost governs competitive suppression of
+resistant clones (§S3), mirroring the adaptive-therapy rationale [9–12].
 
 ### 4.3 Positioning relative to prior art
 The framework advances each of the three neighboring camps on the axis it lacks:
@@ -450,17 +468,21 @@ compounds—that space is saturated (§3.1)—but in embedding that knowledge in
 spatial, control-theoretic framework.
 
 ### 4.4 Translational implications
-The design principle that emerges is control-oriented: pair a low-toxicity anti-CAF
-backbone with a resistance-sparing anti-proliferative partner rather than maximizing
-cytotoxic pressure (§3.5). In-silico, food-medicine-homology regimens maintained tumor
-control at a small fraction of the toxicity of continuous gemcitabine, and a
-sub-maximal, adaptively timed dose further reduced burden (§3.6). For a disease in
-which conventional therapy imposes severe toxicity for limited benefit, a strategy
-oriented toward slowing proliferation, exploiting the myCAF barrier, and preserving
-quality of life—rather than eradication—may be a more realistic near-term goal,
-potentially extending functional survival and easing symptom burden. We emphasize that
-these are model-generated hypotheses, and that accessibility and low toxicity are
-advantages only if efficacy is confirmed experimentally and clinically.
+Two design principles emerge, both stated as model-generated hypotheses. First, the
+stromal target is not depletion but the optimal stromal state: in the regime where
+confinement outweighs immunosuppression, partial modulation—rather than maximal
+anti-fibrotic pressure—best controls the tumor, whereas in the immunosuppression-
+dominant regime stromal reduction is favored (§3.x). Which regime a given tumor occupies
+is an empirical question our framework poses but cannot yet answer. Second, within a
+control objective, pairing a low-exposure anti-CAF/immunomodulatory backbone with a
+resistance-sparing anti-proliferative partner controlled tumor burden at a fraction of
+the *modeled treatment-exposure* of continuous gemcitabine under assumed compound
+weights (§3.5–§3.6)—a statement about exposure burden in the model, not a clinical
+toxicity prediction. For a disease in which conventional therapy imposes severe toxicity
+for limited benefit, a strategy oriented toward slowing proliferation and preserving
+quality of life—rather than eradication—may be a more realistic near-term goal, but only
+if efficacy and the assumed low-toxicity profile are confirmed experimentally and
+clinically.
 
 ### 4.5 Limitations
 Our study has important limitations that bound its claims. First and foremost, it is
@@ -470,7 +492,11 @@ literature-inferred parameters rather than data-fitted; although the adaptive ad
 was robust to ±50% parameter variation (§S3), outcomes were most sensitive to tumor
 proliferation and immune-barrier parameters, which therefore require empirical
 calibration, and control was not guaranteed under the most aggressive proliferation
-regimes. Third, our spatial analyses are of 2D sections; true tissue architecture is
+regimes. Relatedly, the confinement-versus-immunosuppression trade-off that decides
+whether stroma should be preserved or reduced is governed by parameters (stromal
+confinement strength, drug shielding, and immune exclusion) that are mechanistically
+motivated but not data-fitted; the phase boundary is therefore qualitative, and where
+real PDAC falls on it is unresolved. Third, our spatial analyses are of 2D sections; true tissue architecture is
 three-dimensional, and the myCAF-proximity positive control failed on our targeted-
 panel Xenium annotation, succeeding only with full-panel author annotations (§3.2)—so
 real-data spatial claims rest on the CosMx cohort and remain associations in a modest
@@ -498,11 +524,13 @@ generalize and harden the framework.
 
 ### 4.7 Conclusion
 Within a control—rather than eradication—objective, this work provides a reproducible
-computational path from real spatial data to prioritized, low-toxicity,
-food-medicine-homology regimens for PDAC coexistence. By treating the myCAF barrier as a
-resource and resistance as an evolutionary constraint, it reframes the therapeutic goal
-toward durable tumor containment, and it yields concrete, testable hypotheses to guide
-the experimental work that must follow.
+computational path from real spatial data to condition-dependent stromal targets and
+prioritized, low-exposure food-medicine-homology regimens for PDAC coexistence. By
+implementing the myCAF barrier as a physical structure with an explicit
+confinement-versus-immunosuppression trade-off, it reframes the therapeutic question
+from "deplete or preserve the stroma?" to "what is the optimal stromal state, and when?",
+and it yields concrete, testable hypotheses—stromal targets, compound combinations, and
+schedules—to guide the experimental work that must follow.
 
 ---
 
