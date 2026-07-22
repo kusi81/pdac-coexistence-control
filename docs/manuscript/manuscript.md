@@ -235,7 +235,7 @@ cells (with iCAF/macrophage as context). Update rules per step:
 The myCAF barrier thus confers one benefit—physical confinement (effects i–ii above)—
 and two costs: immune exclusion (via `cd8_barrier_alpha`) and impaired drug delivery
 (effect iii). Their balance determines whether preserving or reducing stroma aids
-control, which we map in §3.x. Parameters are literature-grounded rather than fit to
+control, which we map in §3.4. Parameters are literature-grounded rather than fit to
 data; full values and citations are in Supplementary Table S1. Two organ contexts
 (PDAC, HCC) share the stellate/TGF-β axis and differ only in `caf_protumor`.
 
@@ -367,13 +367,41 @@ CD8⁺ T cells remained excluded while the myCAF barrier grew tighter. Rather th
 contradicting the containment hypothesis, this supports it—the myCAF barrier persists
 and is reinforced under treatment, maintaining spatial separation between malignant
 cells and cytotoxic effectors, precisely the configuration our control framework seeks
-to exploit (§3.4–§3.6). These are associations in a modest cohort (n = 15); our use of
+to exploit (§3.5–§3.7). These are associations in a modest cohort (n = 15); our use of
 the authors' annotations makes the myCAF/iCAF positive control confirmatory by
 construction, but the immune and vascular compositional findings are independent of it.
 
-### 3.4 Adaptive scheduling achieves tumor coexistence at a fraction of the toxicity of continuous dosing
+### 3.4 The myCAF barrier controls the tumor only under specified conditions
+Having implemented myCAF as a physical barrier—confinement, mechanical pressure, and
+impaired drug delivery—alongside its immune-exclusion effect (Methods §2.4), we asked
+when preserving or modulating the stroma, rather than depleting it, best controls the
+tumor. Under a fixed sub-maximal treatment, we swept the myCAF barrier level (via
+`k_caf_activate`, the target of anti-fibrotic modulation) and located the stromal level
+that minimized tumor burden, across a grid spanning confinement strength (`caf_pressure`)
+and immune-exclusion strength (`cd8_barrier_alpha`) (Fig. 4).
+
+The optimal stromal level was regime-dependent. Where confinement was strong and immune
+exclusion weak, the optimum was interior (a non-zero stromal level), and preserving that
+level reduced tumor burden by up to ~0.26-fold relative to full stromal depletion—the
+myCAF-as-controllable-resource regime. Where immune exclusion dominated, the optimum
+collapsed to zero (full stromal reduction was best), because the immune- and
+drug-shielding costs of stroma outweighed its confinement benefit. Across the sampled
+grid, the resource regime occupied 7 of 16 conditions (Fig. 4a), with the benefit of
+keeping stroma concentrated in the low-immune-exclusion, high-confinement corner
+(Fig. 4b).
+
+This reframes the central question from "deplete or preserve the stroma?" to "what is the
+optimal stromal state, and when?" It also formalizes the CAF-biology debate: the same
+peritumoral myCAF barrier can be net-protective or net-harmful depending on the local
+balance, so both the failure of stromal ablation [6,7] and reports that CAF reduction
+improves immunotherapy emerge as different regimes of one trade-off. We stress that the
+phase boundary depends on parameters that are mechanistically motivated but not
+data-fitted; where real PDAC lies on it is an empirical question this framework poses
+rather than answers (Discussion §4.5).
+
+### 3.5 Adaptive scheduling achieves tumor coexistence at a fraction of the toxicity of continuous dosing
 On a controllable-but-not-eradicable tumor, we compared no treatment, continuous
-maximum-dose therapy, and adaptive on/off dosing (Fig. 4). Continuous dosing drove the
+maximum-dose therapy, and adaptive on/off dosing (Fig. 5). Continuous dosing drove the
 sensitive population to extinction (final burden 0.00× baseline) but at the highest
 cumulative toxicity (120 units) and left a purely resistant residue. Adaptive dosing
 held the tumor at a stable 0.82× baseline—coexistence rather than eradication—at
@@ -383,9 +411,9 @@ untreated tumor progressed at day 103. Because our `control_score` is artifactua
 high for the zero-toxicity untreated arm, we rank by progression control first and then
 by toxicity, under which adaptive scheduling is preferred (control_score 5.7 vs 1.2).
 
-### 3.5 Food-medicine-homology regimens control tumor burden at low predicted toxicity, with anti-CAF agents minimizing resistance
+### 3.6 Food-medicine-homology regimens control tumor burden at low predicted toxicity, with anti-CAF agents minimizing resistance
 We evaluated single agents and combinations under adaptive scheduling, benchmarked
-against continuous gemcitabine (Fig. 5; in-silico predictions). Every natural regimen
+against continuous gemcitabine (Fig. 6; in-silico predictions). Every natural regimen
 maintained control at markedly lower predicted toxicity than gemcitabine (5–38 vs 128
 units). The most favorable control-per-toxicity profiles were single anti-CAF/
 immunomodulatory agents—garlic (toxicity 5, 1.0× burden, resistant 0.05, control_score
@@ -395,27 +423,27 @@ did not equate to better control: an aggressive combination (garlic + mugwort) r
 burden to 0.4× but at a sharply elevated resistant fraction (0.34), an in-silico
 illustration of competitive release. The balanced combination curcumin + garlic +
 ginsenoside-Rg3 achieved moderate suppression (0.8×) with the lowest resistance (0.01)
-at modest toxicity (11), and was carried forward for dose optimization (§3.6). Second,
+at modest toxicity (11), and was carried forward for dose optimization (§3.7). Second,
 anti-fibrotic activity alone was insufficient: a purely anti-fibrotic pairing (danshen
 + astragaloside) barely held the tumor (1.2×) at the highest natural-arm toxicity (38).
 These results support a control-oriented design principle—pair a low-toxicity anti-CAF
 backbone with a resistance-sparing anti-proliferative partner rather than maximizing
 cytotoxic pressure.
 
-### 3.6 Dose and drug-holiday optimization further lowers predicted toxicity
+### 3.7 Dose and drug-holiday optimization further lowers predicted toxicity
 For the lead combination (curcumin + garlic + ginsenoside-Rg3), a seed-averaged grid
 search over dose intensity and off-threshold under adaptive scheduling (200 days;
-Fig. 6) found an optimum at 80% dose with an off-threshold of 0.5, achieving control at
+Fig. 7) found an optimum at 80% dose with an off-threshold of 0.5, achieving control at
 cumulative toxicity 27 (resistant 0.02, final 0.8× baseline). This modestly but
 consistently outperformed full-dose adaptive scheduling (toxicity 32 at comparable
 control), indicating that a sub-maximal, adaptively timed dose preserves control while
 further trimming toxicity—reinforcing that, under a control objective, less drug
 delivered adaptively can be better.
 
-### 3.7 Multiscale molecular grounding links compounds to model parameters under a transparent evidence hierarchy
+### 3.8 Multiscale molecular grounding links compounds to model parameters under a transparent evidence hierarchy
 Each compound is annotated with its principal target(s) and an explicit evidence tier—
 experimental co-crystal, docking prediction, or pathway-level mechanistic inference
-(Fig. 7). Only the two conventional agents are supported by experimental co-crystals in
+(Fig. 8). Only the two conventional agents are supported by experimental co-crystals in
 which the compound itself is resolved—gemcitabine–deoxycytidine kinase (PDB 1P62) and
 erlotinib–EGFR kinase domain (PDB 1M17). A minority rest on docking (e.g.,
 curcumin–STAT3 1BG1; the entecavir–KDM5B repurposing hypothesis 5A1F), where the
@@ -447,7 +475,7 @@ coexistence objective. Crucially, the model implements the myCAF barrier physica
 with an explicit trade-off between its confinement of the tumor and its
 immunosuppressive and drug-shielding costs; rather than assuming the stroma is a
 resource, it maps the conditions under which preserving/modulating versus reducing it
-best controls the tumor (§3.x, Fig. [phase]).
+best controls the tumor (§3.4, Fig. 4).
 
 ### 4.2 Biological plausibility
 Several results align with independent biology. On author-annotated CosMx data, our
@@ -462,7 +490,7 @@ depends on the balance of physical confinement against immunosuppression, and bo
 the paradoxical worsening of PDAC after stromal ablation [6,7] and reports that CAF
 depletion can improve immunotherapy response fall out as different regimes of the same
 trade-off. In simulation, adaptive scheduling reduced tumor burden at lower cumulative
-exposure than continuous dosing under the tested conditions (§3.4), and our sensitivity
+exposure than continuous dosing under the tested conditions (§3.5), and our sensitivity
 analysis showed that the resistance fitness cost governs competitive suppression of
 resistant clones (§S3), mirroring the adaptive-therapy rationale [9–12].
 
@@ -484,12 +512,12 @@ Two design principles emerge, both stated as model-generated hypotheses. First, 
 stromal target is not depletion but the optimal stromal state: in the regime where
 confinement outweighs immunosuppression, partial modulation—rather than maximal
 anti-fibrotic pressure—best controls the tumor, whereas in the immunosuppression-
-dominant regime stromal reduction is favored (§3.x). Which regime a given tumor occupies
+dominant regime stromal reduction is favored (§3.4). Which regime a given tumor occupies
 is an empirical question our framework poses but cannot yet answer. Second, within a
 control objective, pairing a low-exposure anti-CAF/immunomodulatory backbone with a
 resistance-sparing anti-proliferative partner controlled tumor burden at a fraction of
 the *modeled treatment-exposure* of continuous gemcitabine under assumed compound
-weights (§3.5–§3.6)—a statement about exposure burden in the model, not a clinical
+weights (§3.6–§3.7)—a statement about exposure burden in the model, not a clinical
 toxicity prediction. For a disease in which conventional therapy imposes severe toxicity
 for limited benefit, a strategy oriented toward slowing proliferation and preserving
 quality of life—rather than eradication—may be a more realistic near-term goal, but only
@@ -515,10 +543,10 @@ real-data spatial claims rest on the CosMx cohort and remain associations in a m
 sample (n = 15). Fourth, simulations used a single synthetic architecture and an
 arbitrary-unit toxicity scale that is not clinically calibrated. Fifth, even
 low-toxicity natural combinations can select for resistance under aggressive
-suppression (competitive release; §3.5). Finally, the novelty survey is PubMed-
+suppression (competitive release; §3.6). Finally, the novelty survey is PubMed-
 restricted, and the molecular grounding for most food-medicine-homology compounds rests
 on pathway-level mechanistic inference rather than solved compound-bound structures
-(§3.7).
+(§3.8).
 
 ### 4.6 Future directions
 Several steps follow directly. Experimentally, the ranked regimens define a low-cost
@@ -564,17 +592,26 @@ Xenium data (1/5), localizing the failure to annotation. *(assets/fig2_validatio
 Rim (30 µm) enrichment z by cell type; myCAF is tumor-adjacent and tightens with CRT
 while CD8⁺ T cells remain excluded. *(assets/rim_scotia.png)*
 
-**Figure 4. Control strategies.** Tumor burden, resistant fraction, and cumulative
+**Figure 4. The myCAF barrier is a controllable resource only under specified
+conditions.** Under fixed sub-maximal treatment the myCAF level was swept and the
+tumor-minimizing (optimal) level located, over a grid of confinement strength
+(caf_pressure) × immune-exclusion strength (cd8_barrier_alpha). (a) Optimal myCAF level
+per regime: >0 = preserve/modulate stroma (resource); 0 = reduce stroma. (b) Benefit of
+keeping stroma = tumor(no stroma) − tumor(optimal stroma); >0 = stroma aids control. The
+resource regime occupies the low-immune-exclusion, high-confinement region.
+*(assets/phase_map.png)*
+
+**Figure 5. Control strategies.** Tumor burden, resistant fraction, and cumulative
 toxicity for untreated, continuous, and adaptive dosing; adaptive achieves coexistence
 at ~1/5 the toxicity of continuous. *(assets/control_strategies.png)*
 
-**Figure 5. Food-medicine-homology regimens** ranked by control, toxicity, and
+**Figure 6. Food-medicine-homology regimens** ranked by control, toxicity, and
 resistance vs continuous gemcitabine. *(assets/natural_adaptive_optim.png)*
 
-**Figure 6. Dose × drug-holiday optimization** for the lead combination; optimum at 80%
+**Figure 7. Dose × drug-holiday optimization** for the lead combination; optimum at 80%
 dose / 0.5 off-threshold. *(assets/dose_band_optimization.png)*
 
-**Figure 7. Multiscale molecular grounding** with evidence tiers (experimental vs
+**Figure 8. Multiscale molecular grounding** with evidence tiers (experimental vs
 docking vs mechanistic). *(assets/drug_structures_3d.png)*
 
 **Figure S3. Sensitivity analysis.** (a) resistance_cost sweep—adaptive low-toxicity
