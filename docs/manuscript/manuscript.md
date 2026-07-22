@@ -138,8 +138,12 @@ food-medicine-homology compounds are encoded as mechanistic parameter perturbati
 acting across a molecular-to-cellular-to-tissue hierarchy. The model represents the
 myCAF barrier physically—local stromal density confines tumor expansion, excludes
 cytotoxic T cells, and impairs drug penetration—so that stromal modulation carries an
-explicit benefit–cost trade-off. Rather than optimizing for eradication, we define a
-*coexistence-control* objective with explicit resistance dynamics and a resistance
+explicit benefit–cost trade-off. Because it represents a single contained focus, the
+framework's scope is localized and locally advanced disease, where local control and
+relief of mass-effect complications are the goals; it does not model disseminated or
+peritoneal metastatic disease (Discussion §4.4). Rather than optimizing for eradication,
+we define a *coexistence-control* objective with explicit resistance dynamics and a
+resistance
 fitness cost, and we first map, over the confinement-versus-immunosuppression
 trade-off, the conditions under which preserving/modulating the stroma outperforms
 depleting it; we then prioritize compound combinations, sequences, and doses under
@@ -523,6 +527,20 @@ for limited benefit, a strategy oriented toward slowing proliferation and preser
 quality of life—rather than eradication—may be a more realistic near-term goal, but only
 if efficacy and the assumed low-toxicity profile are confirmed experimentally and
 clinically.
+
+**Scope—disease setting.** Our model represents a single tumor focus contained by a
+myCAF barrier, a geometry that pertains to localized and locally advanced PDAC
+(stages I–III). In this setting, slowing and containing the primary tumor plausibly
+delays local mass-effect complications—biliary and pancreatic-duct obstruction,
+duodenal/gastric-outlet compression, and vascular encasement—benefits aligned with a
+quality-of-life and functional-survival objective. The rationale weakens for
+metastatic disease (stage IV): disseminated cells have, by definition, escaped the
+local barrier, and metastatic-site stroma (e.g., hepatic) differs biologically. In
+particular, malignant ascites in peritoneal carcinomatosis arises from peritoneal
+vascular permeability, subperitoneal lymphatic obstruction, and portal
+hypertension—mechanisms a primary-tumor stromal-control framework does not address and
+should not be expected to prevent. The predictions here therefore apply to local
+control and complication palliation, not to systemic or peritoneal metastatic disease.
 
 ### 4.5 Limitations
 Our study has important limitations that bound its claims. First and foremost, it is
