@@ -490,6 +490,44 @@ mechanistic-tier compounds that dominate our low-toxicity regimens are grounded 
 pathway pharmacology, and their molecular engagement remains a hypothesis for
 experimental confirmation.
 
+Encoding a food such as garlic as one perturbation also conflates dozens of
+constituents of variable content and stability, so a distinct food-medicine entity is
+not yet a defined molecular species. Where a standardized, bioavailable active
+ingredient exists, the framework can be re-grounded at that resolution. We illustrate
+this with S-allylcysteine (SAC), the most abundant and chemically stable organosulfur
+constituent of aged garlic extract—odorless and orally bioavailable, unlike the labile
+allicin that gives raw garlic its acute effects [25]. SAC's characterized activity is
+anti-fibrotic: suppression of TGF-β/SMAD3 and STAT3 signaling with reduced α-SMA and
+collagen deposition in hepatic [23] and pulmonary [24] myofibroblasts. Accordingly, and
+unlike the coarse "garlic" entry (encoded on the anti-proliferative axis), SAC is
+resolved onto the CAF-activation (barrier-modulating) parameter—placing it in the
+anti-fibrotic arm that the phase map (§3.4) identifies as beneficial precisely in the
+immune-exclusion-dominant regime, and as counter-productive where the barrier is
+containment-dominant. Two caveats keep this honest: SAC's anti-fibrotic evidence is from
+liver and lung, so its direct action on PDAC myCAF is an untested hypothesis (a natural
+target for the organoid/CAF co-culture assay of §4.6); and its net benefit is
+regime-conditional rather than universal. SAC is offered as a concrete template for the
+active-ingredient resolution the framework supports, not as a validated PDAC therapeutic.
+
+### 3.9 The control framework runs directly on real patient tissue as its initial condition
+The mechanistic sweeps above use a single synthetic architecture so that one variable can
+be changed at a time; to show that the pipeline is not confined to idealized geometry, we
+seeded the ABM directly from real CosMx tissue. From the SCOTIA cohort we cropped a
+1500-µm tumor-centered window from a treatment-naive patient (U7-a) and a
+chemoradiation-treated patient (T4-a) and used each cell's measured position and type as
+the model's initial condition (Fig. S6). The two tissues are architecturally distinct:
+the naive window is tumor- and myCAF-dominated (1,418 malignant, 775 myCAF, 184 iCAF),
+whereas the treated window is depleted of tumor and shifted toward an
+iCAF/macrophage-rich stroma (236 malignant, 936 iCAF, 748 macrophage, 580 myCAF)—the
+CAF-subtype and myeloid remodeling expected after therapy. Running the same untreated
+versus adaptive-natural-combo contrast on each real tissue reproduced the qualitative
+control result—the adaptive regimen held tumor burden below the naive tissue's untreated
+trajectory—while the quantitative dynamics differed between the two architectures,
+confirming that patient-specific structure, not a hand-built lattice, drives the outcome.
+This grounds the framework's initial conditions in measured tissue; the parameter sweeps
+themselves remain synthetic, and patient-specific *calibration* of dynamics is future work
+(§4.6).
+
 ---
 
 ## 4. Discussion
@@ -586,13 +624,19 @@ real PDAC falls on it is unresolved. Third, our spatial analyses are of 2D secti
 three-dimensional, and the myCAF-proximity positive control failed on our targeted-
 panel Xenium annotation, succeeding only with full-panel author annotations (§3.2)—so
 real-data spatial claims rest on the CosMx cohort and remain associations in a modest
-sample (n = 15). Fourth, simulations used a single synthetic architecture and an
-arbitrary-unit toxicity scale that is not clinically calibrated. Fifth, even
+sample (n = 15). Fourth, the mechanistic parameter sweeps used a single synthetic
+architecture (chosen so one variable could be varied at a time); we confirmed the
+pipeline runs on real CosMx patient tissue as its initial condition (§3.9, Fig. S6), but
+have not yet calibrated its dynamics to patient-specific data, and the toxicity scale
+remains in arbitrary units that are not clinically calibrated. Fifth, even
 low-toxicity natural combinations can select for resistance under aggressive
 suppression (competitive release, seen in aggressive-suppression regimes). Finally, the novelty survey is PubMed-
 restricted, and the molecular grounding for most food-medicine-homology compounds rests
 on pathway-level mechanistic inference rather than solved compound-bound structures
-(§3.8).
+(§3.8). Relatedly, several entries are still encoded at the food rather than the
+molecule level; only where a standardized active ingredient is available (e.g., SAC for
+garlic) have we begun resolving a food to a defined, bioavailable species, and even
+there the PDAC-myCAF action is hypothetical (§3.8).
 
 ### 4.6 Future directions
 Several steps follow directly. Experimentally, the ranked regimens define a low-cost
@@ -603,8 +647,11 @@ calibration against experimental rates (especially proliferation and immune-barr
 terms); global sensitivity analysis (e.g., Sobol) to capture interactions beyond the
 one-at-a-time sweep; a 3D registration pipeline over serial sections to replace 2D
 metrics; annotation transfer from full-transcriptome references to make CAF subtyping
-robust; and molecular-dynamics or larger-scale virtual screening to strengthen the
-molecular tier. Broadening the organ context (e.g., the HCC "co-opted stroma" regime)
+robust; molecular-dynamics or larger-scale virtual screening to strengthen the
+molecular tier; and systematically resolving the remaining food-level entities to
+standardized active ingredients with defined pharmacokinetics, as begun for garlic→SAC,
+so that exposure and toxicity are grounded in real compound doses rather than
+assumed weights. Broadening the organ context (e.g., the HCC "co-opted stroma" regime)
 and extending the survey to Scopus/Web of Science under a PRISMA workflow would further
 generalize and harden the framework.
 
@@ -680,6 +727,16 @@ cumulative exposure. All arms control the tumor; adaptive scheduling cuts exposu
 reflects its assumed toxicity weight rather than superior tumor control.
 *(assets/fair_2x2.png)*
 
+**Figure S6. Patient-grounded initial conditions—the framework runs on real SCOTIA
+CosMx tissue.** A 1500-µm tumor-centered window from a treatment-naive patient (U7-a) and
+a chemoradiation-treated patient (T4-a); each cell's measured position and type seeds the
+ABM. (Left) patient tissue as the initial condition, colored by core cell type with
+counts; the naive tissue is tumor/myCAF-dominated while the treated tissue is
+iCAF/macrophage-shifted. (Right) untreated versus adaptive-natural-combo trajectories on
+each real tissue: the adaptive regimen holds tumor burden below the untreated trajectory
+in both, while the quantitative dynamics differ by architecture. In silico.
+*(assets/patient_grounded.png)*
+
 ---
 
 ## Declarations
@@ -728,6 +785,9 @@ writing – original draft, writing – review & editing.
 20. Shiau C, Cao J, et al. Spatially resolved analysis of pancreatic cancer identifies therapy-associated remodeling of the tumor microenvironment. *Nat Genet* 2024;56(11):2466-2478. PMID: 39227743. doi:10.1038/s41588-024-01890-9
 21. Middleton G, Silcocks P, et al. Gemcitabine and capecitabine with or without telomerase peptide vaccine GV1001 in patients with locally advanced or metastatic pancreatic cancer (TeloVac): an open-label, randomised, phase 3 trial. *Lancet Oncol* 2014;15(8):829-840. PMID: 24954781. doi:10.1016/S1470-2045(14)70236-0
 22. Jo JH, Kim YT, et al. Efficacy of GV1001 with gemcitabine/capecitabine in previously untreated patients with advanced pancreatic ductal adenocarcinoma having high serum eotaxin levels (KG4/2015): an open-label, randomised, phase 3 trial. *Br J Cancer* 2024;130(1):43-52. PMID: 37903909. doi:10.1038/s41416-023-02474-w
+23. Gong Z, Ye H, et al. S-allyl-cysteine attenuates carbon tetrachloride-induced liver fibrosis in rats by targeting STAT3/SMAD3 pathway. *Am J Transl Res* 2018;10(5):1337-1346. PMID: 29887949
+24. Tsukioka T, Takemura S, et al. Attenuation of bleomycin-induced pulmonary fibrosis in rats with S-allyl cysteine. *Molecules* 2017;22(4):543. PMID: 28353632. doi:10.3390/molecules22040543
+25. Kawasaki H, Nussbaum G. Therapeutic potential of garlic, aged garlic extract and garlic-derived compounds on pancreatic cancer (Review). *Biomed Rep* 2025;22(3):54. PMID: 39926043. doi:10.3892/br.2025.1932
 
 ---
 

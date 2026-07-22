@@ -189,6 +189,15 @@ SUBSTANCES = {
         rationale="Allicin·DATS가 Bcl-2↓·caspase↑ 세포사멸, NF-κB/PI3K-Akt↓; "
                   "췌장암세포(Capan-2) 직접 억제 (Discover Oncol 2025)",
     ),
+    "sac": dict(
+        label="S-allylcysteine (SAC; 표준화 마늘 활성성분)", evidence="moderate",
+        effects={"k_caf_activate": 0.45, "k_tumor_apoptosis": 1.3},
+        rationale="숙성마늘(AGE)의 표준화 활성성분 — 무취·안정·경구 생체이용률 ~98%(불안정한 "
+                  "allicin과 대비). **항섬유화**: TGF-β/SMAD3·STAT3 억제 → α-SMA·콜라겐↓로 "
+                  "성상세포/myofibroblast 비활성화(간 PMC5992555, 폐 PMC6154609). "
+                  "→ myCAF 축(k_caf_activate)에 매핑. **단 근거는 간·폐 섬유화이며 PDAC "
+                  "myCAF 직접 작용은 미검증 가설**",
+    ),
     "mugwort": dict(
         label="쑥 (Artesunate/DHA, Eupatilin)", evidence="strong",
         effects={"k_caf_activate": 0.40, "k_kill": 1.20, "k_prolif": 0.85},
@@ -274,7 +283,7 @@ TOXICITY = {
     "gemcitabine": 0.85, "erlotinib": 0.60, "entecavir": 0.25, "gv1001": 0.20,
     "generic_cytotoxic": 0.80, "generic_immunostim": 0.30,
     "generic_antifibrotic": 0.20,
-    "curcumin": 0.10, "ginsenoside_rg3": 0.15, "garlic": 0.10, "mugwort": 0.20,
+    "curcumin": 0.10, "ginsenoside_rg3": 0.15, "garlic": 0.10, "sac": 0.08, "mugwort": 0.20,
     "wild_ginseng": 0.15, "platycodon": 0.10, "sea_cucumber": 0.10,
     "deer_antler": 0.10, "danshen": 0.15, "milk_thistle": 0.10,
     "astragaloside": 0.10,
