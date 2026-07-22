@@ -204,15 +204,24 @@ cells (with iCAF/macrophage as context). Update rules per step:
   (baseline 0.11/day; doubling ~6 days), gated by local contact inhibition
   (≤`tumor_density_cap` neighbors within the kill radius); baseline apoptosis
   `k_tumor_apoptosis`.
-- **myCAF barrier.** Peri-tumoral stroma activates to myCAF with probability
-  `k_caf_activate` within `caf_ring_um` (150 µm) of tumor, up to `caf_cap_per_tumor`,
-  and reverts (turnover) at `k_caf_death`; anti-fibrotic perturbation lowers
-  activation so turnover reduces barrier mass. An optional `caf_protumor` term boosts
-  local proliferation (0 for PDAC—pure barrier; large for the HCC context, reflecting
-  cirrhosis-as-pro-tumor soil).
+- **myCAF barrier (activation/turnover).** Peri-tumoral stroma activates to myCAF with
+  probability `k_caf_activate` within `caf_ring_um` (150 µm) of tumor, up to
+  `caf_cap_per_tumor`, and reverts (turnover) at `k_caf_death`; anti-fibrotic
+  perturbation lowers activation so turnover reduces barrier mass. An optional
+  `caf_protumor` term boosts local proliferation (0 for PDAC; large for the HCC context,
+  reflecting cirrhosis-as-pro-tumor soil).
+- **myCAF physical containment.** Local myCAF density ρ (within the kill radius) exerts
+  three effects on the tumor. (i) *Confinement*: a dividing cell's daughter is blocked
+  from being placed into a stroma-dense location with probability
+  `caf_confine`·min(ρ/`caf_confine_ref`, 1), so the tumor cannot expand through the
+  stromal wall. (ii) *Mechanical pressure*: the local carrying capacity is scaled by
+  exp(−`caf_pressure`·ρ/`caf_confine_ref`), so the tumor cannot pack where stroma is
+  dense. (iii) *Impaired drug delivery*: the drug's anti-proliferative effect on
+  sensitive cells is attenuated by exp(−`caf_drug_block`·ρ/`caf_confine_ref`). Setting
+  these to zero recovers a model in which myCAF affects only immunity.
 - **CD8 migration/killing.** CD8 cells move toward the nearest tumor at `cd8_speed_um`
   /day, attenuated by myCAF density in the corridor via a gate parameterized by
-  `cd8_barrier_alpha` (the key immune-exclusion lever); they kill tumor within
+  `cd8_barrier_alpha` (the immune-exclusion lever); they kill tumor within
   `kill_radius_um` at `k_kill`/day. Recruitment `cd8_recruit`/day at the tissue
   margin; turnover `k_cd8_death`.
 - **Resistance dynamics.** A small pre-existing resistant fraction (`init_resistant_frac`
@@ -223,9 +232,12 @@ cells (with iCAF/macrophage as context). Update rules per step:
   NSCLC-derived ~76% of sensitive growth, Science Advances), which enables competitive
   suppression of resistance during drug holidays.
 
-Parameters are literature-grounded rather than fit to data; full values and citations
-are in Supplementary Table S1. Two organ contexts (PDAC, HCC) share the stellate/
-TGF-β axis and differ only in `caf_protumor`.
+The myCAF barrier thus confers one benefit—physical confinement (effects i–ii above)—
+and two costs: immune exclusion (via `cd8_barrier_alpha`) and impaired drug delivery
+(effect iii). Their balance determines whether preserving or reducing stroma aids
+control, which we map in §3.x. Parameters are literature-grounded rather than fit to
+data; full values and citations are in Supplementary Table S1. Two organ contexts
+(PDAC, HCC) share the stellate/TGF-β axis and differ only in `caf_protumor`.
 
 ### 2.5 Encoding food-medicine-homology compounds
 Seventeen agents—food-medicine-homology compounds (e.g., garlic, ginseng, Platycodon,

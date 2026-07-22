@@ -32,6 +32,10 @@ sensitivity analysis (§S3, Fig. S3) quantifies robustness to ±50% variation.
 | `caf_protumor` | 0.0 (PDAC) | — | — | Local proliferation boost from myCAF. 0 = pure barrier (PDAC); large for HCC "co-opted stroma" context [7; PMC7419619]. |
 | `caf_boost_ref` | 18 | cells | — | Local myCAF count giving full pro-tumor boost (higher → more linear/less saturating). |
 | `k_caf_death` | 0.07 | /day | — | myCAF deactivation/turnover; the route by which reduced activation lowers barrier mass. |
+| `caf_confine` | 0.8 | — | — | Physical containment: probability a tumor daughter is blocked from a stroma-dense location (scaled by local myCAF). 0 recovers a no-containment model. |
+| `caf_confine_ref` | 3 | cells | — | Local (20 µm) myCAF count for full confinement/pressure/drug-block effect; set to the observed peritumoral myCAF density. |
+| `caf_pressure` | 1.2 | — | — | Mechanical exclusion: local carrying capacity scaled by exp(−`caf_pressure`·ρ/ref), limiting tumor packing/spread where stroma is dense. |
+| `caf_drug_block` | 0.6 | — | — | Impaired drug delivery: drug's anti-proliferative effect attenuated by exp(−`caf_drug_block`·ρ/ref) in stroma-dense regions. |
 
 ## CD8⁺ T cell
 
