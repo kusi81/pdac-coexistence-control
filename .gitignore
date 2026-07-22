@@ -27,3 +27,6 @@ scratch/
 
 # Generated submission document (regenerate: python pipeline/build_docx.py)
 *.docx
+
+# Downloaded GEO Visium data (GSE272362)
+data/gse272362/

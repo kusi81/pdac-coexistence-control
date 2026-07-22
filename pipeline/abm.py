@@ -61,6 +61,17 @@ DEFAULT_PARAMS = dict(
     caf_boost_ref=18,          # 완전 부스트 기준 국소 myCAF 수 (높을수록 선형·비포화)
     k_caf_death=0.07,          # myCAF 비활성화(→iCAF) turnover/day. 항섬유화가
                                # k_caf_activate를 낮추면 이 turnover로 장벽 질량이 실제 감소
+    # --- myCAF 물리적 통제 장벽 (L1: containment 구현) ---
+    # 논문 중심가설("제거가 아닌 장벽 활용")을 모델에 직접 구현: 국소 myCAF/ECM 밀도가
+    # 종양의 공간확장을 물리적으로 가둔다(딸세포가 기질벽 안쪽으로 못 나감). 0이면 구모델
+    # (myCAF가 종양에 물리적 영향 없음 = 리뷰어가 지적한 상태).
+    caf_confine=0.8,           # 종양 확장(딸세포 배치) 차단 강도 (0=없음, ~1=강한 가둠)
+    caf_confine_ref=3,         # 완전 confinement 기준 국소(20µm) myCAF 수 (실측 밀도 접지)
+    caf_pressure=1.2,          # 기계적 배제: 국소 myCAF가 종양 수용력을 지수적으로 낮춤
+                               # (기질벽에선 종양이 못 쌓임 → 공간확산 자체를 제한). 0=없음
+    # 트레이드오프: 조밀 기질은 약물 침투도 저해 → myCAF 과다는 오히려 통제 악화
+    # (면역배제 cd8_barrier_alpha와 함께). 이 세 힘의 균형이 '최적 기질 상태'를 만든다.
+    caf_drug_block=0.6,        # 조밀 myCAF의 약물 침투 저해 강도 (0=없음)
     # --- CD8 ---
     cd8_speed_um=120.0,        # 종양 방향 이동 속도 um/day (장벽 없을 때)
     cd8_barrier_alpha=0.9,     # 회랑 myCAF 밀도에 대한 이동 감쇠 계수 (핵심 게이트)
@@ -407,35 +418,55 @@ class TumorABM:
         caf = self.coords[self._mask("myCAF")]
         caf_tree = cKDTree(caf) if len(caf) else None
 
-        # (1) 종양 증식 (국소 밀도 수용력 하 + myCAF 국소 촉진 부스트)
-        # 내성 세포는 약물의 증식억제를 회피(기저 k_prolif), 감수성은 약물 적용(eff).
+        # (1) 종양 증식 — 국소 밀도 수용력 + myCAF 물리적 통제(confinement) + 약물침투 저해
+        # 내성: 약물 회피(기저 k_prolif·적합도비용). 감수성: 약물 적용하되 조밀 myCAF가 침투 저해.
         new_coords, new_labels, new_res = [], [], []
         kr = self.p["kill_radius_um"]
         cap = self.p["tumor_density_cap"]
         protumor = self.p.get("caf_protumor", 0.0)
         boost_ref = max(1, self.p.get("caf_boost_ref", 8))
         mut = self.p.get("mutation_rate", 0.0)
-        kp_sens = self.eff["k_prolif"]      # 약물 적용된 감수성 증식률
-        # 내성: 약물은 무시하되 적합도 비용으로 기저보다 느림 → 휴약 중 감수성에 밀림
-        kp_res = self.p["k_prolif"] * (1.0 - self.p.get("resistance_cost", 0.0))
+        base_kp = self.p["k_prolif"]
+        drug_reduction = max(0.0, base_kp - self.eff["k_prolif"])  # 약물의 감수성 증식억제분
+        kp_res = base_kp * (1.0 - self.p.get("resistance_cost", 0.0))
+        confine = self.p.get("caf_confine", 0.0)
+        confine_ref = max(1, self.p.get("caf_confine_ref", 12))
+        drug_block = self.p.get("caf_drug_block", 0.0)
+        pressure = self.p.get("caf_pressure", 0.0)
+        use_caf = caf_tree is not None and (protumor > 0 or confine > 0
+                                            or drug_block > 0 or pressure > 0)
         for c, is_res in zip(tum, tum_res):
             local = tumor_tree.query_ball_point(c, r=kr, return_length=True)
-            boost, eff_cap = 1.0, cap
+            caf_here = (caf_tree.query_ball_point(c, r=kr, return_length=True)
+                        if use_caf else 0)          # 국소(20µm) myCAF: 약물차단·가둠·압력용
+            boost, eff_cap = 1.0, float(cap)
             if protumor > 0 and caf_tree is not None:
-                caf_near = caf_tree.query_ball_point(c, r=kr * 2, return_length=True)
-                soil = protumor * min(caf_near / boost_ref, 1.0)
+                caf2 = caf_tree.query_ball_point(c, r=kr * 2, return_length=True)
+                soil = protumor * min(caf2 / boost_ref, 1.0)
                 boost = 1.0 + soil
                 eff_cap = cap * (1.0 + soil)
+            # 기계적 배제: 국소 myCAF가 종양 수용력을 지수적으로 낮춤 → 기질벽에선 못 쌓임
+            if pressure > 0 and caf_here:
+                eff_cap *= np.exp(-pressure * caf_here / confine_ref)
             if local >= eff_cap:                 # 국소 수용력 → 감수성·내성 경쟁
                 continue
-            kp = kp_res if is_res else kp_sens
+            if is_res:
+                kp = kp_res
+            else:                                # 조밀 myCAF → 약물 침투 저해 → 약효 감소
+                pen = np.exp(-drug_block * caf_here / confine_ref) if drug_block > 0 else 1.0
+                kp = base_kp - drug_reduction * pen
             if self.rng.random() < kp * boost * dt:
                 ang = self.rng.uniform(0, 2 * np.pi)
                 off = self.rng.uniform(4, kr) * np.array([np.cos(ang), np.sin(ang)])
-                new_coords.append(c + off)
+                dpos = c + off
+                # myCAF 물리적 통제: 딸세포가 기질-밀집 위치로 확장하려 하면 차단(가둠)
+                if confine > 0 and caf_tree is not None:
+                    caf_d = caf_tree.query_ball_point(dpos, r=kr, return_length=True)
+                    if self.rng.random() < confine * min(caf_d / confine_ref, 1.0):
+                        continue                 # 기질벽에 막힘 → 확장 못함 (containment)
+                new_coords.append(dpos)
                 new_labels.append("Tumor")
-                # 딸세포 내성: 유전 + (감수성이면) 변이로 내성 획득
-                daughter_res = bool(is_res) or (self.rng.random() < mut)
+                daughter_res = bool(is_res) or (self.rng.random() < mut)  # 유전+변이
                 new_res.append(daughter_res)
 
         # (2) myCAF 장벽 활성화: 종양 링 거리대의 기질세포 일부를 myCAF로 전환/증식
