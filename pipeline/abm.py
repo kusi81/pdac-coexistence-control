@@ -173,6 +173,15 @@ SUBSTANCES = {
                   "인한 간접효과**(원인 제거)이며 myCAF 직접작용 아님. 항암은 KDM5B 억제 "
                   "in silico 가설(Pharmaceuticals 2023). **췌장암 적용은 미검증 가설**",
     ),
+    "gv1001": dict(
+        label="GV1001 (텔로머라제 hTERT 펩타이드 백신)", evidence="moderate",
+        effects={"cd8_recruit": 1.6, "k_kill": 1.3},
+        rationale="hTERT 유래 16-mer 펩타이드 백신 → 텔로머라제⁺ 종양 대상 CD4/CD8 T세포 "
+                  "프라이밍(면역 부스트). 비선택 진행성 PDAC은 음성(TeloVac 3상, Lancet "
+                  "Oncol 2014)이나 **eotaxin-high 하위군에서 생존 개선**(KG4/2015 3상, BJC "
+                  "2023; OS 11.3 vs 7.5m). 면역 프라이밍 제제 — 효과는 T세포가 종양에 "
+                  "도달할 수 있어야 발현(장벽 열림 필요)",
+    ),
     # ---- 전통 약재 (문헌 기반, 근거 수준 상이 — 반드시 evidence 확인) ----
     "garlic": dict(
         label="마늘 (Allicin/DATS)", evidence="strong",
@@ -262,7 +271,7 @@ EVIDENCE_BADGE = {
 # 비교하기 위한 상대적 지표. 종양 억제만 보던 모델의 맹점(고통·독성)을 보완한다.
 # ==========================================================================
 TOXICITY = {
-    "gemcitabine": 0.85, "erlotinib": 0.60, "entecavir": 0.25,
+    "gemcitabine": 0.85, "erlotinib": 0.60, "entecavir": 0.25, "gv1001": 0.20,
     "generic_cytotoxic": 0.80, "generic_immunostim": 0.30,
     "generic_antifibrotic": 0.20,
     "curcumin": 0.10, "ginsenoside_rg3": 0.15, "garlic": 0.10, "mugwort": 0.20,

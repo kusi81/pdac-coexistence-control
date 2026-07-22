@@ -403,6 +403,23 @@ phase boundary depends on parameters that are mechanistically motivated but not
 data-fitted; where real PDAC lies on it is an empirical question this framework poses
 rather than answers (Discussion §4.5).
 
+**Application—a clinical immunotherapy is gated by the stromal barrier.** The phase map
+predicts that immune-directed agents should help only where the stroma does not exclude
+T cells. We tested this with GV1001, a telomerase (hTERT) peptide vaccine that primes
+tumor-directed T cells; it failed to improve survival in unselected advanced PDAC
+(TeloVac [21]) but did so in an eotaxin-high subgroup (KG4/2015 [22]). Encoded as an
+immune-priming perturbation in a strongly immune-excluding regime, GV1001 alone barely
+reduced tumor burden (1.89× vs 2.28× untreated)—the dense barrier excluded even the
+boosted T cells—whereas co-administration with a barrier-opening anti-fibrotic agent
+controlled the tumor (0.76×); the anti-fibrotic alone was insufficient (1.66×)
+(Fig. S4). Notably, sustained co-administration outperformed a pulsed
+"open-then-rest" schedule (1.49×), because letting the barrier re-form between pulses
+re-excluded the T cells—so, unlike drug holidays that exploit competition among resistant
+clones, immune access must be held open. This is a concrete instance of the framework's
+message: an immunotherapy's value is contingent on the stromal state, and pairing it with
+barrier-opening is predicted to be necessary specifically in the immune-exclusion-dominant
+regime.
+
 ### 3.5 Adaptive scheduling achieves tumor coexistence at a fraction of the toxicity of continuous dosing
 On a controllable-but-not-eradicable tumor, we compared no treatment, continuous
 maximum-dose therapy, and adaptive on/off dosing (Fig. 5). Continuous dosing drove the
@@ -637,6 +654,14 @@ advantage is robust across the range; resistance_cost governs resistant-clone
 suppression. (b) One-at-a-time ±50% tornado—outcome sensitivity concentrates in
 tumor-immune balance parameters. *(assets/sensitivity.png)*
 
+**Figure S4. A clinical immunotherapy is gated by the stromal barrier.** In a strongly
+immune-excluding regime, the telomerase vaccine GV1001 (encoded as immune priming) was
+tested alone and combined with a barrier-opening anti-fibrotic agent. (a) Tumor
+trajectories; (b) final tumor burden per arm. GV1001 alone is nearly futile (dense
+stroma excludes the boosted T cells); opening the barrier first unlocks it, and sustained
+co-administration outperforms a pulsed open-then-rest schedule.
+*(assets/gv1001_sequential.png)*
+
 ---
 
 ## Declarations
@@ -683,6 +708,8 @@ writing – original draft, writing – review & editing.
 18. Hu X, Peng X, et al. Shikonin reverses cancer-associated fibroblast-induced gemcitabine resistance in pancreatic cancer cells by suppressing MCT4-mediated reverse Warburg effect. *Phytomedicine* 2024;123:155214. PMID: 38134861. doi:10.1016/j.phymed.2023.155214
 19. Norton KA, Gong C, et al. Multiscale agent-based and hybrid modeling of the tumor immune microenvironment. *Processes (Basel)* 2019;7(1):37. PMID: 30701168. doi:10.3390/pr7010037
 20. Shiau C, Cao J, et al. Spatially resolved analysis of pancreatic cancer identifies therapy-associated remodeling of the tumor microenvironment. *Nat Genet* 2024;56(11):2466-2478. PMID: 39227743. doi:10.1038/s41588-024-01890-9
+21. Middleton G, Silcocks P, et al. Gemcitabine and capecitabine with or without telomerase peptide vaccine GV1001 in patients with locally advanced or metastatic pancreatic cancer (TeloVac): an open-label, randomised, phase 3 trial. *Lancet Oncol* 2014;15(8):829-840. PMID: 24954781. doi:10.1016/S1470-2045(14)70236-0
+22. Jo JH, Kim YT, et al. Efficacy of GV1001 with gemcitabine/capecitabine in previously untreated patients with advanced pancreatic ductal adenocarcinoma having high serum eotaxin levels (KG4/2015): an open-label, randomised, phase 3 trial. *Br J Cancer* 2024;130(1):43-52. PMID: 37903909. doi:10.1038/s41416-023-02474-w
 
 ---
 
