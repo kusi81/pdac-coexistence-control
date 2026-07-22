@@ -432,6 +432,19 @@ threshold over 150 days, whereas the untreated tumor progressed at day 127. Beca
 progression control first and then by exposure, under which adaptive scheduling is
 preferred (control_score 6.6 vs 1.2).
 
+**Separating schedule from agent (fair 2×2).** To avoid conflating adaptive scheduling
+with the choice of agent, we ran a factorial comparison—{gemcitabine, the lead natural
+combination} × {continuous, adaptive}, with compound synergy disabled (Fig. S5). All four
+arms controlled the tumor (final burden 0.00–0.17×); they differed chiefly in cumulative
+exposure. Adaptive scheduling was the robust, agent-independent lever: it cut exposure
+~6–7-fold for both agents (gemcitabine 128→20; natural 52→7) at a minor increase in
+residual tumor. The natural combination's lower exposure than gemcitabine at matched
+schedule (52 vs 128 continuous; 7 vs 20 adaptive) follows largely from the assumed
+compound toxicity weights rather than a model-discovered efficacy difference, since tumor
+control was comparable across agents. The large gap between natural-adaptive and
+continuous-gemcitabine therefore reflects the schedule effect plus the exposure weighting,
+not agent efficacy per se—an important caveat for interpreting §3.6.
+
 ### 3.6 Food-medicine-homology regimens control tumor burden at low modeled exposure, with resistance staying low
 We evaluated single agents and combinations under adaptive scheduling, benchmarked
 against continuous gemcitabine (Fig. 6; in-silico predictions under assumed exposure
@@ -659,6 +672,13 @@ trajectories; (b) final tumor burden per arm. GV1001 alone is nearly futile (den
 stroma excludes the boosted T cells); opening the barrier first unlocks it, and sustained
 co-administration outperforms a pulsed open-then-rest schedule.
 *(assets/gv1001_sequential.png)*
+
+**Figure S5. Fair 2×2 comparison—agent × schedule (synergy off).** {Gemcitabine, lead
+natural combination} × {continuous, adaptive}, five seeds. (a) Final tumor burden; (b)
+cumulative exposure. All arms control the tumor; adaptive scheduling cuts exposure
+~6–7-fold for both agents, and the natural agent's lower exposure at matched schedule
+reflects its assumed toxicity weight rather than superior tumor control.
+*(assets/fair_2x2.png)*
 
 ---
 
