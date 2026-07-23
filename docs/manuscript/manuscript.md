@@ -309,13 +309,14 @@ simulated trajectory we compute a panel of outcomes that we treat as a
 multi-objective (Pareto) problem rather than collapsing to one number:
 time-to-progression (first time tumor reaches 1.5× baseline; if never, the horizon is
 used and the run is *censored*), peak and final burden, final resistant fraction,
-cumulative modeled exposure, and burden AUC. We also report a convenience composite
-`control_score` = time-to-progression / (cumulative exposure + 1), but flag that it is
-structurally flawed—an untreated run receives zero exposure and so scores highly
-despite uncontrolled growth—so it must never be read alone. Accordingly, strategies
-are ranked first by progression control (censored vs progressed), then by exposure at
-matched control, i.e., by their position on the progression-versus-exposure Pareto
-frontier; the composite is retained only as a compact label. Adaptive scheduling
+cumulative modeled exposure, and burden AUC. We deliberately do **not** collapse these
+into a single composite score: a score that rewards low exposure (e.g., time-to-progression
+divided by exposure) would rank the zero-exposure untreated arm highest despite
+uncontrolled growth. Instead we use a **progression-constrained multi-objective
+evaluation**—rank first by progression control (censored vs progressed), then, among
+progression-free strategies, by cumulative exposure, i.e., by position on the
+progression-versus-exposure Pareto frontier (§3.6, Fig. S10)—with resistant fraction and
+burden-AUC as secondary read-outs. Adaptive scheduling
 toggles treatment on above an upper band (`adapt_on`) and off below a lower band
 (`adapt_off`) around the tumor-burden reference. Because this feedback uses the true
 simulated burden with zero measurement delay or noise, it is an idealized controller;
@@ -423,28 +424,33 @@ on full-panel author-annotated data—and that robust CAF-subtype spatial analys
 requires full-transcriptome or author-level annotations rather than targeted-panel
 module scoring, consistent with our hypothesis-generating framing.
 
-### 3.3 myCAFs form a tumor-adjacent barrier that is denser in CRT-treated specimens, while cytotoxic T cells remain excluded
-We characterized the peritumoral rim (30 µm shell) composition in the CosMx cohort and
-compared it between untreated and neoadjuvant-chemoradiotherapy (CRT) specimens (9
-untreated, 6 CRT; Fig. 3). This is a cross-sectional comparison of different patients, not
-a paired longitudinal measurement, so differences are associations between treatment
-status and rim composition rather than demonstrated treatment effects. myCAFs were the
-dominant tumor-adjacent population, strongly enriched at the rim in both groups and more
-strongly enriched in CRT-treated than untreated specimens (mean rim z = +9.1 untreated vs
-+15.7 CRT), whereas iCAFs were excluded and displaced farther out (z = −3.5 vs −9.2).
-Pericytes were rim-neutral in untreated and tumor-adjacent in CRT-treated specimens
-(z = −1.6 vs +3.3), consistent with vascular remodeling. The immune compartment showed
-exclusion in both groups: cytotoxic CD8⁺ T cells were depleted from the rim (z = −5.6 vs
-−4.0), with CD4⁺ T and regulatory T cells similarly excluded and plasma cells most
-strongly excluded (z = −11.3 vs −4.1); macrophages were the only rim-enriched immune
-lineage, and were less enriched in CRT-treated specimens (z = +6.8 vs +2.4).
+### 3.3 A tumor-adjacent myCAF barrier with excluded cytotoxic T cells is present in both untreated and CRT specimens
+We characterized the peritumoral rim (30 µm shell) composition in the CosMx cohort with
+the **patient as the unit of analysis** (9 untreated, 6 CRT), computing each patient's
+per-cell-type rim-enrichment z, then comparing groups with a nonparametric test
+(Mann–Whitney U), a Cliff's-delta effect size, patient-bootstrap 95% confidence intervals,
+and Benjamini–Hochberg correction across the ten cell types (Fig. 3). This is a
+cross-sectional comparison of different patients, not a paired longitudinal measurement.
 
-These observations refine the intuitive expectation that therapy relieves immune
-exclusion. In this cohort, CRT did *not* recruit cytotoxic T cells to the tumor rim:
-CD8⁺ T cells remained excluded while the myCAF barrier grew tighter. Rather than
-contradicting the containment hypothesis, this supports it—the myCAF barrier persists
-and is reinforced under treatment, maintaining spatial separation between malignant
-cells and cytotoxic effectors, precisely the configuration our control framework seeks
+The **robust, group-independent** finding is architectural: myCAFs are strongly
+rim-enriched (untreated mean z = +9.1 [95% CI −0, 19]; CRT +15.7 [9, 24]) while cytotoxic
+CD8⁺ T cells (−5.6 [−8, −3] vs −4.0 [−6, −2]) and other lymphocytes are excluded—in *both*
+groups. In contrast, **no untreated-versus-CRT difference was statistically significant**:
+although several point estimates trend as expected (denser myCAF rim, more excluded iCAF,
+Cliff's delta −0.63, and rim-ward pericyte shift under CRT), the largest raw effects reach
+only p ≈ 0.05 and **none survives multiple-testing correction** (all BH-adjusted p > 0.19;
+myCAF p = 0.53). With n = 9 versus 6 and wide patient-level scatter, the cohort is
+underpowered to establish a treatment effect on rim composition. We therefore report the
+untreated-versus-CRT contrasts as **suggestive, non-significant associations**, not
+treatment effects, and rest the spatial claim on the pattern common to both groups: a
+persistent myCAF-rim barrier coincident with CD8⁺ T-cell exclusion.
+
+This pattern refines the intuitive expectation that therapy relieves immune exclusion: in
+neither group are cytotoxic T cells at the tumor rim, and the myCAF barrier is present in
+both. Rather than contradicting the containment hypothesis, this supports it—the myCAF
+barrier and immune exclusion co-occur regardless of treatment status, maintaining spatial
+separation between malignant cells and cytotoxic effectors, precisely the configuration
+our control framework seeks
 to exploit (§3.5–§3.7). These are associations in a modest cohort (n = 15); our use of
 the authors' annotations makes the myCAF/iCAF positive control confirmatory by
 construction, but the immune and vascular compositional findings are independent of it.
@@ -513,10 +519,16 @@ sensitive population to extinction (final burden 0.00× baseline) at the highest
 cumulative exposure (120 units), leaving a purely resistant residue. Adaptive dosing
 held the tumor low (0.16× baseline) at roughly one-fifth the exposure (22 units), with a
 modest resistant fraction (0.14); both treated arms remained below the progression
-threshold over 150 days, whereas the untreated tumor progressed at day 127. Because our
-`control_score` is artifactually high for the zero-exposure untreated arm, we rank by
-progression control first and then by exposure, under which adaptive scheduling is
-preferred (control_score 6.6 vs 1.2).
+threshold over 150 days, whereas the untreated tumor progressed at day 127. Rather than
+collapse these into a single composite score (a naive score that rewards low exposure
+would rank the zero-exposure untreated arm highest, which is meaningless), we evaluate
+outcomes as a **progression-constrained objective**: among strategies that keep the tumor
+progression-free, prefer the one with the lowest cumulative exposure, with resistant
+fraction and burden-AUC as secondary read-outs. Under this constraint adaptive scheduling
+dominates continuous dosing (both progression-free, but adaptive at ~1/5 the exposure);
+the untreated arm is excluded because it fails the progression constraint. This
+progression-constrained, Pareto-based evaluation (developed fully in §3.6, Fig. S10)
+replaces any single composite metric throughout.
 
 **Separating schedule from agent (fair 2×2).** To avoid conflating adaptive scheduling
 with the choice of agent, we ran a factorial comparison—{gemcitabine, the lead natural
@@ -561,30 +573,17 @@ non-secretors—for whom CA19-9 is uninformative—defaulted to continuous thera
 the adaptive benefit entirely. Thus the schedule advantage is real but monitoring-limited,
 and its clinical realization would depend on a usable, sufficiently frequent readout.
 
-### 3.6 Food-medicine-homology regimens control tumor burden at low modeled exposure, with resistance staying low
-As an illustrative case study of how the framework prioritizes candidates—not as an
-efficacy claim, and with the compound-specific figures placed in the Supplement because
-their support is weaker than the phase-map principle of §3.4—we evaluated single agents
-and combinations under adaptive scheduling, benchmarked against a continuous-gemcitabine
-modeling reference (Fig. S8; in-silico predictions under assigned exposure weights). Every natural regimen maintained control at markedly lower modeled exposure
-than gemcitabine (3–10 vs 128 units). The most favorable control-per-exposure profiles
-were single low-exposure agents—garlic (exposure 3, 0.0× burden, resistant 0.00,
-control_score 38), curcumin (4, 1.0×, 32), and wild ginseng (5, 0.6×, 26)—controlling
-the tumor at roughly 1/13 to 1/40 the exposure of gemcitabine, with resistance remaining
-low across regimens (0.00–0.05). Notably, because anti-fibrotic agents reduce the myCAF
-barrier, a purely anti-fibrotic pairing (danshen + astragaloside) also controlled the
-tumor in this regime (0.3×, exposure 9)—consistent with the phase map, where reducing
-stroma aids control when immune exclusion is the dominant cost (§3.4). This
-regime-dependence is itself a caution: the compound ranking is contingent on the stromal
-regime, and the same anti-fibrotic that helps here would release confinement where
-containment dominates. The balanced combination curcumin + garlic + ginsenoside-Rg3
-(0.0×, exposure 7, resistant 0.00) was carried forward for dose optimization (§3.7).
+### 3.6 Food-medicine-homology regimens control tumor burden at low modeled exposure, but only combinations do so robustly
+As an illustrative case study of how the framework prioritizes candidates—not an efficacy
+claim—we evaluated single agents and combinations under adaptive scheduling against a
+continuous-gemcitabine reference. We present the **multi-seed (n = 30) analysis as the
+primary result**; a single-seed exploratory ranking is provided only in the Supplement
+(Fig. S8) and is superseded here, because single-seed orderings proved unreliable (below).
 
-**Multi-seed re-analysis and Pareto view (n = 30).** Because a single-seed ranking can be
-misleading, we re-ran the regimens over 30 seeds (varying both tissue architecture and
-simulation stochasticity, with combination synergy switched off) and summarized the
-progression-versus-exposure trade-off as a Pareto frontier with rank-stability
-statistics (Fig. S10). This tempers the single-seed picture in an important way. Only the
+**Multi-seed, progression-constrained Pareto view (n = 30).** We re-ran the regimens over
+30 seeds (varying both tissue architecture and simulation stochasticity, with combination
+synergy switched off) and summarized the progression-versus-exposure trade-off as a Pareto
+frontier with rank-stability statistics (Fig. S10). Only the
 adaptive *combinations* controlled the tumor in every seed—curcumin + garlic + Rg3
 (progression-free in 30/30; exposure 6, 95% interval [5–7]), garlic + mugwort (30/30;
 7 [7–8]), and ginseng + garlic + mugwort (30/30; 8 [7–9])—together with continuous
@@ -592,15 +591,18 @@ gemcitabine (30/30) but at ~20× their exposure (128). Single garlic gave the lo
 exposure of all (3 [3–4]) and the best median rank, but was less reliable (progression-
 free in 28/30). Critically, several single agents that scored well on one seed were *not*
 robust: wild ginseng controlled the tumor in only 1/30 seeds, and mugwort and curcumin in
-none, so their apparent single-seed advantage (above) does not survive replication. The
+none, so the single-seed exploratory ordering (Fig. S8) does not survive replication. The
 anti-fibrotic pair danshen + astragaloside likewise failed to control across seeds
 (median final burden 1.23×), consistent with anti-fibrotic action helping only in the
 regimes the phase map identifies (§3.4) rather than universally. The robust, defensible
 reading is therefore narrow: adaptively scheduled low-exposure *combinations* can control
 this simulated tumor at a small fraction of the modeled exposure of continuous
 gemcitabine, whereas rankings among individual low-exposure agents are seed-sensitive and
-should not be over-interpreted. This multi-seed Pareto analysis supersedes the
-single-seed ordering of Fig. S8 for reliability.
+should not be over-interpreted. We carry the most robust combination (curcumin + garlic +
+Rg3, progression-free in 30/30 at the lowest combination exposure) forward as the
+illustrative lead for dose optimization (§3.7). This multi-seed, progression-constrained
+Pareto analysis is the primary compound result; the single-seed ordering of Fig. S8 is
+exploratory only.
 
 **Epistemic uncertainty dominates: control collapses when compound assumptions are
 sampled.** The 30-seed analysis varies architecture and stochasticity but holds the
@@ -750,6 +752,19 @@ Together these are predictions about emergent geometry, timing, and measurable s
 that motivate spatial biomarkers and scheduling hypotheses, moving the framework beyond a
 restatement of its inputs.
 
+Finally, to show that spatial structure is *necessary*—not incidental—we compared the
+ABM against a well-mixed (mean-field) model built from the same mechanisms (proliferation,
+immune killing, resistance, drug) but with myCAF acting only through its aggregate fraction
+(immune attenuation ∝ exp(−α·M)), with no geometry or local confinement (Fig. S18). The
+mean-field model is blind to the very effect that drives our results: because contained and
+diffuse tissues share the same myCAF abundance, it predicts *identical* outcomes for them,
+whereas the ABM predicts an ~7-fold difference in immune-therapy response. More importantly,
+it inverts the central strategy—lacking any spatial confinement benefit, the mean-field
+optimum is always full stromal reduction (M = 0) at every immune-exclusion level, so it can
+never produce the conditional-preservation ("keep-stroma") regime that the spatial ABM
+identifies (§3.4). The spatial representation therefore changes the *selected strategy*, not
+merely the numerical burden—establishing that the geometry is load-bearing.
+
 ---
 
 ## 4. Discussion
@@ -771,12 +786,15 @@ best controls the tumor (§3.4, Fig. 4).
 
 ### 4.2 Biological plausibility
 Several results align with independent biology. On author-annotated CosMx data, our
-metric reproduced the myCAF-proximal/iCAF-distal architecture in 15 of 16 tumors and
-showed a denser peritumoral myCAF rim in CRT-treated than untreated specimens while
-cytotoxic T cells remained excluded in both (§3.3; cross-sectional association). We are careful in interpreting this: a denser peritumoral
-myCAF rim with persistent T-cell exclusion is equally consistent with an
-*immunosuppressive* barrier as with a tumor-*containing* one—the observation is a
-necessary, not sufficient, condition for containment. This ambiguity is precisely
+metric reproduced the myCAF-proximal/iCAF-distal architecture in 15 of 16 tumors and,
+at the patient level, showed a rim-enriched myCAF barrier coincident with cytotoxic
+T-cell exclusion in *both* untreated and CRT specimens (§3.3); the untreated-versus-CRT
+differences trend as expected but are not statistically significant in this small cohort
+(all BH-adjusted p > 0.19), so we lean only on the pattern common to both groups. We are
+careful in interpreting even that: a peritumoral myCAF rim with persistent T-cell
+exclusion is equally consistent with an *immunosuppressive* barrier as with a
+tumor-*containing* one—the observation is a necessary, not sufficient, condition for
+containment. This ambiguity is precisely
 what our phase analysis formalizes: whether such a barrier aids or harms control
 depends on the balance of physical confinement against immunosuppression, and both
 the paradoxical worsening of PDAC after stromal ablation [6,7] and reports that CAF
@@ -986,10 +1004,15 @@ our targeted search. *(assets/fig1_novelty.png)*
 tumors (points left of 0 = correct). (c) The same metric fails on marker-annotated
 Xenium data (1/5), localizing the failure to annotation. *(assets/fig2_validation.png)*
 
-**Figure 3. Peritumoral composition, untreated vs CRT (CosMx author annotations).**
-Rim (30 µm) enrichment z by cell type; myCAF is tumor-adjacent and more rim-enriched in
-CRT-treated than untreated specimens while CD8⁺ T cells remain excluded in both
-(cross-sectional comparison of different patients, not paired). *(assets/rim_scotia.png)*
+**Figure 3. Patient-level peritumoral composition, untreated (n=9) vs CRT (n=6) (CosMx
+author annotations).** Per-cell-type rim (30 µm) enrichment z with the patient as the unit
+of analysis; markers show group mean ± 95% CI (patient bootstrap) and small points show
+individual patients. myCAF is tumor-adjacent and CD8⁺ T cells are excluded in *both*
+groups. Untreated-versus-CRT differences are compared by Mann–Whitney U with
+Benjamini–Hochberg correction across the ten cell types; none is significant (all adjusted
+p > 0.19; myCAF p = 0.53), so the treatment contrasts are suggestive, non-significant
+associations in this small, underpowered cross-sectional cohort (different patients, not
+paired). *(assets/rim_scotia_stats.png)*
 
 **Figure 4. The model predicts a non-zero optimal stromal level only under specified
 conditions.** Under fixed sub-maximal treatment the myCAF level was swept and the
@@ -1002,11 +1025,11 @@ resource regime occupies the low-immune-exclusion, high-confinement region.
 
 **Figure 5. Exposure-schedule comparison (within-model).** Tumor burden, resistant
 fraction, and cumulative modeled exposure for untreated, continuous, and adaptive
-dosing; adaptive achieves simulated coexistence at ~1/5 the modeled exposure of
-continuous. "Continuous maximum-dose" is a modeling reference arm, not clinical
-standard-of-care, and the composite control_score shown must be read together with the
-progression outcome (it is inflated for the zero-exposure untreated arm).
-*(assets/control_strategies.png)*
+dosing. Evaluated under the progression-constrained objective (§2.7): among
+progression-free strategies, adaptive achieves simulated coexistence at ~1/5 the modeled
+exposure of continuous, while the untreated arm is excluded for failing the progression
+constraint. "Continuous full-intensity" is a within-model reference arm, not clinical
+standard-of-care. *(assets/control_strategies.png)*
 
 **Figure 6. Multiscale molecular grounding** with evidence tiers (experimental vs
 docking vs mechanistic). *(assets/drug_structures_3d.png)*
@@ -1061,12 +1084,13 @@ negligible global influence. Given the wide intervals at this screening sample s
 robust reading is the parameter ranking rather than the exact index values. In silico.
 *(assets/sobol.png)*
 
-**Figure S8. Food-medicine-homology regimens ranked (illustrative case study).** Single
-agents and combinations under adaptive scheduling, ranked by simulated control, modeled
-exposure, and resistance versus a continuous-gemcitabine modeling reference. These are
-in-silico predictions under assigned exposure weights and are contingent on the stromal
-regime (§3.4); they illustrate how the framework prioritizes candidates and are not
-claims of clinical efficacy or safety. *(assets/natural_adaptive_optim.png)*
+**Figure S8. Single-seed exploratory regimen ranking (superseded).** Single agents and
+combinations under adaptive scheduling on one seed, versus a continuous-gemcitabine
+reference. **This single-seed ranking is exploratory only and is not used as a result:**
+it is superseded by the multi-seed, progression-constrained Pareto analysis (Fig. S10),
+which shows that several agents ranked highly here (e.g., wild ginseng, curcumin) do not
+control the tumor on replication. Shown for transparency of the analysis history; in
+silico, under assigned exposure weights. *(assets/natural_adaptive_optim.png)*
 
 **Figure S9. Dose × drug-holiday optimization for the lead combination (illustrative).**
 Seed-averaged grid search over simulated dose fraction and off-threshold under adaptive
@@ -1169,6 +1193,19 @@ colored by immune outcome: response tracks the rim-density axis, not the abundan
 hypothesis: a peritumoral myCAF-density readout should flag barrier-limited,
 immune-excluded tumors. In silico. *(assets/predict_biomarker.png)*
 
+**Figure S18. Why the spatial model is necessary: comparison to a well-mixed (mean-field)
+model.** A mean-field model with the same mechanisms (proliferation, immune killing,
+resistance, drug) but with myCAF acting only through its aggregate fraction M (immune
+attenuation ∝ exp(−α·M)) and no geometry or local confinement. (a) Geometry-blindness:
+because contained and diffuse tissues have identical myCAF abundance, the mean-field model
+predicts identical immune-therapy outcomes, whereas the spatial ABM predicts a ~7-fold
+difference. (b) Strategy inversion: sweeping the aggregate stromal level M under immune
+therapy, the mean-field final burden increases monotonically with M at every
+immune-exclusion strength α, so its optimum is always full stromal reduction (M = 0)—it
+never produces the conditional keep-stroma regime that the spatial ABM finds (Fig. 4).
+Spatial structure changes the selected strategy, not just the numbers. In silico.
+*(assets/wellmixed_compare.png)*
+
 ---
 
 ## Declarations
@@ -1246,7 +1283,11 @@ writing – original draft, writing – review & editing.
 - [x] Terminology pass: toxicity→modeled exposure; ground-truth→author-provided reference; patient-grounded→patient-geometry initialized; validated→positive-control support
 - [x] Demote compound-ranking (→Fig S8) and dose-optimization (→Fig S9) to Supplement; promote molecular grounding to Fig 6; GV1001 caption softened
 - [x] Expand §4.5 limitations: confinement-encoded, caf_protumor=0/IL-6, CAF plasticity, CD8-only immunity, non-PDAC resistance, no observation model, local≠survival, seeds/calibration
-- [ ] Fig 3 / Fig 5 / Fig S8 minor glyph pass (unicode minus; replot from saved CSVs — cosmetic)
+- [x] Delete control_score from paper; replace with progression-constrained multi-objective/Pareto evaluation (§2.7, §3.5, Fig 5 caption); reviewer #3
+- [x] §3.6: remove single-seed ranking from main text (→ Fig S8, marked exploratory/superseded); lead with 30-seed progression-constrained Pareto; reviewer #4
+- [x] CRT spatial analysis rewritten to patient-level statistics (Mann–Whitney U + Cliff's delta + bootstrap 95% CI + BH correction; n=9 vs 6, none significant); causal language removed; new Fig 3 (rim_scotia_stats.png); reviewer #6
+- [x] Well-mixed (mean-field) vs spatial ABM comparison proving spatial necessity — geometry-blindness + strategy inversion (Fig. S18, §3.10); reviewer #2
+- [x] Fig 3 glyph fixed (ASCII minus); Fig 5 shows no control_score; Fig S8 marked superseded
 - [x] Recompute key rankings with 30 seeds + progression-vs-exposure Pareto frontier and rank-stability (Fig. S10; overturns several single-agent rankings)
 - [x] Restore CAF pro-tumor axis (caf_protumor + new caf_survival drug-tolerance); re-map phase map with it on (Fig. S11; resource regime 7/16→6/16, persists)
 - [x] Add CA19-9 observation model (interval, noise, lag, non-secretor, min-duration, safety); adaptive advantage survives but attenuates (Fig. S12)
