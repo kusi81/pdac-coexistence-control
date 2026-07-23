@@ -243,6 +243,14 @@ cells (with iCAF/macrophage as context). Update rules per step:
   dense. (iii) *Impaired drug delivery*: the drug's anti-proliferative effect on
   sensitive cells is attenuated by exp(−`caf_drug_block`·ρ/`caf_confine_ref`). Setting
   these to zero recovers a model in which myCAF affects only immunity.
+- **CAF pro-tumor support (paracrine growth and drug tolerance).** To avoid biasing the
+  model toward containment, CAFs can also *support* the tumor via two axes used in a
+  robustness analysis (§3.4, Fig. S11): a paracrine proliferation/carrying-capacity boost
+  (`caf_protumor`, the "pro-tumor soil" term) and a signaling-based drug-tolerance term
+  (`caf_survival`) by which local myCAF further attenuates the drug's effect on sensitive
+  cells—multiplicatively with the physical `caf_drug_block` term but representing distinct
+  biology (IL-6/JAK–STAT-type therapy-induced survival signaling rather than physical
+  exclusion). Both default to zero in the baseline and are switched on to test robustness.
 - **CD8 migration/killing.** CD8 cells move toward the nearest tumor at `cd8_speed_um`
   /day, attenuated by myCAF density in the corridor via a gate parameterized by
   `cd8_barrier_alpha` (the immune-exclusion lever); they kill tumor within
@@ -257,9 +265,11 @@ cells (with iCAF/macrophage as context). Update rules per step:
   suppression of resistance during drug holidays.
 
 The myCAF barrier thus confers one benefit—physical confinement (effects i–ii above)—
-and two costs: immune exclusion (via `cd8_barrier_alpha`) and impaired drug delivery
-(effect iii). Their balance determines whether preserving or reducing stroma aids
-control, which we map in §3.4. Parameters are literature-grounded rather than fit to
+against costs: immune exclusion (via `cd8_barrier_alpha`), impaired drug delivery
+(effect iii), and, when the pro-tumor axes are enabled, paracrine growth support and
+signaling-based drug tolerance. Their balance determines whether preserving or reducing
+stroma aids control, which we map in §3.4 (and re-map with the pro-tumor axes on in
+Fig. S11). Parameters are literature-grounded rather than fit to
 data; full values and citations are in Supplementary Table S1. Two organ contexts
 (PDAC, HCC) share the stellate/TGF-β axis and differ only in `caf_protumor`.
 
@@ -433,6 +443,17 @@ improves immunotherapy emerge as different regimes of one trade-off. We stress t
 phase boundary depends on parameters that are mechanistically motivated but not
 data-fitted; where real PDAC lies on it is an empirical question this framework poses
 rather than answers (Discussion §4.5).
+
+**Robustness to restored CAF pro-tumor biology.** Because a baseline that omits the
+tumor-supporting roles of CAFs could bias this map toward "keep stroma," we recomputed it
+with two such axes switched on—a paracrine proliferation boost and a signaling-based
+drug-tolerance term by which local myCAF attenuates the drug's effect on sensitive cells
+(IL-6/JAK–STAT-type therapy-induced resistance; Methods §2.4, Fig. S11). Restoring this
+biology shrank the resource regime modestly (7/16 → 6/16 sampled conditions) and reduced
+the average benefit of keeping stroma, but did not abolish it: preservation still won in
+the strong-confinement, weak-immune-exclusion corner. The condition-dependent principle
+is therefore qualitatively robust to the previously omitted pro-tumor biology, while the
+favorable region is somewhat narrower (Discussion §4.5).
 
 **Application—a clinical immunotherapy is gated by the stromal barrier.** The phase map
 predicts that immune-directed agents should help only where the stroma does not exclude
@@ -711,14 +732,23 @@ myCAF exerts measurable physical confinement, an intermediate stromal optimum ca
 emerge—whereas the stronger claim, that human PDAC myCAF actually contains the tumor to
 the predicted degree, is untested and would require relating myCAF/ECM density to
 invasion fronts, tumor budding, ductal spread, perineural invasion, and dissemination in
-real tissue. **(ii) A conservative pro-tumor assumption biases the model toward
-containment.** We set the direct CAF pro-proliferative term to zero in the PDAC context;
-real CAFs also support tumors through paracrine cytokines and growth factors, metabolic
-support, ECM remodeling, invasion facilitation, and therapy-induced survival signaling.
-Notably, the very CosMx cohort we use (Shiau et al. [20]) reports CAF–malignant
-interaction changes and IL-6-family signaling linked to therapy resistance—biology our
-current parameterization omits and that would partly offset the containment benefit;
-calibrating a CAF paracrine-survival/resistance axis against these data is a priority.
+real tissue. **(ii) The pro-tumor assumption is now tested, not assumed away.** Our baseline set the
+direct CAF pro-proliferative term to zero, which risks biasing the model toward
+containment; real CAFs also support tumors through paracrine cytokines and growth
+factors, metabolic support, ECM remodeling, invasion facilitation, and therapy-induced
+survival signaling. The very CosMx cohort we use (Shiau et al. [20]) reports
+CAF–malignant interaction changes and IL-6-family signaling linked to therapy resistance,
+and shikonin reversal of CAF-induced gemcitabine resistance is documented [18]. We
+therefore added two axes—a modest paracrine proliferation boost (`caf_protumor`) and a
+signaling-based drug-tolerance term (`caf_survival`, in which local myCAF attenuates the
+drug's effect on sensitive cells independently of physical penetration)—and recomputed
+the confinement × immune-exclusion phase map with this biology switched on (§3.4,
+Fig. S11). Restoring it shrinks the "stroma-as-resource" regime (from 7/16 to 6/16
+sampled cells) and lowers the average benefit of keeping stroma, but does not erase the
+regime: preserving/modulating stroma still aids control where physical confinement is
+strong and immune exclusion is weak. The central claim is thus qualitatively robust to
+the previously omitted biology, though the favorable region is narrower; full calibration
+of these axes against the IL-6/JAK–STAT data remains a priority.
 **(iii) CAF states are fixed rather than plastic.** myCAF/iCAF/apCAF are modeled as
 stable types, whereas real CAFs interconvert (TGF-β vs IL-1/JAK–STAT balance,
 therapy-induced transitions, LRRC15⁺ and senescent/inflammatory substates); a claim of
@@ -894,6 +924,18 @@ strong on one seed (wild ginseng, curcumin, mugwort) are not robust, and the ant
 pair fails across seeds. In silico, under assigned exposure weights.
 *(assets/pareto_seeds.png)*
 
+**Figure S11. The condition-dependent stromal-control result is robust to restoring CAF
+pro-tumor biology.** The confinement (`caf_pressure`) × immune-exclusion
+(`cd8_barrier_alpha`) phase map, recomputed with the tumor-supporting roles of CAFs (a)
+switched off (baseline) and (b) switched on (a paracrine proliferation boost plus a
+signaling-based drug-tolerance term, `caf_survival`, in which local myCAF attenuates the
+drug's effect on sensitive cells—an IL-6/JAK–STAT-type therapy-induced resistance).
+Color = benefit of keeping stroma (tumor with no stroma − tumor at the optimal stromal
+level); cells labeled "keep" are the stroma-as-resource regime. Restoring pro-tumor
+biology shrinks the resource regime (7/16 → 6/16 sampled cells) and lowers its average
+benefit, but preservation still wins in the strong-confinement, weak-immune-exclusion
+corner. Three seeds per cell; in silico. *(assets/phase_protumor.png)*
+
 ---
 
 ## Declarations
@@ -967,4 +1009,5 @@ writing – original draft, writing – review & editing.
 - [x] Expand §4.5 limitations: confinement-encoded, caf_protumor=0/IL-6, CAF plasticity, CD8-only immunity, non-PDAC resistance, no observation model, local≠survival, seeds/calibration
 - [ ] Fig 3 / Fig 5 / Fig S8 minor glyph pass (unicode minus; replot from saved CSVs — cosmetic)
 - [x] Recompute key rankings with 30 seeds + progression-vs-exposure Pareto frontier and rank-stability (Fig. S10; overturns several single-agent rankings)
+- [x] Restore CAF pro-tumor axis (caf_protumor + new caf_survival drug-tolerance); re-map phase map with it on (Fig. S11; resource regime 7/16→6/16, persists)
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)

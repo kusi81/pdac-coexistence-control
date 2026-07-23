@@ -72,6 +72,11 @@ DEFAULT_PARAMS = dict(
     # 트레이드오프: 조밀 기질은 약물 침투도 저해 → myCAF 과다는 오히려 통제 악화
     # (면역배제 cd8_barrier_alpha와 함께). 이 세 힘의 균형이 '최적 기질 상태'를 만든다.
     caf_drug_block=0.6,        # 조밀 myCAF의 약물 침투 저해 강도 (0=없음)
+    # CAF 유도 약물내성(생존 신호): 물리 침투(caf_drug_block)와 별개로, 국소 myCAF가
+    # IL-6/JAK-STAT 등 파라크린 생존신호로 감수성 종양세포의 약효를 감쇠 → 치료유발 내성.
+    # (Shiau 등 [20]의 CAF-종양 상호작용·IL-6 신호, shikonin이 되돌리는 CAF유발 젬시타빈
+    # 내성 [18]에 접지). 0이면 이 생물학을 끈 상태(리뷰어가 지적한 containment 편향).
+    caf_survival=0.0,          # CAF 신호기반 약물내성 강도 (0=없음)
     # --- CD8 ---
     cd8_speed_um=120.0,        # 종양 방향 이동 속도 um/day (장벽 없을 때)
     cd8_barrier_alpha=0.9,     # 회랑 myCAF 밀도에 대한 이동 감쇠 계수 (핵심 게이트)
@@ -453,9 +458,11 @@ class TumorABM:
         confine = self.p.get("caf_confine", 0.0)
         confine_ref = max(1, self.p.get("caf_confine_ref", 12))
         drug_block = self.p.get("caf_drug_block", 0.0)
+        survival = self.p.get("caf_survival", 0.0)   # CAF 유도 약물내성(생존신호)
         pressure = self.p.get("caf_pressure", 0.0)
         use_caf = caf_tree is not None and (protumor > 0 or confine > 0
-                                            or drug_block > 0 or pressure > 0)
+                                            or drug_block > 0 or pressure > 0
+                                            or survival > 0)
         for c, is_res in zip(tum, tum_res):
             if skip_division:
                 break
@@ -475,9 +482,10 @@ class TumorABM:
                 continue
             if is_res:
                 kp = kp_res
-            else:                                # 조밀 myCAF → 약물 침투 저해 → 약효 감소
+            else:                                # 조밀 myCAF → 약물 침투 저해(물리) + 생존신호(내성)
                 pen = np.exp(-drug_block * caf_here / confine_ref) if drug_block > 0 else 1.0
-                kp = base_kp - drug_reduction * pen
+                surv = np.exp(-survival * caf_here / confine_ref) if survival > 0 else 1.0
+                kp = base_kp - drug_reduction * pen * surv  # 두 기전 모두 약효를 감쇠
             if self.rng.random() < kp * boost * dt:
                 ang = self.rng.uniform(0, 2 * np.pi)
                 off = self.rng.uniform(4, kr) * np.array([np.cos(ang), np.sin(ang)])

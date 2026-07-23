@@ -36,6 +36,7 @@ sensitivity analysis (§S3, Fig. S3) quantifies robustness to ±50% variation.
 | `caf_confine_ref` | 3 | cells | — | Local (20 µm) myCAF count for full confinement/pressure/drug-block effect; set to the observed peritumoral myCAF density. |
 | `caf_pressure` | 1.2 | — | — | Mechanical exclusion: local carrying capacity scaled by exp(−`caf_pressure`·ρ/ref), limiting tumor packing/spread where stroma is dense. |
 | `caf_drug_block` | 0.6 | — | — | Impaired drug delivery: drug's anti-proliferative effect attenuated by exp(−`caf_drug_block`·ρ/ref) in stroma-dense regions. |
+| `caf_survival` | 0.0 (baseline) | — | — | CAF-induced drug tolerance (signaling): local myCAF further attenuates the drug's effect on sensitive cells by exp(−`caf_survival`·ρ/ref), multiplicative with `caf_drug_block` but representing IL-6/JAK–STAT-type therapy-induced resistance [18,20] rather than physical exclusion. Switched on (0.4) in the pro-tumor robustness check (Fig. S11). |
 
 ## CD8⁺ T cell
 
