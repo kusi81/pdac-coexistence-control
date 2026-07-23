@@ -1,0 +1,26 @@
+arm,seed,final,censored,exposure
+Immune only,1,2.5573333333333332,0.0,36.0
+Immune only,2,2.8887468030690537,0.0,36.0
+Immune only,3,2.151761517615176,0.0,36.0
+Immune only,4,1.6363636363636365,0.0,36.0
+Immune only,5,1.0082191780821919,0.0,36.0
+Anti-fibrotic only,1,4.277333333333333,0.0,24.0
+Anti-fibrotic only,2,4.258312020460358,0.0,24.0
+Anti-fibrotic only,3,3.100271002710027,0.0,24.0
+Anti-fibrotic only,4,2.672998643147897,0.0,24.0
+Anti-fibrotic only,5,3.552054794520548,0.0,24.0
+Simultaneous,1,2.3653333333333335,0.0,60.0
+Simultaneous,2,2.1457800511508953,0.0,60.0
+Simultaneous,3,0.532520325203252,0.0,60.0
+Simultaneous,4,1.1329715061058345,0.0,60.0
+Simultaneous,5,1.1356164383561644,0.0,60.0
+Open-first (AF→AF+Imm),1,0.6906666666666667,0.0,51.0
+Open-first (AF→AF+Imm),2,3.2161125319693094,0.0,51.0
+Open-first (AF→AF+Imm),3,0.4254742547425474,0.0,51.0
+Open-first (AF→AF+Imm),4,1.1438263229308006,0.0,51.0
+Open-first (AF→AF+Imm),5,1.3013698630136987,0.0,51.0
+Kill-first (Imm→AF+Imm),1,1.248,0.0,54.0
+Kill-first (Imm→AF+Imm),2,2.3273657289002556,0.0,54.0
+Kill-first (Imm→AF+Imm),3,0.7669376693766937,0.0,54.0
+Kill-first (Imm→AF+Imm),4,1.287652645861601,0.0,54.0
+Kill-first (Imm→AF+Imm),5,1.3178082191780822,0.0,54.0

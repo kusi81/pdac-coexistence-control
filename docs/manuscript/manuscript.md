@@ -680,6 +680,35 @@ This grounds the framework's initial conditions in measured tissue; the paramete
 themselves remain synthetic, and patient-specific *calibration* of dynamics is future work
 (§4.6).
 
+### 3.10 The model makes non-trivial spatial predictions, not just restatements of its rules
+A fair objection is that once myCAF is coded to confine daughter cells and block drug and
+immune access, "confinement matters" is built in. We therefore asked whether the model
+yields predictions that its local rules do not make obvious—predictions that depend on
+*emergent* spatial structure rather than on any single encoded rule.
+
+First, spatial *geometry* changes therapeutic outcome at *fixed* cell counts. Comparing
+the contained architecture (myCAF in peritumoral rings) with a diffuse one (identical
+myCAF, iCAF, CD8, and macrophage counts, scattered) under matched sub-maximal therapy,
+every modality was less effective against the confining geometry, and the effect was
+modality-specific: immune-directed therapy was ~12-fold weaker in the contained tissue
+(residual 0.73× vs 0.06× in diffuse) because the ring barrier physically excludes CD8,
+whereas cytotoxic therapy was less affected (Fig. S15a). Abundance alone is therefore not
+predictive—the same myCAF, arranged as a barrier versus scattered, changes the value of
+immunotherapy by an order of magnitude, so a measurable descriptor of *arrangement*
+(not amount) is what would stratify immune-therapy benefit. Second, and relatedly, the
+model predicts *when* reducing CAF widens the invasion front: anti-fibrotic treatment
+increased tumor spatial spread more in the confining geometry than in the diffuse one
+(90th-percentile radius +78 µm vs +51 µm; Fig. S15b), i.e., releasing a barrier that was
+actually containing the tumor—an emergent, spatially explicit trade-off, not a coded rule.
+Third, treatment *order* matters in a barrier-gated regime: with a strongly
+immune-excluding stroma, immune-alone and anti-fibrotic-alone both failed, combining them
+in any order roughly halved residual burden, and opening the barrier before adding
+immunotherapy was marginally better than the reverse (Fig. S16)—a modest but
+directionally consistent sequence effect (using both mechanisms matters more than their
+order). Together these are predictions about emergent geometry and timing that motivate
+measurable spatial biomarkers and scheduling hypotheses, moving the framework beyond a
+restatement of its inputs.
+
 ---
 
 ## 4. Discussion
@@ -1065,6 +1094,25 @@ collapse is driven chiefly by bioavailability uncertainty, showing that the natu
 regimens' benefit is not robust to epistemic uncertainty in their pharmacology. In silico.
 *(assets/mc_uncertainty.png)*
 
+**Figure S15. Spatial geometry, not just abundance, changes the model's predictions.**
+Contained (myCAF in peritumoral rings) versus diffuse (identical cell counts, scattered)
+architectures, five seeds. (a) Final tumor burden by treatment modality at matched
+sub-maximal dose: every modality is weaker against the confining geometry, and immune
+therapy is ~12× weaker (residual 0.73× contained vs 0.06× diffuse) because the ring
+barrier excludes CD8; the best combination (cytotoxic+immune) is robust, but the value of
+immunotherapy is geometry-dependent at fixed abundance. (b) Tumor spatial spread
+(90th-percentile radius) untreated versus after anti-fibrotic CAF reduction: reducing CAF
+widens the invasion front more where the geometry confines the tumor (Δ +78 µm contained
+vs +51 µm diffuse). In silico. *(assets/predict_geometry.png)*
+
+**Figure S16. Treatment order in barrier-gated immunotherapy.** In a strongly
+immune-excluding contained regime (five seeds), immune-alone and anti-fibrotic-alone both
+fail; combining the two mechanisms roughly halves residual burden regardless of order, and
+opening the barrier first (anti-fibrotic lead-in, then anti-fibrotic+immune) is marginally
+better than immune-first. The sequence effect is modest relative to the benefit of using
+both mechanisms; no fixed schedule fully controls this aggressive regime. In silico.
+*(assets/predict_sequence.png)*
+
 ---
 
 ## Declarations
@@ -1149,4 +1197,5 @@ writing – original draft, writing – review & editing.
 - [x] Generalize GV1001 to "illustrative immune-priming agent" in main text; keep the GV1001 name + trial refs only in Fig. S4 caption
 - [x] Resolve food entities to defined APIs (garlic→SAC, mugwort→eupatilin, ginseng→20(S)-Rg3) + drug-product attribute table (Table S2, refs [26-29])
 - [x] Monte Carlo epistemic uncertainty over compound assumptions (effect, exposure weight, bioavailability, synergy) on API regimens (Fig. S14); natural control collapses to 0-2% vs gem 96% — not robust to pharmacology uncertainty
+- [x] Non-trivial spatial predictions (§3.10): geometry changes immune-therapy efficacy ~12× at fixed abundance (Fig. S15a), CAF reduction widens invasion front more when confined (Fig. S15b), and open-first beats immune-first modestly (Fig. S16)
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)
