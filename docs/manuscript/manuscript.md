@@ -2,10 +2,11 @@
 
 *Subtitle: food-medicine-homology compounds as a hypothesis-generating application*
 
-*Draft manuscript — assembled from section drafts (2026-07-21). In-silico, hypothesis-generating study. Placeholder items marked [ ].*
+*In-silico, hypothesis-generating study.*
 
-**Author:** Seung-Il Kim (김승일 / 金昇日), Independent Researcher [+ collaborating PI to be added]
+**Author:** Seung-Il Kim (김승일 / 金昇日)¹
 **Corresponding author:** Seung-Il Kim · kusi81kim@gmail.com · **ORCID:** [0009-0007-5965-9212](https://orcid.org/0009-0007-5965-9212)
+¹ Independent Researcher (unaffiliated).
 
 ---
 
@@ -19,9 +20,9 @@ treated as a *controllable resource* for restraining, rather than eradicating, t
 tumor. We present an in-silico framework that integrates three previously
 disconnected research lines—static network pharmacology of "food-medicine
 homology" compounds, wet-laboratory studies of herbal modulation of PDAC CAFs, and
-agent-based modeling of the tumor microenvironment. A systematic PubMed survey
-confirmed that, while each line is individually well populated, their integration
-is essentially absent. Our framework builds a spatial agent-based model of the
+agent-based modeling of the tumor microenvironment. A targeted PubMed survey
+found that, while each line is individually well populated, no directly matching study
+integrates them. Our framework builds a spatial agent-based model of the
 PDAC tumor–myCAF–immune ecosystem, grounded in single-cell spatial transcriptomics
 (Xenium and CosMx), and encodes food-medicine-homology compounds (e.g., garlic,
 ginseng, Platycodon, mugwort) as mechanistic parameter perturbations across a
@@ -192,7 +193,9 @@ chemoradiation-treated [CRT]) with a 480-gene panel; cell coordinates (µm) from
 two-stage module-score scheme (coarse type by argmax over marker modules, then CAF
 subtype among CAF-assigned cells) using literature marker panels. (ii) **CosMx SMI**
 (NanoString; Shiau et al. [20]; Mendeley Data doi:10.17632/kx6b69n3cb.1): 16 PDAC
-tumors (9 untreated, 6 CRT, 1 CRTL) with a 1,009-gene panel and **author-provided**
+tumors (9 untreated, 6 CRT, and 1 specimen labeled CRTL—chemoradiation plus an additional
+line of therapy in the source metadata—which we excluded from the untreated-versus-CRT
+rim comparison for group clarity) with a 1,009-gene panel and **author-provided**
 major-type and CAF-subtype annotations (717,493 cells); global pixel coordinates
 were converted to microns (0.12028 µm/px). MIBI-TOF (colorectal, squidpy) served as
 a negative-architecture control. The two PDAC datasets play complementary roles: the
@@ -232,8 +235,9 @@ cells (with iCAF/macrophage as context). Update rules per step:
   probability `k_caf_activate` within `caf_ring_um` (150 µm) of tumor, up to
   `caf_cap_per_tumor`, and reverts (turnover) at `k_caf_death`; anti-fibrotic
   perturbation lowers activation so turnover reduces barrier mass. An optional
-  `caf_protumor` term boosts local proliferation (0 for PDAC; large for the HCC context,
-  reflecting cirrhosis-as-pro-tumor soil).
+  `caf_protumor` term boosts local proliferation (baseline 0; enabled in the pro-tumor
+  robustness analysis of §3.4/Fig. S11, and available for co-opted-stroma settings such as
+  a cirrhotic liver).
 - **myCAF physical containment.** Local myCAF density ρ (within the kill radius) exerts
   three effects on the tumor. (i) *Confinement*: a dividing cell's daughter is blocked
   from being placed into a stroma-dense location with probability
@@ -270,8 +274,8 @@ against costs: immune exclusion (via `cd8_barrier_alpha`), impaired drug deliver
 signaling-based drug tolerance. Their balance determines whether preserving or reducing
 stroma aids control, which we map in §3.4 (and re-map with the pro-tumor axes on in
 Fig. S11). Parameters are literature-grounded rather than fit to
-data; full values and citations are in Supplementary Table S1. Two organ contexts
-(PDAC, HCC) share the stellate/TGF-β axis and differ only in `caf_protumor`.
+data; full values and citations are in Supplementary Table S1. (The stellate/TGF-β axis
+generalizes to other desmoplastic organs; results here are for PDAC only.)
 
 ### 2.5 Encoding food-medicine-homology compounds
 Seventeen agents—food-medicine-homology compounds (e.g., garlic, ginseng, Platycodon,
@@ -329,22 +333,43 @@ sequential cycles; (E3) a seed-averaged dose × drug-holiday grid search; and a
 sensitivity analysis combining a `resistance_cost` sweep with one-at-a-time ±50%
 perturbation of nine key parameters, complemented by a variance-based global (Sobol)
 analysis over eight parameters (Saltelli sampling, first- and total-order indices;
-Fig. S7). Stochastic results are averaged over three seeds (42, 7, 123).
+Fig. S7). Exploratory results use three seeds (42, 7, 123); the confirmatory analyses use
+larger replication as summarized below.
+
+**Replication per experiment.** Seed/sample counts vary by analysis and are reported with
+each result:
+
+| Analysis | Figure | Replication |
+|---|---|---|
+| Exploratory sims, phase map | Figs 4, 5, S3, S8, S9 | 3 seeds |
+| Fair 2×2 (agent × schedule) | Fig. S5 | 5 seeds |
+| GV1001-style barrier gating | Fig. S4 | (regime sweep) |
+| Global Sobol sensitivity | Fig. S7 | Saltelli N=32, 1 seed/run |
+| Multi-seed Pareto ranking | Fig. S10 | 30 seeds |
+| Pro-tumor phase-map robustness | Fig. S11 | 3 seeds/cell, 2 conditions |
+| CA19-9 observation model | Fig. S12 | 20 seeds |
+| Single-agent schedule | Fig. S13 | 20 seeds |
+| Monte Carlo epistemic uncertainty | Fig. S14 | 100 draws |
+| Non-trivial spatial predictions | Figs S15–S17 | 5 seeds |
 
 ### 2.9 Implementation and availability
 The framework is implemented in Python (3.13) using scanpy/anndata, squidpy, pyarrow,
 NumPy/SciPy, and Matplotlib, with an interactive Streamlit dashboard exposing the
 spatial, simulation, optimization, and molecular-viewer modes. Spatial data: Xenium
 GSE274673; CosMx from Mendeley Data (doi:10.17632/kx6b69n3cb.1) [20]. All analysis
-code is available at https://github.com/kusi81/pdac-coexistence-control.
+code is available at https://github.com/kusi81/pdac-coexistence-control; a version-tagged
+release archived with a DOI (e.g., Zenodo) will accompany publication so that every figure
+is reproducible from the exact commit, including per-figure generation scripts and the
+random seeds listed in §2.8.
 
 ---
 
 ## 3. Results
 
-### 3.1 The components of our approach are individually well-established, but their integration is unoccupied
-To position the framework, we ran a systematic PubMed survey (ten Boolean queries
-spanning the intersecting dimensions of our approach; Methods §2.1) and quantified
+### 3.1 The components of our approach are individually well-established, but no directly matching integration was found in a targeted survey
+To position the framework, we ran a targeted PubMed survey (twelve Boolean queries—ten
+spanning the intersecting dimensions of our approach plus two "integrated" queries;
+Methods §2.1) and quantified
 how much prior literature occupies each axis versus their integration (Fig. 1a). The
 individual axes are well populated: coexistence/control with natural compounds (56
 records), network-pharmacology of food-medicine-homology compounds against cancer
@@ -364,8 +389,8 @@ optimization framework [17,18]; and (iii) agent-based and spatial models of the 
 microenvironment, which capture tumor–stroma–immune dynamics but incorporate neither
 natural compounds nor a coexistence-control objective [19,20]. The triple
 intersection—a dynamic, spatially grounded, adaptive-control framework that uses
-food-medicine-homology compounds to modulate the myCAF barrier—was empty in our
-survey, defining the gap this work occupies. We note the limits of this analysis: it
+food-medicine-homology compounds to modulate the myCAF barrier—returned no directly
+matching study in our targeted survey, indicating the gap this work addresses. We note the limits of this analysis: it
 queries PubMed only and is a targeted novelty search rather than a PRISMA systematic
 review; nonetheless, the near-absence of integrated hits amid abundant single-axis
 literature supports that the contribution lies in the integration.
@@ -379,9 +404,9 @@ abundance (Fig. 2a). We next tested a known biological positive control—myCAFs
 closer to malignant cells than iCAFs [3,20]—on the author-annotated CosMx dataset
 (717,493 cells across 16 tumors). myCAF was significantly closer to malignant cells
 than iCAF in 15 of 16 tumors (the single exception showed a 0.2 µm difference,
-p = 0.279, a tie), and the gap widened after therapy (−2.6 µm untreated vs −18.8 µm
-CRT) (Fig. 2b). Given faithful annotations, our metric recovers the expected
-architecture.
+p = 0.279, a tie), and the gap was larger in CRT-treated than untreated specimens
+(−2.6 µm untreated vs −18.8 µm CRT; cross-sectional, not paired) (Fig. 2b). Given faithful
+annotations, our metric recovers the expected architecture.
 
 Critically, the *same* metric failed this positive control on our targeted-panel
 Xenium data typed by marker-based module scores: myCAF scored as marginally *farther*
@@ -395,18 +420,21 @@ on full-panel author-annotated data—and that robust CAF-subtype spatial analys
 requires full-transcriptome or author-level annotations rather than targeted-panel
 module scoring, consistent with our hypothesis-generating framing.
 
-### 3.3 myCAFs form a tumor-adjacent barrier that tightens under therapy while cytotoxic T cells remain excluded
-We characterized the peritumoral rim (30 µm shell) composition and its change with
-neoadjuvant chemoradiotherapy in the CosMx cohort (9 untreated, 6 CRT; Fig. 3). myCAFs
-were the dominant tumor-adjacent population, strongly enriched at the rim in both
-groups and further enriched after therapy (mean rim z = +9.1 → +15.7), whereas iCAFs
-were excluded and displaced farther out (z = −3.5 → −9.2). Pericytes shifted from
-neutral to tumor-adjacent after therapy (z = −1.6 → +3.3), consistent with vascular
-remodeling. The immune compartment showed persistent exclusion: cytotoxic CD8⁺ T cells
-remained depleted from the rim (z = −5.6 → −4.0), with CD4⁺ T and regulatory T cells
-similarly excluded and plasma cells most strongly excluded (z = −11.3 → −4.1);
-macrophages were the only rim-enriched immune lineage, declining after therapy
-(z = +6.8 → +2.4).
+### 3.3 myCAFs form a tumor-adjacent barrier that is denser in CRT-treated specimens, while cytotoxic T cells remain excluded
+We characterized the peritumoral rim (30 µm shell) composition in the CosMx cohort and
+compared it between untreated and neoadjuvant-chemoradiotherapy (CRT) specimens (9
+untreated, 6 CRT; Fig. 3). This is a cross-sectional comparison of different patients, not
+a paired longitudinal measurement, so differences are associations between treatment
+status and rim composition rather than demonstrated treatment effects. myCAFs were the
+dominant tumor-adjacent population, strongly enriched at the rim in both groups and more
+strongly enriched in CRT-treated than untreated specimens (mean rim z = +9.1 untreated vs
++15.7 CRT), whereas iCAFs were excluded and displaced farther out (z = −3.5 vs −9.2).
+Pericytes were rim-neutral in untreated and tumor-adjacent in CRT-treated specimens
+(z = −1.6 vs +3.3), consistent with vascular remodeling. The immune compartment showed
+exclusion in both groups: cytotoxic CD8⁺ T cells were depleted from the rim (z = −5.6 vs
+−4.0), with CD4⁺ T and regulatory T cells similarly excluded and plasma cells most
+strongly excluded (z = −11.3 vs −4.1); macrophages were the only rim-enriched immune
+lineage, and were less enriched in CRT-treated specimens (z = +6.8 vs +2.4).
 
 These observations refine the intuitive expectation that therapy relieves immune
 exclusion. In this cohort, CRT did *not* recruit cytotoxic T cells to the tumor rim:
@@ -741,8 +769,8 @@ best controls the tumor (§3.4, Fig. 4).
 ### 4.2 Biological plausibility
 Several results align with independent biology. On author-annotated CosMx data, our
 metric reproduced the myCAF-proximal/iCAF-distal architecture in 15 of 16 tumors and
-showed the myCAF barrier tightening under chemoradiation while cytotoxic T cells
-remained excluded (§3.3). We are careful in interpreting this: a denser peritumoral
+showed a denser peritumoral myCAF rim in CRT-treated than untreated specimens while
+cytotoxic T cells remained excluded in both (§3.3; cross-sectional association). We are careful in interpreting this: a denser peritumoral
 myCAF rim with persistent T-cell exclusion is equally consistent with an
 *immunosuppressive* barrier as with a tumor-*containing* one—the observation is a
 necessary, not sufficient, condition for containment. This ambiguity is precisely
@@ -942,11 +970,12 @@ principles and a prioritization engine for the experimental work that must follo
 
 ## Figures
 
-**Figure 1. Novelty landscape.** (a) Per-dimension PubMed hit counts from the
-systematic survey; individual axes (blue) are well populated while integrated,
-three-axis queries (red) return only off-target hits. (b) Three-camp schematic: static
-network pharmacology, wet-lab herbal–CAF, and spatial/ABM modeling are each populated
-but their intersection—this work—is empty. *(assets/fig1_novelty.png)*
+**Figure 1. Novelty landscape.** (a) Per-dimension PubMed hit counts from the targeted
+survey (twelve queries: ten dimensional, two integrated); individual axes (blue) are well
+populated while integrated, three-axis queries (red) return only off-target hits. (b)
+Three-camp schematic: static network pharmacology, wet-lab herbal–CAF, and spatial/ABM
+modeling are each populated but no directly matching study occupies their intersection in
+our targeted search. *(assets/fig1_novelty.png)*
 
 **Figure 2. The containment metric is sound; annotation is the limiting factor.**
 (a) Synthetic contained (myCAF ring; barrier z = +22.3) vs diffuse (scattered; +0.9).
@@ -955,10 +984,11 @@ tumors (points left of 0 = correct). (c) The same metric fails on marker-annotat
 Xenium data (1/5), localizing the failure to annotation. *(assets/fig2_validation.png)*
 
 **Figure 3. Peritumoral composition, untreated vs CRT (CosMx author annotations).**
-Rim (30 µm) enrichment z by cell type; myCAF is tumor-adjacent and tightens with CRT
-while CD8⁺ T cells remain excluded. *(assets/rim_scotia.png)*
+Rim (30 µm) enrichment z by cell type; myCAF is tumor-adjacent and more rim-enriched in
+CRT-treated than untreated specimens while CD8⁺ T cells remain excluded in both
+(cross-sectional comparison of different patients, not paired). *(assets/rim_scotia.png)*
 
-**Figure 4. The myCAF barrier is a controllable resource only under specified
+**Figure 4. The model predicts a non-zero optimal stromal level only under specified
 conditions.** Under fixed sub-maximal treatment the myCAF level was swept and the
 tumor-minimizing (optimal) level located, over a grid of confinement strength
 (caf_pressure) × immune-exclusion strength (cd8_barrier_alpha). (a) Optimal myCAF level
@@ -1221,4 +1251,5 @@ writing – original draft, writing – review & editing.
 - [x] Resolve food entities to defined APIs (garlic→SAC, mugwort→eupatilin, ginseng→20(S)-Rg3) + drug-product attribute table (Table S2, refs [26-29])
 - [x] Monte Carlo epistemic uncertainty over compound assumptions (effect, exposure weight, bioavailability, synergy) on API regimens (Fig. S14); natural control collapses to 0-2% vs gem 96% — not robust to pharmacology uncertainty
 - [x] Non-trivial spatial predictions (§3.10): geometry changes immune-therapy efficacy ~12× at fixed abundance (Fig. S15a), CAF reduction widens invasion front more when confined (Fig. S15b), open-first beats immune-first modestly (Fig. S16), and peritumoral myCAF density (|r|=0.92) — not abundance (|r|=0.56) — predicts the immune regime (Fig. S17)
-- [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)
+- [x] CRTL defined inline (§2.2, chemoradiation + additional line; excluded from untreated-vs-CRT comparison)
+- [x] Editorial pass: cover-page placeholder removed; CRT causal→cross-sectional language (§3.3, Figs 2b/3); novelty "empty/confirmed"→"no directly matching study" and query count unified to 12 (Fig 1); Fig 4 caption "resource"→"non-zero optimum"; HCC decoupled from results; per-experiment seed table (§2.8); archived-release note (§2.9)

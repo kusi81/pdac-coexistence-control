@@ -84,16 +84,17 @@ def panel_b(ax):
             ha="center", fontsize=8.2, color="#555")
     ax.set_xlim(-3.1, 3.1); ax.set_ylim(-3.0, 3.0); ax.set_aspect("equal")
     ax.axis("off")
-    ax.set_title("b  Three camps and the empty intersection (integrated queries: 2-3, all off-target)",
-                 fontsize=9.8, fontweight="bold")
+    ax.set_title("b  Three camps, no directly matching integration (integrated queries: 2-3, all off-target)",
+                 fontsize=9.6, fontweight="bold")
 
 
 def main():
     fig, axs = plt.subplots(1, 2, figsize=(13.5, 5.6),
                             gridspec_kw=dict(width_ratios=[1.05, 1]))
     panel_a(axs[0]); panel_b(axs[1])
-    fig.suptitle("Figure 1 — Novelty: components saturated, integration unoccupied "
-                 "(systematic PubMed survey, 10 queries)", fontsize=12.5, fontweight="bold")
+    fig.suptitle("Figure 1 — Novelty: components saturated, no directly matching integration "
+                 "(targeted PubMed survey, 12 queries: 10 dimensional + 2 integrated)",
+                 fontsize=11.5, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     out = os.path.join(ROOT, "assets", "fig1_novelty.png")
     fig.savefig(out, dpi=120, bbox_inches="tight")
