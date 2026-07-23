@@ -1,4 +1,6 @@
-# A spatially grounded agent-based framework for coexistence-control of pancreatic cancer using food-medicine-homology compounds
+# Condition-dependent stromal control of pancreatic cancer in a spatially grounded agent-based model
+
+*Subtitle: food-medicine-homology compounds as a hypothesis-generating application*
 
 *Draft manuscript — assembled from section drafts (2026-07-21). In-silico, hypothesis-generating study. Placeholder items marked [ ].*
 
@@ -30,13 +32,19 @@ Under a coexistence-control objective with explicit resistance dynamics, a phase
 analysis shows that treating myCAF as a resource to modulate (rather than deplete) is
 favored only where physical confinement outweighs immunosuppression; where
 immunosuppression dominates, stromal reduction is preferred, making the optimal
-stromal state—not depletion or preservation per se—the control target. Within this
-framework, adaptively scheduled, low-exposure food-medicine-homology regimens
-controlled tumor burden under specified conditions, though any regimen's advantage
-depends on assumed compound weights and the stromal regime. We stress that these
-outputs are testable hypotheses—candidate stromal targets, combinations, and
-schedules—intended to focus, not replace, experimental validation. The framework offers a reproducible route from real spatial data to
-prioritized, low-toxicity control strategies for PDAC coexistence.
+stromal state—not depletion or preservation per se—the central control target and the
+principal contribution of this work. A global (Sobol) sensitivity analysis identifies
+tumor proliferation and the immune-exclusion barrier as the dominant controls. As a
+hypothesis-generating application of the framework, we encode food-medicine-homology
+compounds (a case study, not an efficacy claim) and find that adaptively scheduled,
+low modeled-exposure regimens achieved simulated control under the specified
+assumptions; because inputs such as compound exposure weights are assigned rather than
+measured, these are strategy comparisons rather than evidence of clinical efficacy or
+safety. We stress that all outputs are testable hypotheses—candidate stromal targets,
+combinations, and schedules—intended to focus, not replace, experimental validation.
+The framework offers a reproducible route from real spatial data to condition-dependent
+stromal-control principles for PDAC and a prioritization engine for the experiments
+that must follow.
 
 **Keywords:** pancreatic ductal adenocarcinoma; cancer-associated fibroblasts;
 myCAF; adaptive therapy; tumor coexistence; agent-based model; spatial
@@ -54,11 +62,14 @@ different question: instead of destroying the tumor, can we *manage* it—slowin
 growth and using the myCAF barrier to keep it contained, so patients feel better
 and live longer? To explore this safely and cheaply, we built a computer simulation
 of pancreatic tumor tissue based on real spatial measurements of where each cell
-sits. Into this simulation we added compounds that are eaten as food and used as
-traditional medicine in Northeast Asia. The model lets us test many combinations,
-timings, and doses in silico and rank the most promising, low-toxicity strategies.
-These predictions are hypotheses meant to guide future laboratory experiments, not
-to replace them.
+sits. The main finding is a principle: whether it helps to keep or to thin the
+barrier depends on the individual tumor—on whether the barrier is mostly walling the
+tumor in, or mostly keeping immune cells and drugs out. As a worked example of how the
+model can be used, we added compounds that are eaten as food and used as traditional
+medicine in Northeast Asia and let the model rank promising, low-exposure strategies.
+These rankings are illustrative hypotheses generated under assumed inputs, not claims
+that these foods treat cancer, and are meant to guide future laboratory experiments,
+not to replace them.
 
 ---
 
@@ -106,10 +117,11 @@ CAF-mediated containment has not been integrated into such control frameworks.
 A complementary opportunity lies in the compounds available for long-term,
 low-toxicity control. "Food-medicine homology" (medicine-food homology)
 substances—plant and animal materials used in Northeast Asian traditions as both food
-and remedy (e.g., garlic, ginseng, Platycodon, mugwort, hawthorn)—offer
-multi-target activity with favorable safety and accessibility, making them
-attractive backbones for chronic control regimens rather than acute cytotoxic
-bursts [14,15]. However, the computational study of these compounds in oncology has
+and remedy (e.g., garlic, ginseng, Platycodon, mugwort, hawthorn)—are reputed to
+offer multi-target activity with a favorable safety and accessibility profile, making
+them candidate backbones for chronic control regimens rather than acute cytotoxic
+bursts [14,15]; we treat that reputation as a hypothesis to be tested, not an
+established fact. However, the computational study of these compounds in oncology has
 been dominated by *static* network pharmacology: compound–target–pathway mapping
 and molecular docking that predict mechanism but do not simulate dynamics, space,
 or scheduling [14,15,16]. Our own systematic PubMed survey (Methods) confirmed this
@@ -146,8 +158,13 @@ we define a *coexistence-control* objective with explicit resistance dynamics an
 resistance
 fitness cost, and we first map, over the confinement-versus-immunosuppression
 trade-off, the conditions under which preserving/modulating the stroma outperforms
-depleting it; we then prioritize compound combinations, sequences, and doses under
-adaptive scheduling within that landscape. We emphasize that the framework is a
+depleting it. This condition-dependent stromal-control principle—that the optimal
+stromal state is regime-dependent rather than uniformly "preserve" or "deplete"—is the
+paper's central result. As a downstream application that demonstrates how the framework
+turns into concrete, testable predictions, we then use it to prioritize compound
+combinations, sequences, and doses under adaptive scheduling; the food-medicine-homology
+compounds serve as a case study for this prioritization, not as a claim of therapeutic
+efficacy or safety. We emphasize throughout that the framework is a
 hypothesis-*generating* and hypothesis-*prioritizing* engine: its outputs are testable
 predictions—candidate stromal targets, compound combinations, and schedules—intended
 to focus, not replace, subsequent experimental validation.
@@ -179,17 +196,20 @@ tumors (9 untreated, 6 CRT, 1 CRTL) with a 1,009-gene panel and **author-provide
 major-type and CAF-subtype annotations (717,493 cells); global pixel coordinates
 were converted to microns (0.12028 µm/px). MIBI-TOF (colorectal, squidpy) served as
 a negative-architecture control. The two PDAC datasets play complementary roles: the
-author-annotated CosMx cohort provides the annotation ground truth for metric
-validation (§3.2), while the Xenium cohort illustrates the limits of marker-based
-typing.
+author-annotated CosMx cohort provides the author-provided reference annotation used
+as a positive control for the metric (§3.2), while the Xenium cohort illustrates the
+limits of marker-based typing.
 
 ### 2.3 Barrier and containment metrics
 All spatial metrics operate on (coordinates, cell-type labels) and use permutation
-nulls that preserve tissue geometry. (i) **Barrier score**: the fraction of
+nulls that preserve tissue geometry. (i) **Barrier score** (a *myCAF spatial
+interposition index*, not a measured impediment to cell movement): the fraction of
 straight-line tumor→immune paths that pass within a corridor (default 30 µm) of a
 barrier-cell (myCAF), compared against a matched-null that resamples barrier
 positions at fixed density; reported as a z-score, so the metric tests
-*interposition geometry* rather than abundance. (ii) **Rim enrichment**: for a
+*interposition geometry* rather than abundance. The straight-line construction is a
+2D approximation; true CD8 trafficking additionally depends on vascular entry points,
+chemokine gradients, and ECM fiber orientation (Discussion §4.5). (ii) **Rim enrichment**: for a
 peritumoral shell (30 µm), the enrichment of each cell type relative to a
 label-permutation null, as a z-score (>2 tumor-adjacent, <−2 excluded).
 (iii) **Proximity test**: whether cell type A is closer than cell type B to the
@@ -268,21 +288,31 @@ the molecule→cell→tissue link.
 
 ### 2.7 Control objective and metrics
 The objective is durable control at minimal burden, not eradication. From each
-simulated trajectory we compute: time-to-progression (first time tumor reaches 1.5×
-baseline; if never, the horizon is used and the run is *censored*), peak and final
-burden, final resistant fraction, cumulative toxicity, burden AUC, and a composite
-`control_score` = time-to-progression / (cumulative toxicity + 1). Because
-`control_score` is artifactually inflated for zero-toxicity (untreated) runs,
-strategies are ranked by progression control first (censored vs progressed) and then
-by toxicity. Adaptive scheduling toggles treatment on above an upper band (`adapt_on`)
-and off below a lower band (`adapt_off`) around the tumor-burden reference.
+simulated trajectory we compute a panel of outcomes that we treat as a
+multi-objective (Pareto) problem rather than collapsing to one number:
+time-to-progression (first time tumor reaches 1.5× baseline; if never, the horizon is
+used and the run is *censored*), peak and final burden, final resistant fraction,
+cumulative modeled exposure, and burden AUC. We also report a convenience composite
+`control_score` = time-to-progression / (cumulative exposure + 1), but flag that it is
+structurally flawed—an untreated run receives zero exposure and so scores highly
+despite uncontrolled growth—so it must never be read alone. Accordingly, strategies
+are ranked first by progression control (censored vs progressed), then by exposure at
+matched control, i.e., by their position on the progression-versus-exposure Pareto
+frontier; the composite is retained only as a compact label. Adaptive scheduling
+toggles treatment on above an upper band (`adapt_on`) and off below a lower band
+(`adapt_off`) around the tumor-burden reference. Because this feedback uses the true
+simulated burden with zero measurement delay or noise, it is an idealized controller;
+a clinically deployable version would require an explicit observation model (Discussion
+§4.5).
 
 ### 2.8 In-silico experimental design
 Simulations were run on synthetic tissues generated with matched cell counts in two
 architectures—`contained` (myCAF rings around tumor islets, CD8 excluded) and
 `diffuse` (identical counts, no architecture)—so that abundance is held constant and
 only geometry differs. Experiments comprised: (E1) untreated vs continuous
-maximum-dose vs adaptive scheduling; (E2) single agents vs combinations vs timed
+maximum-dose vs adaptive scheduling—a within-model comparison of exposure schedules,
+where "continuous maximum-dose" is a modeling reference arm and not a representation
+of clinical standard-of-care; (E2) single agents vs combinations vs timed
 sequential cycles; (E3) a seed-averaged dose × drug-holiday grid search; and a
 sensitivity analysis combining a `resistance_cost` sweep with one-at-a-time ±50%
 perturbation of nine key parameters, complemented by a variance-based global (Sobol)
@@ -328,7 +358,7 @@ queries PubMed only and is a targeted novelty search rather than a PRISMA system
 review; nonetheless, the near-absence of integrated hits amid abundant single-axis
 literature supports that the contribution lies in the integration.
 
-### 3.2 The containment metric is validated by an author-annotated positive control, and localizes annotation—not metric—as the limiting factor
+### 3.2 The containment metric is supported by an author-annotated positive control, and localizes annotation—not metric—as the limiting factor
 On synthetic tissues, the barrier score cleanly separated an architecture in which
 stroma is interposed between tumor and immune cells (contained; z ≈ +22.3) from one in
 which the same cell counts are randomly intermixed (diffuse; z ≈ +0.9), confirming
@@ -421,7 +451,7 @@ message: an immunotherapy's value is contingent on the stromal state, and pairin
 barrier-opening is predicted to be necessary specifically in the immune-exclusion-dominant
 regime.
 
-### 3.5 Adaptive scheduling achieves tumor coexistence at a fraction of the toxicity of continuous dosing
+### 3.5 Adaptive scheduling achieves simulated coexistence at a fraction of the modeled exposure of continuous dosing
 On a controllable-but-not-eradicable tumor, we compared no treatment, continuous
 maximum-dose therapy, and adaptive on/off dosing (Fig. 5). Continuous dosing drove the
 sensitive population to extinction (final burden 0.00× baseline) at the highest
@@ -447,9 +477,11 @@ continuous-gemcitabine therefore reflects the schedule effect plus the exposure 
 not agent efficacy per se—an important caveat for interpreting §3.6.
 
 ### 3.6 Food-medicine-homology regimens control tumor burden at low modeled exposure, with resistance staying low
-We evaluated single agents and combinations under adaptive scheduling, benchmarked
-against continuous gemcitabine (Fig. 6; in-silico predictions under assumed exposure
-weights). Every natural regimen maintained control at markedly lower modeled exposure
+As an illustrative case study of how the framework prioritizes candidates—not as an
+efficacy claim, and with the compound-specific figures placed in the Supplement because
+their support is weaker than the phase-map principle of §3.4—we evaluated single agents
+and combinations under adaptive scheduling, benchmarked against a continuous-gemcitabine
+modeling reference (Fig. S8; in-silico predictions under assigned exposure weights). Every natural regimen maintained control at markedly lower modeled exposure
 than gemcitabine (3–10 vs 128 units). The most favorable control-per-exposure profiles
 were single low-exposure agents—garlic (exposure 3, 0.0× burden, resistant 0.00,
 control_score 38), curcumin (4, 1.0×, 32), and wild ginseng (5, 0.6×, 26)—controlling
@@ -463,11 +495,12 @@ regime, and the same anti-fibrotic that helps here would release confinement whe
 containment dominates. The balanced combination curcumin + garlic + ginsenoside-Rg3
 (0.0×, exposure 7, resistant 0.00) was carried forward for dose optimization (§3.7).
 
-### 3.7 Dose and drug-holiday optimization further lowers predicted toxicity
+### 3.7 Dose and drug-holiday optimization further lowers modeled exposure (illustrative)
 For the lead combination (curcumin + garlic + ginsenoside-Rg3), a seed-averaged grid
 search over dose intensity and off-threshold under adaptive scheduling (200 days;
-Fig. 7) found an optimum at 40% dose with an off-threshold of 0.4, achieving control at
-cumulative exposure 17 (resistant 0.04, final 0.8× baseline). This markedly undercut
+Fig. S9) found an optimum at a 40% simulated dose fraction with an off-threshold of 0.4,
+achieving control at cumulative exposure 17 (resistant 0.04, final 0.8× baseline). This
+40% is a model-parameter fraction under the tested parameterization, not a clinical dose. This markedly undercut
 full-dose adaptive scheduling (exposure 27 at comparable control), indicating that a
 sub-maximal, adaptively timed dose preserves control while further trimming exposure—
 reinforcing that, under a control objective, less drug delivered adaptively can be
@@ -476,7 +509,7 @@ better.
 ### 3.8 Multiscale molecular grounding links compounds to model parameters under a transparent evidence hierarchy
 Each compound is annotated with its principal target(s) and an explicit evidence tier—
 experimental co-crystal, docking prediction, or pathway-level mechanistic inference
-(Fig. 8). Only the two conventional agents are supported by experimental co-crystals in
+(Fig. 6). Only the two conventional agents are supported by experimental co-crystals in
 which the compound itself is resolved—gemcitabine–deoxycytidine kinase (PDB 1P62) and
 erlotinib–EGFR kinase domain (PDB 1M17). A minority rest on docking (e.g.,
 curcumin–STAT3 1BG1; the entecavir–KDM5B repurposing hypothesis 5A1F), where the
@@ -487,8 +520,8 @@ target maps to the ABM parameter class it perturbs—anti-proliferative to proli
 rate, anti-CAF/anti-fibrotic (predominantly TGF-β/Smad) to CAF activation, and
 immunomodulatory to CD8 recruitment/killing—providing the molecule-to-cell-to-tissue
 link. This hierarchy is a transparency device, not a claim of binding validation: the
-mechanistic-tier compounds that dominate our low-toxicity regimens are grounded in
-pathway pharmacology, and their molecular engagement remains a hypothesis for
+mechanistic-tier compounds that dominate our low modeled-exposure regimens are grounded
+in pathway pharmacology, and their molecular engagement remains a hypothesis for
 experimental confirmation.
 
 Encoding a food such as garlic as one perturbation also conflates dozens of
@@ -637,7 +670,7 @@ architecture (chosen so one variable could be varied at a time); we confirmed th
 pipeline runs on real CosMx patient tissue as its initial condition (§3.9, Fig. S6), but
 have not yet calibrated its dynamics to patient-specific data, and the toxicity scale
 remains in arbitrary units that are not clinically calibrated. Fifth, even
-low-toxicity natural combinations can select for resistance under aggressive
+low modeled-exposure natural combinations can select for resistance under aggressive
 suppression (competitive release, seen in aggressive-suppression regimes). Finally, the novelty survey is PubMed-
 restricted, and the molecular grounding for most food-medicine-homology compounds rests
 on pathway-level mechanistic inference rather than solved compound-bound structures
@@ -645,6 +678,53 @@ on pathway-level mechanistic inference rather than solved compound-bound structu
 molecule level; only where a standardized active ingredient is available (e.g., SAC for
 garlic) have we begun resolving a food to a defined, bioavailable species, and even
 there the PDAC-myCAF action is hypothetical (§3.8).
+
+Beyond these, several structural assumptions bound the biology the model can speak to,
+and we state them plainly. **(i) Confinement is largely encoded, not discovered.** The
+physical rules by which local myCAF density blocks daughter-cell placement and lowers
+carrying capacity are model inputs; the phase behavior we report (an intermediate
+stromal optimum where confinement dominates) is therefore a consequence of those rules,
+not independent evidence about human tissue. The defensible claim is conditional—*if*
+myCAF exerts measurable physical confinement, an intermediate stromal optimum can
+emerge—whereas the stronger claim, that human PDAC myCAF actually contains the tumor to
+the predicted degree, is untested and would require relating myCAF/ECM density to
+invasion fronts, tumor budding, ductal spread, perineural invasion, and dissemination in
+real tissue. **(ii) A conservative pro-tumor assumption biases the model toward
+containment.** We set the direct CAF pro-proliferative term to zero in the PDAC context;
+real CAFs also support tumors through paracrine cytokines and growth factors, metabolic
+support, ECM remodeling, invasion facilitation, and therapy-induced survival signaling.
+Notably, the very CosMx cohort we use (Shiau et al. [20]) reports CAF–malignant
+interaction changes and IL-6-family signaling linked to therapy resistance—biology our
+current parameterization omits and that would partly offset the containment benefit;
+calibrating a CAF paracrine-survival/resistance axis against these data is a priority.
+**(iii) CAF states are fixed rather than plastic.** myCAF/iCAF/apCAF are modeled as
+stable types, whereas real CAFs interconvert (TGF-β vs IL-1/JAK–STAT balance,
+therapy-induced transitions, LRRC15⁺ and senescent/inflammatory substates); a claim of
+CAF *reprogramming* rather than depletion ultimately needs a subtype-transition model.
+**(iv) Immunity is reduced to CD8 T cells.** Macrophages, MDSCs, Tregs, NK and dendritic
+cells, and the vasculature are present only as static context; Fig. 3 shows treatment-
+associated macrophage shifts that the control mechanism does not yet act on, a gap
+between spatial observation and simulated mechanism. **(v) Resistance is not
+PDAC-specific.** The resistance fitness cost is borrowed from NSCLC and the resistant
+phenotype is a fixed binary decoupled from CAF state, whereas gemcitabine resistance is
+mixed genetic/epigenetic/metabolic/microenvironmental and is, in our own cited biology,
+CAF-induced; a continuous, reversible drug-tolerance state coupled to CAF signaling
+(with resensitization during holidays) would be more faithful. **(vi) The controller is
+idealized and local.** Adaptive switching uses the true simulated burden with no
+measurement noise, sampling interval, reporting delay, minimum on/off duration, or
+safety rule; a clinically deployable version needs an explicit observation model tied to
+a real readout (imaging, CA19-9, ctDNA) and its errors. Moreover, the model controls a
+single primary focus, and local burden is not a validated surrogate for survival:
+clinically meaningful endpoints (local and distant progression-free survival, biliary-
+obstruction-free and pain-free survival, conversion to resectability, overall survival,
+and patient-reported quality of life) depend on systemic disease the model does not
+represent. **(vii) Stochastic and calibration limits.** Regimen rankings rest on
+three-seed means; a robust ranking needs many more seeds with medians, 95% intervals,
+and rank-stability checks, and the Sobol analysis is screening-level (§S7). Calibration
+and validation are not yet separated (no held-out patient cohort, posterior parameter
+distributions, or identifiability analysis), so the rankings are provisional. For the
+same reason we describe the patient-tissue runs as *patient-geometry initialized* rather
+than patient-calibrated (§3.9).
 
 ### 4.6 Future directions
 Several steps follow directly. Experimentally, the ranked regimens define a low-cost
@@ -665,14 +745,16 @@ and extending the survey to Scopus/Web of Science under a PRISMA workflow would 
 generalize and harden the framework.
 
 ### 4.7 Conclusion
-Within a control—rather than eradication—objective, this work provides a reproducible
-computational path from real spatial data to condition-dependent stromal targets and
-prioritized, low-exposure food-medicine-homology regimens for PDAC coexistence. By
-implementing the myCAF barrier as a physical structure with an explicit
+Within a control—rather than eradication—objective, this work's central contribution is
+a principle: by implementing the myCAF barrier as a physical structure with an explicit
 confinement-versus-immunosuppression trade-off, it reframes the therapeutic question
-from "deplete or preserve the stroma?" to "what is the optimal stromal state, and when?",
-and it yields concrete, testable hypotheses—stromal targets, compound combinations, and
-schedules—to guide the experimental work that must follow.
+from "deplete or preserve the stroma?" to "what is the optimal stromal state, and when?"
+and maps the conditions that decide the answer. The food-medicine-homology compounds
+serve as a case study demonstrating how the framework converts this principle into
+concrete, ranked, testable hypotheses—candidate stromal targets, compound combinations,
+and schedules—rather than as a claim that any compound treats PDAC. The result is a
+reproducible path from real spatial data to condition-dependent stromal-control
+principles and a prioritization engine for the experimental work that must follow.
 
 ---
 
@@ -703,40 +785,40 @@ keeping stroma = tumor(no stroma) − tumor(optimal stroma); >0 = stroma aids co
 resource regime occupies the low-immune-exclusion, high-confinement region.
 *(assets/phase_map.png)*
 
-**Figure 5. Control strategies.** Tumor burden, resistant fraction, and cumulative
-toxicity for untreated, continuous, and adaptive dosing; adaptive achieves coexistence
-at ~1/5 the toxicity of continuous. *(assets/control_strategies.png)*
+**Figure 5. Exposure-schedule comparison (within-model).** Tumor burden, resistant
+fraction, and cumulative modeled exposure for untreated, continuous, and adaptive
+dosing; adaptive achieves simulated coexistence at ~1/5 the modeled exposure of
+continuous. "Continuous maximum-dose" is a modeling reference arm, not clinical
+standard-of-care, and the composite control_score shown must be read together with the
+progression outcome (it is inflated for the zero-exposure untreated arm).
+*(assets/control_strategies.png)*
 
-**Figure 6. Food-medicine-homology regimens** ranked by control, toxicity, and
-resistance vs continuous gemcitabine. *(assets/natural_adaptive_optim.png)*
-
-**Figure 7. Dose × drug-holiday optimization** for the lead combination; optimum at 40%
-dose / 0.4 off-threshold. *(assets/dose_band_optimization.png)*
-
-**Figure 8. Multiscale molecular grounding** with evidence tiers (experimental vs
+**Figure 6. Multiscale molecular grounding** with evidence tiers (experimental vs
 docking vs mechanistic). *(assets/drug_structures_3d.png)*
 
-**Figure S3. Sensitivity analysis.** (a) resistance_cost sweep—adaptive low-toxicity
+**Figure S3. Sensitivity analysis.** (a) resistance_cost sweep—adaptive low-exposure
 advantage is robust across the range; resistance_cost governs resistant-clone
 suppression. (b) One-at-a-time ±50% tornado—outcome sensitivity concentrates in
 tumor-immune balance parameters. *(assets/sensitivity.png)*
 
-**Figure S4. A clinical immunotherapy is gated by the stromal barrier.** In a strongly
-immune-excluding regime, the telomerase vaccine GV1001 (encoded as immune priming) was
-tested alone and combined with a barrier-opening anti-fibrotic agent. (a) Tumor
-trajectories; (b) final tumor burden per arm. GV1001 alone is nearly futile (dense
-stroma excludes the boosted T cells); opening the barrier first unlocks it, and sustained
-co-administration outperforms a pulsed open-then-rest schedule.
+**Figure S4. The model predicts stromal gating of immune priming (illustrative).** In a
+strongly immune-excluding regime, the telomerase vaccine GV1001 (encoded as immune
+priming) was tested alone and combined with a barrier-opening anti-fibrotic agent. (a)
+Tumor trajectories; (b) final tumor burden per arm. In the model, GV1001 alone is nearly
+futile (dense stroma excludes the boosted T cells); opening the barrier first unlocks it,
+and sustained co-administration outperforms a pulsed open-then-rest schedule. This is a
+mechanistic illustration of barrier-gated immunotherapy within the model, not a clinical
+prediction for GV1001.
 *(assets/gv1001_sequential.png)*
 
 **Figure S5. Fair 2×2 comparison—agent × schedule (synergy off).** {Gemcitabine, lead
 natural combination} × {continuous, adaptive}, five seeds. (a) Final tumor burden; (b)
 cumulative exposure. All arms control the tumor; adaptive scheduling cuts exposure
 ~6–7-fold for both agents, and the natural agent's lower exposure at matched schedule
-reflects its assumed toxicity weight rather than superior tumor control.
+reflects its assigned exposure weight rather than superior tumor control.
 *(assets/fair_2x2.png)*
 
-**Figure S6. Patient-grounded initial conditions—the framework runs on real SCOTIA
+**Figure S6. Patient-geometry initialized simulation—the framework runs on real SCOTIA
 CosMx tissue.** A 1500-µm tumor-centered window from a treatment-naive patient (U7-a) and
 a chemoradiation-treated patient (T4-a); each cell's measured position and type seeds the
 ABM. (Left) patient tissue as the initial condition, colored by core cell type with
@@ -760,6 +842,18 @@ next most influential for control and acts predominantly through interactions
 negligible global influence. Given the wide intervals at this screening sample size, the
 robust reading is the parameter ranking rather than the exact index values. In silico.
 *(assets/sobol.png)*
+
+**Figure S8. Food-medicine-homology regimens ranked (illustrative case study).** Single
+agents and combinations under adaptive scheduling, ranked by simulated control, modeled
+exposure, and resistance versus a continuous-gemcitabine modeling reference. These are
+in-silico predictions under assigned exposure weights and are contingent on the stromal
+regime (§3.4); they illustrate how the framework prioritizes candidates and are not
+claims of clinical efficacy or safety. *(assets/natural_adaptive_optim.png)*
+
+**Figure S9. Dose × drug-holiday optimization for the lead combination (illustrative).**
+Seed-averaged grid search over simulated dose fraction and off-threshold under adaptive
+scheduling; the optimum near a 40% simulated dose fraction is a model-parameter value
+under the tested parameterization, not a clinical dose. *(assets/dose_band_optimization.png)*
 
 ---
 
@@ -828,6 +922,10 @@ writing – original draft, writing – review & editing.
 - [x] Author/affiliation block, corresponding author, ORCID, repository URL (§2.9), license (MIT) — complete
 - [ ] Decide Abstract numeric inclusion (3.4–3.6 values) per target journal word limit  *(journal-dependent)*
 - [ ] Target journal selection → convert citation style; fix figure numbering to house style  *(journal-dependent)*
-- [ ] Define "arbitrary units" toxicity; cross-ref Methods §2.5/2.7
-- [ ] Fig 3 / Fig 5 / Fig 6 minor glyph pass (unicode minus; replot from saved CSVs — cosmetic)
+- [x] Reframe to condition-dependent stromal control; compounds demoted to case study (title, abstract, §1, §3.6–3.7, §4.7)
+- [x] Terminology pass: toxicity→modeled exposure; ground-truth→author-provided reference; patient-grounded→patient-geometry initialized; validated→positive-control support
+- [x] Demote compound-ranking (→Fig S8) and dose-optimization (→Fig S9) to Supplement; promote molecular grounding to Fig 6; GV1001 caption softened
+- [x] Expand §4.5 limitations: confinement-encoded, caf_protumor=0/IL-6, CAF plasticity, CD8-only immunity, non-PDAC resistance, no observation model, local≠survival, seeds/calibration
+- [ ] Fig 3 / Fig 5 / Fig S8 minor glyph pass (unicode minus; replot from saved CSVs — cosmetic)
+- [ ] Consider recomputing key rankings with 20–50 seeds + Pareto frontier plot (compute; deferred)
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)
