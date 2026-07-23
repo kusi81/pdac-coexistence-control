@@ -225,7 +225,10 @@ conversion.
 The core model is a phenomenological, off-lattice agent-based model (ABM) of the
 PDAC tumor–myCAF–immune ecosystem on a 2D field (default 1,500 µm), advanced in
 0.5-day steps. Agents are tumor cells (sensitive or resistant), myCAFs, and CD8⁺ T
-cells (with iCAF/macrophage as context). Update rules per step:
+cells (with iCAF/macrophage as context). A complete ODD-protocol specification (entities
+and state variables, the fixed per-step process schedule and update semantics, design
+concepts, initialization, and every submodel equation) is provided in the Supplement
+(`S3_ODD_protocol.md`); the essential update rules per step are:
 
 - **Tumor proliferation.** Each tumor cell divides with probability `k_prolif`
   (baseline 0.11/day; doubling ~6 days), gated by local contact inhibition
@@ -1227,6 +1230,7 @@ writing – original draft, writing – review & editing.
 ## Supplementary
 - **Table S1** — full ABM parameter list with baseline values, units, perturbable flag, and literature grounding. See `S1_parameters.md` (24 parameters across global/tumor/myCAF/CD8/resistance groups + organ-context overrides).
 - **Table S2** — from food-medicine entities to defined drug products: each resolved active ingredient (SAC, eupatilin, 20(S)-Rg3, curcumin) scored on nine pharmaceutical-development attributes (active ingredient, extraction, standardized content, purity, stereochemistry, formulation, oral bioavailability, tissue distribution, batch consistency), the mapped model axis, and defined/partial/undefined status. See `S2_drug_products.md`.
+- **ODD protocol** — a full Overview–Design-concepts–Details description of the ABM (Grimm et al.), covering entities and state variables, the fixed per-step process schedule and update semantics, design concepts (emergence, sensing, stochasticity, observation), initialization, and every submodel with its update equations. See `S3_ODD_protocol.md`.
 - **S3 Sensitivity analysis** — see `S3_sensitivity_draft.md` (resistance_cost sweep + OAT tornado; Fig. S3).
 - **Supplementary Data** — systematic survey queries, counts, and retrieved records (`docs/literature_search/`).
 
@@ -1253,3 +1257,4 @@ writing – original draft, writing – review & editing.
 - [x] Non-trivial spatial predictions (§3.10): geometry changes immune-therapy efficacy ~12× at fixed abundance (Fig. S15a), CAF reduction widens invasion front more when confined (Fig. S15b), open-first beats immune-first modestly (Fig. S16), and peritumoral myCAF density (|r|=0.92) — not abundance (|r|=0.56) — predicts the immune regime (Fig. S17)
 - [x] CRTL defined inline (§2.2, chemoradiation + additional line; excluded from untreated-vs-CRT comparison)
 - [x] Editorial pass: cover-page placeholder removed; CRT causal→cross-sectional language (§3.3, Figs 2b/3); novelty "empty/confirmed"→"no directly matching study" and query count unified to 12 (Fig 1); Fig 4 caption "resource"→"non-zero optimum"; HCC decoupled from results; per-experiment seed table (§2.8); archived-release note (§2.9)
+- [x] ODD-protocol ABM specification (Grimm et al.): entities/state variables, fixed per-step schedule + update semantics, design concepts, initialization, all submodel equations, boundary/RNG conventions (S3_ODD_protocol.md; referenced §2.4)
