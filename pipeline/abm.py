@@ -441,6 +441,9 @@ class TumorABM:
         new_coords, new_labels, new_res = [], [], []
         kr = self.p["kill_radius_um"]
         cap = self.p["tumor_density_cap"]
+        # opt-in 전역 세포 상한: 폭주 regime 런타임 bound (progression은 이미 확정)
+        max_tumor = self.p.get("max_tumor", 0)
+        skip_division = bool(max_tumor) and len(tum) >= max_tumor
         protumor = self.p.get("caf_protumor", 0.0)
         boost_ref = max(1, self.p.get("caf_boost_ref", 8))
         mut = self.p.get("mutation_rate", 0.0)
@@ -454,6 +457,8 @@ class TumorABM:
         use_caf = caf_tree is not None and (protumor > 0 or confine > 0
                                             or drug_block > 0 or pressure > 0)
         for c, is_res in zip(tum, tum_res):
+            if skip_division:
+                break
             local = tumor_tree.query_ball_point(c, r=kr, return_length=True)
             caf_here = (caf_tree.query_ball_point(c, r=kr, return_length=True)
                         if use_caf else 0)          # 국소(20µm) myCAF: 약물차단·가둠·압력용

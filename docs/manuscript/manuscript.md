@@ -285,8 +285,9 @@ only geometry differs. Experiments comprised: (E1) untreated vs continuous
 maximum-dose vs adaptive scheduling; (E2) single agents vs combinations vs timed
 sequential cycles; (E3) a seed-averaged dose × drug-holiday grid search; and a
 sensitivity analysis combining a `resistance_cost` sweep with one-at-a-time ±50%
-perturbation of nine key parameters. Stochastic results are averaged over three seeds
-(42, 7, 123).
+perturbation of nine key parameters, complemented by a variance-based global (Sobol)
+analysis over eight parameters (Saltelli sampling, first- and total-order indices;
+Fig. S7). Stochastic results are averaged over three seeds (42, 7, 123).
 
 ### 2.9 Implementation and availability
 The framework is implemented in Python (3.13) using scanpy/anndata, squidpy, pyarrow,
@@ -616,7 +617,14 @@ literature-inferred parameters rather than data-fitted; although the adaptive ad
 was robust to ±50% parameter variation (§S3), outcomes were most sensitive to tumor
 proliferation and immune-barrier parameters, which therefore require empirical
 calibration, and control was not guaranteed under the most aggressive proliferation
-regimes. Relatedly, the confinement-versus-immunosuppression trade-off that decides
+regimes. A variance-based global (Sobol) analysis over eight parameters concurs and
+sharpens this: tumor proliferation dominates the control outcome (total-order
+$S_T\approx0.93$), the immune-exclusion barrier is the next most influential and acts
+largely through interactions ($S_T\approx0.43\gg S_1\approx0.12$), and—consistent with
+the confinement-versus-immunosuppression framing—the physical-confinement strength and
+the resistance parameters have negligible global influence (Fig. S7); the wide
+confidence intervals at this screening sample size mean the parameter *ranking*, not the
+precise indices, is the robust claim. Relatedly, the confinement-versus-immunosuppression trade-off that decides
 whether stroma should be preserved or reduced is governed by parameters (stromal
 confinement strength, drug shielding, and immune exclusion) that are mechanistically
 motivated but not data-fitted; the phase boundary is therefore qualitative, and where
@@ -644,8 +652,9 @@ validation ladder—2D PDAC cell-line dose–response and combination/synergy as
 patient-derived organoid screening—prioritizing the anti-CAF-backbone combinations and
 the competitive-release predictions. Computationally, priorities are: parameter
 calibration against experimental rates (especially proliferation and immune-barrier
-terms); global sensitivity analysis (e.g., Sobol) to capture interactions beyond the
-one-at-a-time sweep; a 3D registration pipeline over serial sections to replace 2D
+terms, which the global Sobol analysis flags as dominant, Fig. S7); a larger Sobol
+sample with multi-seed replication to tighten the indices beyond the present
+screening-level estimate; a 3D registration pipeline over serial sections to replace 2D
 metrics; annotation transfer from full-transcriptome references to make CAF subtyping
 robust; molecular-dynamics or larger-scale virtual screening to strengthen the
 molecular tier; and systematically resolving the remaining food-level entities to
@@ -736,6 +745,21 @@ iCAF/macrophage-shifted. (Right) untreated versus adaptive-natural-combo traject
 each real tissue: the adaptive regimen holds tumor burden below the untreated trajectory
 in both, while the quantitative dynamics differ by architecture. In silico.
 *(assets/patient_grounded.png)*
+
+**Figure S7. Global (Sobol) sensitivity analysis complements the one-at-a-time sweep.**
+Variance-based first-order ($S_1$, main effect) and total-order ($S_T$, including
+interactions) Sobol indices for eight parameters spanning tumor kinetics, immunity,
+resistance, and the two barrier axes (immune exclusion, physical confinement), computed
+on the adaptive-therapy arm (Saltelli sampling, $D=8$, $N=32$; error bars are bootstrap
+95% confidence intervals; runaway-growth samples were capped at a fixed population for
+tractability, which only bounds already-progressing regimes and does not change their
+progression classification). (a) Control score and (b) final tumor burden. Tumor
+proliferation dominates both outcomes; the immune-exclusion barrier ($\alpha$) is the
+next most influential for control and acts predominantly through interactions
+($S_T\gg S_1$), whereas physical confinement and the resistance parameters have
+negligible global influence. Given the wide intervals at this screening sample size, the
+robust reading is the parameter ranking rather than the exact index values. In silico.
+*(assets/sobol.png)*
 
 ---
 
