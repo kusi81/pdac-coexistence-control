@@ -37,12 +37,15 @@ stromal state—not depletion or preservation per se—the central control targe
 principal contribution of this work. A global (Sobol) sensitivity analysis identifies
 tumor proliferation and the immune-exclusion barrier as the dominant controls. As a
 hypothesis-generating application of the framework, we encode food-medicine-homology
-compounds (a case study, not an efficacy claim) and find that adaptively scheduled,
-low modeled-exposure regimens achieved simulated control under the specified
-assumptions; because inputs such as compound exposure weights are assigned rather than
-measured, these are strategy comparisons rather than evidence of clinical efficacy or
-safety. We stress that all outputs are testable hypotheses—candidate stromal targets,
-combinations, and schedules—intended to focus, not replace, experimental validation.
+compounds (a case study, not an efficacy claim). The robust, agent-independent finding
+is that adaptive scheduling maintains control at a fraction of the modeled exposure of
+continuous dosing; by contrast, the apparent benefit of the natural compounds themselves
+is *not* robust—under a Monte Carlo over their assigned effect and bioavailability, the
+natural-compound control collapses (0–2% of draws) while a defined cytotoxic remains
+robust, so the compound rankings are hypotheses contingent on unmeasured pharmacology,
+not predictions. We stress that all outputs are testable hypotheses—candidate stromal
+targets, combinations, and schedules—intended to focus, not replace, experimental
+validation.
 The framework offers a reproducible route from real spatial data to condition-dependent
 stromal-control principles for PDAC and a prioritization engine for the experiments
 that must follow.
@@ -1280,8 +1283,8 @@ writing – original draft, writing – review & editing.
 ## Supplementary
 - **Table S1** — full ABM parameter list with baseline values, units, perturbable flag, and literature grounding. See `S1_parameters.md` (24 parameters across global/tumor/myCAF/CD8/resistance groups + organ-context overrides).
 - **Table S2** — from food-medicine entities to defined drug products: each resolved active ingredient (SAC, eupatilin, 20(S)-Rg3, curcumin) scored on nine pharmaceutical-development attributes (active ingredient, extraction, standardized content, purity, stereochemistry, formulation, oral bioavailability, tissue distribution, batch consistency), the mapped model axis, and defined/partial/undefined status. See `S2_drug_products.md`.
-- **ODD protocol** — a full Overview–Design-concepts–Details description of the ABM (Grimm et al.), covering entities and state variables, the fixed per-step process schedule and update semantics, design concepts (emergence, sensing, stochasticity, observation), initialization, and every submodel with its update equations. See `S3_ODD_protocol.md`.
-- **S3 Sensitivity analysis** — see `S3_sensitivity_draft.md` (resistance_cost sweep + OAT tornado; Fig. S3).
+- **Supplementary Methods (ODD protocol)** — a full Overview–Design-concepts–Details description of the ABM (Grimm et al.), covering entities and state variables, the fixed per-step process schedule and update semantics, design concepts (emergence, sensing, stochasticity, observation), initialization, and every submodel with its update equations. See `S3_ODD_protocol.md`.
+- **Supplementary Note (sensitivity)** — narrative for the sensitivity analyses (resistance_cost sweep + one-at-a-time tornado; Fig. S3, and global Sobol; Fig. S7). See `S3_sensitivity_draft.md`.
 - **Supplementary Data** — systematic survey queries, counts, and retrieved records (`docs/literature_search/`).
 
 ## Master editorial checklist (pre-submission)
