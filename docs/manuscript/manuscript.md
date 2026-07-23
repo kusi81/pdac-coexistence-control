@@ -571,6 +571,28 @@ gemcitabine, whereas rankings among individual low-exposure agents are seed-sens
 should not be over-interpreted. This multi-seed Pareto analysis supersedes the
 single-seed ordering of Fig. S8 for reliability.
 
+**Epistemic uncertainty dominates: control collapses when compound assumptions are
+sampled.** The 30-seed analysis varies architecture and stochasticity but holds the
+*compound assumptions* fixed—yet those coefficients are assigned, not measured. We
+therefore ran a Monte Carlo over the compound assumptions themselves, on the
+API-resolved regimens (§3.8): for each of 100 draws we sampled every compound's effect
+coefficient (log-normal), its exposure weight (log-normal), its oral bioavailability
+(from API-specific priors grounded in Table S2—high for SAC, very low for curcumin—used
+to scale the effect), and the combination synergy (Uniform[0, 0.3]), then re-ranked all
+regimens under those shared assumptions (Fig. S14). The result sharply qualifies the
+nominal-parameter picture. Whereas at nominal coefficients the combinations and
+20(S)-Rg3 control the tumor, under sampled uncertainty the natural-API regimens control
+in only 0–2% of draws, while gemcitabine—whose pharmacology is defined and whose
+bioavailability prior is near-certain—controls in 96%. The collapse is driven chiefly by
+bioavailability: an orally administered natural product whose systemic/target exposure is
+low and uncertain cannot reliably deliver its encoded effect, and no number of
+architecture seeds repairs that. The honest conclusion is thus stronger than "rankings
+are seed-sensitive": the *control benefit* of the natural-compound regimens is not robust
+to epistemic uncertainty in their pharmacology, and their apparent advantage over a
+defined cytotoxic is contingent on assumptions the model cannot currently justify. This
+is the sharpest statement of why these outputs are hypotheses to be tested—by measuring
+the effect and exposure parameters—rather than rankings to be trusted.
+
 ### 3.7 Dose and drug-holiday optimization further lowers modeled exposure (illustrative)
 For the lead combination (curcumin + garlic + ginsenoside-Rg3), a seed-averaged grid
 search over dose intensity and off-threshold under adaptive scheduling (200 days;
@@ -835,7 +857,14 @@ progression-versus-exposure Pareto frontier (§3.6, Fig. S10). That re-analysis 
 supports a narrow robust claim (adaptive combinations control at a fraction of
 gemcitabine's exposure) and overturns several single-agent rankings that did not survive
 replication—so single-seed orderings elsewhere in the paper should be read as
-provisional. The Sobol analysis remains screening-level (§S7). Calibration and validation
+provisional. Crucially, that analysis addresses only *stochastic* (architecture/seed)
+uncertainty; a Monte Carlo over the *epistemic* uncertainty in the compound assumptions
+themselves—effect coefficients, exposure weights, oral bioavailability, and synergy
+(§3.6, Fig. S14)—shows the natural-compound control benefit is *not* robust: under sampled
+assumptions those regimens control in 0–2% of draws versus 96% for gemcitabine, the
+collapse being driven by bioavailability uncertainty. The compound rankings are therefore
+hypotheses contingent on unmeasured pharmacology, not dependable predictions. The Sobol
+analysis remains screening-level (§S7). Calibration and validation
 are still not separated (no held-out patient cohort, posterior parameter distributions,
 or identifiability analysis), and for the same reason we describe the patient-tissue runs
 as *patient-geometry initialized* rather than patient-calibrated (§3.9).
@@ -1022,6 +1051,20 @@ encoded agent under adaptive scheduling maintains control at substantially lower
 exposure than continuous full-intensity dosing—a schedule effect independent of the choice
 of agent. In silico. *(assets/gem_schedule.png)*
 
+**Figure S14. Epistemic (compound-assumption) uncertainty by Monte Carlo.** Instead of
+architecture seeds alone, the compound *assumptions* are sampled: for each of 100 draws,
+every API's effect coefficient (log-normal), exposure weight (log-normal), oral
+bioavailability (API-specific Beta priors grounded in Table S2, used to scale the effect),
+and combination synergy (Uniform[0, 0.3]) are drawn, and all API-resolved regimens are
+re-ranked under those shared assumptions. (a) Per-draw rank distribution (rank 1 =
+controlled at lowest exposure). (b) Fraction of draws in which each regimen controls the
+tumor (progression-free). Under sampled uncertainty the natural-API regimens control in
+only 0–2% of draws—despite controlling at nominal coefficients—whereas gemcitabine, with
+defined pharmacology and a near-certain bioavailability prior, controls in 96%. The
+collapse is driven chiefly by bioavailability uncertainty, showing that the natural
+regimens' benefit is not robust to epistemic uncertainty in their pharmacology. In silico.
+*(assets/mc_uncertainty.png)*
+
 ---
 
 ## Declarations
@@ -1105,4 +1148,5 @@ writing – original draft, writing – review & editing.
 - [x] Add intermittent (clinical-approx q28) gemcitabine arm + same-agent schedule-only comparison (Fig. S13); reframe continuous as within-model reference
 - [x] Generalize GV1001 to "illustrative immune-priming agent" in main text; keep the GV1001 name + trial refs only in Fig. S4 caption
 - [x] Resolve food entities to defined APIs (garlic→SAC, mugwort→eupatilin, ginseng→20(S)-Rg3) + drug-product attribute table (Table S2, refs [26-29])
+- [x] Monte Carlo epistemic uncertainty over compound assumptions (effect, exposure weight, bioavailability, synergy) on API regimens (Fig. S14); natural control collapses to 0-2% vs gem 96% — not robust to pharmacology uncertainty
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)
