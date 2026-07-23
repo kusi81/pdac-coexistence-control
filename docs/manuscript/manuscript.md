@@ -464,15 +464,18 @@ tumor. Under a fixed sub-maximal treatment, we swept the myCAF barrier level (vi
 that minimized tumor burden, across a grid spanning confinement strength (`caf_pressure`)
 and immune-exclusion strength (`cd8_barrier_alpha`) (Fig. 4).
 
-The optimal stromal level was regime-dependent. Where confinement was strong and immune
-exclusion weak, the optimum was interior (a non-zero stromal level), and preserving that
-level reduced tumor burden by up to ~0.26-fold relative to full stromal depletion—the
-myCAF-as-controllable-resource regime. Where immune exclusion dominated, the optimum
-collapsed to zero (full stromal reduction was best), because the immune- and
-drug-shielding costs of stroma outweighed its confinement benefit. Across the sampled
-grid, the resource regime occupied 7 of 16 conditions (Fig. 4a), with the benefit of
-keeping stroma concentrated in the low-immune-exclusion, high-confinement corner
-(Fig. 4b).
+The optimal stromal level was regime-dependent. On a denser 6×6 grid with five seeds per
+cell, we report the phase boundary probabilistically—the fraction of seeds for which
+keeping stroma is optimal, P(keep-stroma)—rather than as a hard line. Where confinement was
+strong and immune exclusion weak, the optimum was interior (a non-zero stromal level) and
+this was robust across seeds (P(keep) ≥ 0.8), with preservation reducing tumor burden by up
+to ~0.5-fold relative to full stromal depletion—the myCAF-as-controllable-resource regime.
+Where immune exclusion dominated, the optimum collapsed to zero (P(keep) ≤ 0.2; full
+stromal reduction was best), because the immune- and drug-shielding costs of stroma
+outweighed its confinement benefit. A transition band (P(keep) ≈ 0.4–0.6) separates the
+two, quantifying where the strategy is genuinely uncertain. Across the grid the keep-stroma
+regime held in 20 of 36 sampled conditions at P(keep) ≥ 0.6 (Fig. 4a), with the benefit of
+keeping stroma concentrated in the low-immune-exclusion region (Fig. 4b).
 
 This reframes the central question from "deplete or preserve the stroma?" to "what is the
 optimal stromal state, and when?" It also formalizes the CAF-biology debate: the same
@@ -752,18 +755,25 @@ Together these are predictions about emergent geometry, timing, and measurable s
 that motivate spatial biomarkers and scheduling hypotheses, moving the framework beyond a
 restatement of its inputs.
 
-Finally, to show that spatial structure is *necessary*—not incidental—we compared the
-ABM against a well-mixed (mean-field) model built from the same mechanisms (proliferation,
-immune killing, resistance, drug) but with myCAF acting only through its aggregate fraction
-(immune attenuation ∝ exp(−α·M)), with no geometry or local confinement (Fig. S18). The
-mean-field model is blind to the very effect that drives our results: because contained and
-diffuse tissues share the same myCAF abundance, it predicts *identical* outcomes for them,
-whereas the ABM predicts an ~7-fold difference in immune-therapy response. More importantly,
-it inverts the central strategy—lacking any spatial confinement benefit, the mean-field
-optimum is always full stromal reduction (M = 0) at every immune-exclusion level, so it can
-never produce the conditional-preservation ("keep-stroma") regime that the spatial ABM
-identifies (§3.4). The spatial representation therefore changes the *selected strategy*, not
-merely the numerical burden—establishing that the geometry is load-bearing.
+Finally, to show that spatial structure is *necessary*—not incidental—we ran an ablation
+series that isolates each ingredient and asks the decisive question: does spatial geometry
+change the *selected strategy* (keep vs reduce stroma), or only the tumor number? (i) A
+**well-mixed (mean-field)** model with the same mechanisms but with myCAF acting only
+through its aggregate fraction (immune attenuation ∝ exp(−α·M)), no geometry or local
+confinement, is blind to the effect that drives our results: because contained and diffuse
+tissues share the same abundance it predicts *identical* outcomes, whereas the ABM predicts
+an ~7-fold difference (Fig. S18a); and lacking any confinement benefit, its optimum is
+*always* full stromal reduction (M = 0) at every immune-exclusion level, so it never
+produces the keep-stroma regime (Fig. S18b). The mean-field is thus the "no-confinement"
+ablation, and it inverts the strategy. (ii) **Randomized geometry at matched cell counts**
+(contained vs diffuse) separates abundance from arrangement: same myCAF amount, ~12-fold
+different immune-therapy outcome (§3.10 above, Fig. S15). (iii) The **immune-exclusion
+contribution** is isolated by the phase map's vertical axis: increasing `cd8_barrier_alpha`
+alone flips the optimum from keep to reduce (Fig. 4a), so removing that cost would leave
+only the confinement benefit and favor preservation. Together these ablations show that
+both spatial ingredients are load-bearing and, crucially, that geometry changes the
+*selected stromal strategy*—not merely the numerical burden—which a non-spatial model
+cannot reproduce.
 
 ---
 
@@ -1015,13 +1025,16 @@ associations in this small, underpowered cross-sectional cohort (different patie
 paired). *(assets/rim_scotia_stats.png)*
 
 **Figure 4. The model predicts a non-zero optimal stromal level only under specified
-conditions.** Under fixed sub-maximal treatment the myCAF level was swept and the
-tumor-minimizing (optimal) level located, over a grid of confinement strength
-(caf_pressure) × immune-exclusion strength (cd8_barrier_alpha). (a) Optimal myCAF level
-per regime: >0 = preserve/modulate stroma (resource); 0 = reduce stroma. (b) Benefit of
-keeping stroma = tumor(no stroma) − tumor(optimal stroma); >0 = stroma aids control. The
-resource regime occupies the low-immune-exclusion, high-confinement region.
-*(assets/phase_map.png)*
+conditions (6×6 grid, 5-seed phase uncertainty).** Under fixed sub-maximal treatment the
+myCAF level was swept and the tumor-minimizing (optimal) level located, over a 6×6 grid of
+confinement strength (caf_pressure) × immune-exclusion strength (cd8_barrier_alpha), with
+5 seeds per cell. (a) Probability across seeds that keeping stroma is optimal,
+P(keep-stroma)—a probabilistic phase boundary rather than a hard line: keeping stroma is
+robust (P ≥ 0.8) in the low-immune-exclusion region, uncertain (P ≈ 0.4–0.6) in the
+transition band, and disfavored (P ≤ 0.2) where immune exclusion is strong. (b) Mean
+benefit of keeping stroma = tumor(no stroma) − tumor(optimal), annotated with half the
+10–90% seed interval. The keep-stroma ("resource") regime occupies the low-immune-exclusion
+region and holds in 20 of 36 sampled cells at P ≥ 0.6. *(assets/phase_dense.png)*
 
 **Figure 5. Exposure-schedule comparison (within-model).** Tumor burden, resistant
 fraction, and cumulative modeled exposure for untreated, continuous, and adaptive
@@ -1288,6 +1301,8 @@ writing – original draft, writing – review & editing.
 - [x] CRT spatial analysis rewritten to patient-level statistics (Mann–Whitney U + Cliff's delta + bootstrap 95% CI + BH correction; n=9 vs 6, none significant); causal language removed; new Fig 3 (rim_scotia_stats.png); reviewer #6
 - [x] Well-mixed (mean-field) vs spatial ABM comparison proving spatial necessity — geometry-blindness + strategy inversion (Fig. S18, §3.10); reviewer #2
 - [x] Fig 3 glyph fixed (ASCII minus); Fig 5 shows no control_score; Fig S8 marked superseded
+- [x] Recompute Figure 4 on a denser 6×6 grid, 5 seeds/cell, with probabilistic phase-boundary uncertainty P(keep-stroma) + benefit CI (phase_dense.png; §3.4); reviewer #1
+- [x] Spatial-necessity ablation (Major Comment 1) answered by mapping to existing evidence in §3.10: well-mixed = no-confinement (Fig S18, inverts strategy to always-reduce), randomized geometry at matched counts (Fig S15, 12× outcome shift), immune-exclusion contribution = phase-map α-axis (Fig 4a flips keep→reduce). Central question ("does geometry change the selected strategy?") answered yes.
 - [x] Recompute key rankings with 30 seeds + progression-vs-exposure Pareto frontier and rank-stability (Fig. S10; overturns several single-agent rankings)
 - [x] Restore CAF pro-tumor axis (caf_protumor + new caf_survival drug-tolerance); re-map phase map with it on (Fig. S11; resource regime 7/16→6/16, persists)
 - [x] Add CA19-9 observation model (interval, noise, lag, non-secretor, min-duration, safety); adaptive advantage survives but attenuates (Fig. S12)
