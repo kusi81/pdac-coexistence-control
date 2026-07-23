@@ -312,8 +312,10 @@ frontier; the composite is retained only as a compact label. Adaptive scheduling
 toggles treatment on above an upper band (`adapt_on`) and off below a lower band
 (`adapt_off`) around the tumor-burden reference. Because this feedback uses the true
 simulated burden with zero measurement delay or noise, it is an idealized controller;
-a clinically deployable version would require an explicit observation model (Discussion
-§4.5).
+we therefore also implement an explicit CA19-9-based observation model (interval
+sampling, measurement noise, biomarker-to-burden lag, non-secretors, minimum treatment
+durations, and a confirm-before-stop safety rule) and test whether the adaptive advantage
+survives it (§3.5, Fig. S12; Discussion §4.5).
 
 ### 2.8 In-silico experimental design
 Simulations were run on synthetic tissues generated with matched cell counts in two
@@ -455,12 +457,12 @@ the strong-confinement, weak-immune-exclusion corner. The condition-dependent pr
 is therefore qualitatively robust to the previously omitted pro-tumor biology, while the
 favorable region is somewhat narrower (Discussion §4.5).
 
-**Application—a clinical immunotherapy is gated by the stromal barrier.** The phase map
-predicts that immune-directed agents should help only where the stroma does not exclude
-T cells. We tested this with GV1001, a telomerase (hTERT) peptide vaccine that primes
-tumor-directed T cells; it failed to improve survival in unselected advanced PDAC
-(TeloVac [21]) but did so in an eotaxin-high subgroup (KG4/2015 [22]). Encoded as an
-immune-priming perturbation in a strongly immune-excluding regime, GV1001 alone barely
+**Application—immune priming is gated by the stromal barrier.** The phase map predicts
+that immune-directed agents should help only where the stroma does not exclude T cells.
+We illustrate this with an immune-priming agent (an illustrative immune-priming agent
+under a strongly immune-excluding stromal regime; a clinical telomerase-vaccine instance
+and the trial evidence motivating it are given in the Supplement, Fig. S4). Encoded as an
+immune-priming perturbation in a strongly immune-excluding regime, the agent alone barely
 reduced tumor burden (1.89× vs 2.28× untreated)—the dense barrier excluded even the
 boosted T cells—whereas co-administration with a barrier-opening anti-fibrotic agent
 controlled the tumor (0.76×); the anti-fibrotic alone was insufficient (1.66×)
@@ -468,13 +470,14 @@ controlled the tumor (0.76×); the anti-fibrotic alone was insufficient (1.66×)
 "open-then-rest" schedule (1.49×), because letting the barrier re-form between pulses
 re-excluded the T cells—so, unlike drug holidays that exploit competition among resistant
 clones, immune access must be held open. This is a concrete instance of the framework's
-message: an immunotherapy's value is contingent on the stromal state, and pairing it with
-barrier-opening is predicted to be necessary specifically in the immune-exclusion-dominant
-regime.
+message: an immune-priming agent's value is contingent on the stromal state, and pairing
+it with barrier-opening is predicted to be necessary specifically in the
+immune-exclusion-dominant regime.
 
 ### 3.5 Adaptive scheduling achieves simulated coexistence at a fraction of the modeled exposure of continuous dosing
 On a controllable-but-not-eradicable tumor, we compared no treatment, continuous
-maximum-dose therapy, and adaptive on/off dosing (Fig. 5). Continuous dosing drove the
+full-intensity therapy (a within-model reference arm, not the clinical standard of care),
+and adaptive on/off dosing (Fig. 5). Continuous dosing drove the
 sensitive population to extinction (final burden 0.00× baseline) at the highest
 cumulative exposure (120 units), leaving a purely resistant residue. Adaptive dosing
 held the tumor low (0.16× baseline) at roughly one-fifth the exposure (22 units), with a
@@ -496,6 +499,36 @@ compound toxicity weights rather than a model-discovered efficacy difference, si
 control was comparable across agents. The large gap between natural-adaptive and
 continuous-gemcitabine therefore reflects the schedule effect plus the exposure weighting,
 not agent efficacy per se—an important caveat for interpreting §3.6.
+
+**Schedule effect within a single agent.** To isolate the schedule effect from any
+compound assumption, we varied only the *schedule* of one encoded agent—gemcitabine at a
+fixed efficacy coefficient—across a continuous full-intensity arm (a model reference, not
+the clinical standard), an intermittent clinical-approximation arm (three weeks on, one
+week off, q28), and burden-triggered adaptive dosing (Fig. S13). All arms held the tumor
+below the progression threshold in every seed (final burden ~0.00×); they differed only
+in cumulative modeled exposure, which fell monotonically with less-continuous scheduling
+(continuous 128 → intermittent q28 98 → adaptive 18, 20 seeds). The message is
+schedule-driven and agent-agnostic: even for the same encoded agent at the same efficacy,
+adaptive scheduling can maintain control at a substantially lower modeled exposure than
+continuous full-intensity dosing. This is a within-model comparison of dosing strategies,
+not a claim that any schedule is clinically superior.
+
+**Does the adaptive advantage survive realistic monitoring?** The adaptive arms above
+assume an idealized controller that observes true tumor burden instantaneously and without
+error. In the clinic, feedback would come from a serum biomarker such as CA19-9, sampled
+at intervals, with measurement noise, a biomarker-to-burden lag, a non-informative
+non-secretor subgroup, minimum treatment durations, and a safety rule against premature
+discontinuation. We re-ran the adaptive controller under such an observation model
+(Fig. S12): a latent CA19-9 signal lagging true burden, read every 28 days with 25%
+log-normal noise, de-escalating only after two consecutive confirmed low reads and a
+minimum on-duration, and forced back on above a safety ceiling. The adaptive advantage
+survived but attenuated: control was still maintained in every seed, and exposure remained
+well below continuous (median 67 vs 120), but roughly half the idealized saving was lost
+to observation delay and noise (ideal 21 → observed 67). More frequent sampling recovered
+more of the benefit (14-day interval → 45; 56-day → 90), and Lewis-antigen-negative
+non-secretors—for whom CA19-9 is uninformative—defaulted to continuous therapy and lost
+the adaptive benefit entirely. Thus the schedule advantage is real but monitoring-limited,
+and its clinical realization would depend on a usable, sufficiently frequent readout.
 
 ### 3.6 Food-medicine-homology regimens control tumor burden at low modeled exposure, with resistance staying low
 As an illustrative case study of how the framework prioritizes candidates—not as an
@@ -762,10 +795,15 @@ phenotype is a fixed binary decoupled from CAF state, whereas gemcitabine resist
 mixed genetic/epigenetic/metabolic/microenvironmental and is, in our own cited biology,
 CAF-induced; a continuous, reversible drug-tolerance state coupled to CAF signaling
 (with resensitization during holidays) would be more faithful. **(vi) The controller is
-idealized and local.** Adaptive switching uses the true simulated burden with no
-measurement noise, sampling interval, reporting delay, minimum on/off duration, or
-safety rule; a clinically deployable version needs an explicit observation model tied to
-a real readout (imaging, CA19-9, ctDNA) and its errors. Moreover, the model controls a
+partly idealized, and outcomes are local.** Our primary adaptive arm switches on the true
+simulated burden; to test clinical realizability we added a CA19-9-based observation model
+with interval sampling, measurement noise, a biomarker-to-burden lag, non-secretors,
+minimum on/off durations, and a confirm-before-stop safety rule (§3.5, Fig. S12). The
+adaptive advantage survived but was roughly halved by observation delay and noise,
+degraded with longer sampling intervals, and vanished in non-secretors—so the benefit is
+real but monitoring-limited, and a deployable controller would still need a validated,
+sufficiently frequent readout (imaging, CA19-9, or ctDNA) and formal control-theoretic
+analysis. Moreover, the model controls a
 single primary focus, and local burden is not a validated surrogate for survival:
 clinically meaningful endpoints (local and distant progression-free survival, biliary-
 obstruction-free and pain-free survival, conversion to resectability, overall survival,
@@ -858,14 +896,17 @@ suppression. (b) One-at-a-time ±50% tornado—outcome sensitivity concentrates 
 tumor-immune balance parameters. *(assets/sensitivity.png)*
 
 **Figure S4. The model predicts stromal gating of immune priming (illustrative).** In a
-strongly immune-excluding regime, the telomerase vaccine GV1001 (encoded as immune
+strongly immune-excluding regime, an illustrative immune-priming agent (encoded as immune
 priming) was tested alone and combined with a barrier-opening anti-fibrotic agent. (a)
-Tumor trajectories; (b) final tumor burden per arm. In the model, GV1001 alone is nearly
-futile (dense stroma excludes the boosted T cells); opening the barrier first unlocks it,
-and sustained co-administration outperforms a pulsed open-then-rest schedule. This is a
-mechanistic illustration of barrier-gated immunotherapy within the model, not a clinical
-prediction for GV1001.
-*(assets/gv1001_sequential.png)*
+Tumor trajectories; (b) final tumor burden per arm. In the model, the agent alone is
+nearly futile (dense stroma excludes the boosted T cells); opening the barrier first
+unlocks it, and sustained co-administration outperforms a pulsed open-then-rest schedule.
+The clinical motivation for this illustration is the telomerase (hTERT) peptide vaccine
+GV1001, which failed to improve survival in unselected advanced PDAC (TeloVac [21]) but
+did so in an eotaxin-high subgroup (KG4/2015 [22])—consistent with immune priming being
+effective only where the stromal barrier does not exclude T cells. This is a mechanistic
+illustration of barrier-gated immunotherapy within the model, not a clinical prediction
+for GV1001. *(assets/gv1001_sequential.png)*
 
 **Figure S5. Fair 2×2 comparison—agent × schedule (synergy off).** {Gemcitabine, lead
 natural combination} × {continuous, adaptive}, five seeds. (a) Final tumor burden; (b)
@@ -935,6 +976,31 @@ level); cells labeled "keep" are the stroma-as-resource regime. Restoring pro-tu
 biology shrinks the resource regime (7/16 → 6/16 sampled cells) and lowers its average
 benefit, but preservation still wins in the strong-confinement, weak-immune-exclusion
 corner. Three seeds per cell; in silico. *(assets/phase_protumor.png)*
+
+**Figure S12. The adaptive advantage under a realistic CA19-9 observation model.** The
+adaptive controller re-run with feedback from a serum biomarker rather than true burden
+(20 seeds). (a) Observation-model mechanics for one representative patient: true tumor
+burden, the latent CA19-9 signal lagging it, interval-sampled noisy measurements
+(points), and drug-on periods (shading); the on/off decision uses only the measurements,
+subject to minimum durations and a confirm-before-stop rule. (b) Cumulative exposure by
+arm: continuous, ideal adaptive (true-burden feedback), observed CA19-9 adaptive, and
+observed with a non-secretor patient; control (fraction of seeds progression-free) is
+annotated. The adaptive saving survives realistic observation (median exposure 67 vs 120
+continuous) but is roughly halved relative to the ideal controller (21), and non-secretors
+default to continuous therapy. (c) Measurement-interval sensitivity: exposure rises toward
+continuous as the CA19-9 interval lengthens (14 → 28 → 56 days). In silico.
+*(assets/obs_model.png)*
+
+**Figure S13. Schedule effect within a single encoded agent (gemcitabine).** Varying only
+the schedule of one agent at a fixed efficacy coefficient (20 seeds): continuous
+full-intensity (a model reference, not the clinical standard), intermittent
+clinical-approximation (three weeks on/one week off, q28), ideal adaptive, and observed
+CA19-9 adaptive. (a) Cumulative modeled exposure and (b) final tumor burden. All schedules
+maintain control (final ~0.00×, progression-free in every seed); they differ only in
+exposure, which falls with less-continuous scheduling (128 → 98 → 71 → 18). The same
+encoded agent under adaptive scheduling maintains control at substantially lower modeled
+exposure than continuous full-intensity dosing—a schedule effect independent of the choice
+of agent. In silico. *(assets/gem_schedule.png)*
 
 ---
 
@@ -1010,4 +1076,7 @@ writing – original draft, writing – review & editing.
 - [ ] Fig 3 / Fig 5 / Fig S8 minor glyph pass (unicode minus; replot from saved CSVs — cosmetic)
 - [x] Recompute key rankings with 30 seeds + progression-vs-exposure Pareto frontier and rank-stability (Fig. S10; overturns several single-agent rankings)
 - [x] Restore CAF pro-tumor axis (caf_protumor + new caf_survival drug-tolerance); re-map phase map with it on (Fig. S11; resource regime 7/16→6/16, persists)
+- [x] Add CA19-9 observation model (interval, noise, lag, non-secretor, min-duration, safety); adaptive advantage survives but attenuates (Fig. S12)
+- [x] Add intermittent (clinical-approx q28) gemcitabine arm + same-agent schedule-only comparison (Fig. S13); reframe continuous as within-model reference
+- [x] Generalize GV1001 to "illustrative immune-priming agent" in main text; keep the GV1001 name + trial refs only in Fig. S4 caption
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)

@@ -97,6 +97,19 @@ DEFAULT_PARAMS = dict(
                                # 증식(NSCLC 실측 75.6%, Science Adv abm7212). 이 비용 덕에
                                # 휴약 중 감수성이 내성을 경쟁 억제 → adaptive therapy 성립.
                                # (단 회전율 높으면 비용 없이도 성립: Cancer Res 2021 33172930)
+    # --- 관측모델(observation model): 적응형 controller의 임상 실현가능성 ---
+    # 기본 적응형은 실제 종양수를 즉시·정확히 관측(이상적). obs_model=True면 CA19-9류
+    # 혈청 biomarker를 통해 '지연·이산측정·오차·non-secretor·최소지속·안전규칙' 하에서만
+    # 관측 → 노이즈/지연에도 적응형 이점이 유지되는지 검정(리뷰어 임상 지적).
+    obs_model=False,           # True면 이상적 관측 대신 biomarker 관측으로 on/off 결정
+    obs_interval=28.0,         # 측정 주기(일). CA19-9 통상 4주(치료주기)마다
+    obs_noise_cv=0.25,         # 측정 변동계수(로그정규 승법 잡음; CA19-9 검사·생물학적 변동)
+    obs_lag_days=14.0,         # biomarker가 실제 부담을 따라가는 1차 지연 τ(분비·반감기)
+    nonsecretor=False,         # 이 환자가 Lewis음성 non-secretor면 CA19-9 무정보(~10%)
+    min_on_days=14.0,          # 투여 최소 지속(잡음성 재개/중단 방지)
+    min_off_days=21.0,         # 휴약 최소 지속
+    obs_confirm=2,             # 저부담 '연속 N회 확인' 후에만 중단(잘못된 조기중단 방지)
+    obs_safety_mult=1.4,       # 관측치가 초기의 이 배 이상이면 최소지속 무시하고 강제 투여
     seed=0,
 )
 
@@ -349,6 +362,12 @@ class TumorABM:
         self.adapt_on = adapt_on
         self.adapt_off = adapt_off
         self.drug_on = True
+        # 관측모델 상태: 잠재 biomarker(초기=1.0=기준부담), 최근 측정치, 측정/전환 시각
+        self.biomarker = 1.0
+        self.obs_ratio = 1.0
+        self.last_obs_t = None
+        self.last_switch_t = 0.0
+        self.low_reads = 0
         # 저항성(내성) 라벨: 종양 세포별 내성 여부(coords와 정렬). 비종양=False.
         self.res = np.zeros(len(self.coords), dtype=bool)
         tmask = self._mask("Tumor")
@@ -366,11 +385,14 @@ class TumorABM:
         adaptive면 종양 부담 band로 투여 on/off를 먼저 결정(off면 무투여)."""
         subs, label = None, None
         if self.adaptive:
-            n_now = int(self._mask("Tumor").sum())
-            if n_now >= self.adapt_on * self.n0:
-                self.drug_on = True
-            elif n_now <= self.adapt_off * self.n0:
-                self.drug_on = False
+            if self.p.get("obs_model", False):
+                self._observed_drug_decision()       # CA19-9류 지연·잡음 관측
+            else:
+                n_now = int(self._mask("Tumor").sum())   # 이상적: 실제 부담 즉시 관측
+                if n_now >= self.adapt_on * self.n0:
+                    self.drug_on = True
+                elif n_now <= self.adapt_off * self.n0:
+                    self.drug_on = False
             # band 사이면 직전 상태 유지(hysteresis)
             if not self.drug_on:
                 self.eff = dict(self.p); self._active_subs = None
@@ -399,6 +421,61 @@ class TumorABM:
         self._active_subs = subs
         self.phase_label = label
 
+    # --- 관측모델(observation model) ---
+    def _update_biomarker(self, dt):
+        """잠재 biomarker를 실제 부담비(n/n0)의 1차 지연으로 진행(분비·반감기 지연)."""
+        if not self.p.get("obs_model", False):
+            return
+        n_now = int(self._mask("Tumor").sum())
+        true_ratio = (n_now / self.n0) if self.n0 else 0.0
+        tau = max(float(self.p.get("obs_lag_days", 14.0)), dt)
+        self.biomarker += (true_ratio - self.biomarker) * (dt / tau)
+
+    def _observed_drug_decision(self):
+        """CA19-9류 혈청 biomarker 관측으로 투여 on/off 결정.
+        - non-secretor(Lewis음성): 무정보 → 안전측으로 지속 투여(de-escalation 불가).
+        - 그 외: obs_interval마다 잡음 측정 → 최소지속·연속확인·안전상한 규칙 하 결정."""
+        if self.p.get("nonsecretor", False):
+            self.drug_on = True                 # 마커 무정보 → 휴약 판단 불가 → 연속치료
+            return
+        interval = float(self.p.get("obs_interval", 28.0))
+        if self.last_obs_t is None or (self.t - self.last_obs_t) >= interval - 1e-9:
+            self.last_obs_t = self.t
+            cv = float(self.p.get("obs_noise_cv", 0.25))
+            if cv > 0:                          # 로그정규 승법잡음(중앙값 1)
+                sigma = np.sqrt(np.log(1 + cv * cv))
+                noise = float(np.exp(self.rng.normal(-0.5 * sigma * sigma, sigma)))
+            else:
+                noise = 1.0
+            self.obs_ratio = max(0.0, self.biomarker * noise)
+            self._decide_from_obs()
+        # 측정 사이에는 직전 결정 유지
+
+    def _decide_from_obs(self):
+        on, off = self.adapt_on, self.adapt_off
+        safety = float(self.p.get("obs_safety_mult", 1.4))
+        min_on = float(self.p.get("min_on_days", 14.0))
+        min_off = float(self.p.get("min_off_days", 21.0))
+        confirm = int(self.p.get("obs_confirm", 2))
+        obs = self.obs_ratio
+        if obs >= safety:                       # 안전상한: 최소지속 무시하고 강제 투여
+            if not self.drug_on:
+                self.drug_on = True; self.last_switch_t = self.t
+            self.low_reads = 0
+            return
+        dur = self.t - self.last_switch_t
+        if self.drug_on:                        # 중단은 '연속 확인 + 최소지속' 충족시만
+            if obs <= off:
+                self.low_reads += 1
+                if self.low_reads >= confirm and dur >= min_on:
+                    self.drug_on = False; self.last_switch_t = self.t; self.low_reads = 0
+            else:
+                self.low_reads = 0
+        else:                                   # 재개는 상한밴드 초과 + 최소휴약 충족시
+            if obs >= on and dur >= min_off:
+                self.drug_on = True; self.last_switch_t = self.t
+            self.low_reads = 0
+
     # --- helpers ---
     def _mask(self, ct):
         return self.labels == ct
@@ -425,6 +502,8 @@ class TumorABM:
     def step(self):
         dt = self.p["dt_days"]
         field = self.p["field_um"]
+        # 관측모델: 잠재 biomarker를 실제 부담의 1차 지연으로 갱신(관측결정 전)
+        self._update_biomarker(dt)
         # 현재 시점의 phase에 맞춰 약물 배수 갱신 + 누적 독성 적산
         self._apply_regimen()
         if self._active_subs:
@@ -626,6 +705,8 @@ class TumorABM:
             cum_toxicity=round(self.cum_tox, 3),
             drug_on=bool(self.drug_on),
             phase=self.phase_label,
+            biomarker=round(float(self.biomarker), 4),   # 잠재 CA19-9류(부담비 지연)
+            obs_ratio=round(float(self.obs_ratio), 4),   # 최근 관측치(잡음 포함)
         ))
 
     def run(self, days=20.0, snapshots=(0.0, 0.5, 1.0)):
