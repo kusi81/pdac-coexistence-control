@@ -619,6 +619,26 @@ target for the organoid/CAF co-culture assay of §4.6); and its net benefit is
 regime-conditional rather than universal. SAC is offered as a concrete template for the
 active-ingredient resolution the framework supports, not as a validated PDAC therapeutic.
 
+**From food entities to defined drug products.** SAC is not the only such resolution.
+Each food-level entity in our regimens can, where a standardized active ingredient exists,
+be re-grounded onto a defined molecular species with a documented development history
+(Table S2): mugwort (*Artemisia argyi*) → eupatilin, a flavonoid that is the standardized
+active ingredient of a marketed gastroprotective drug and suppresses stellate-cell/
+myofibroblast activation via β-catenin/PAI-1 [26], mapped—like SAC—onto the anti-fibrotic
+CAF axis; and ginseng → 20(S)-ginsenoside Rg3, a single stereoisomer (distinct in activity
+and oral pharmacokinetics from its 20(R) epimer [27]) that is standardized as a clinical
+capsule product [28]. This matters because a food and a drug product differ on axes our
+parameter perturbation does not by itself capture—active ingredient, extraction method,
+standardized content, purity, stereochemistry, formulation, oral bioavailability, tissue
+distribution, and batch-to-batch consistency. Table S2 makes these explicit for each
+resolved API and, crucially, marks where they remain undefined: curcumin, for instance, is
+chemically well-defined but has notoriously poor and formulation-dependent oral
+bioavailability [29], so its encoded effect presumes an exposure that a conventional
+preparation may not achieve. The framework therefore resolves *which* molecule and *which*
+mechanistic axis, but the pharmacokinetic and chemistry-manufacturing-controls layer that
+turns a molecule into a drug product is out of its current scope and is the explicit
+subject of Table S2 and §4.6.
+
 ### 3.9 The control framework runs directly on real patient tissue as its initial condition
 The mechanistic sweeps above use a single synthetic architecture so that one variable can
 be changed at a time; to show that the pipeline is not confined to idealized geometry, we
@@ -1053,11 +1073,16 @@ writing – original draft, writing – review & editing.
 23. Gong Z, Ye H, et al. S-allyl-cysteine attenuates carbon tetrachloride-induced liver fibrosis in rats by targeting STAT3/SMAD3 pathway. *Am J Transl Res* 2018;10(5):1337-1346. PMID: 29887949
 24. Tsukioka T, Takemura S, et al. Attenuation of bleomycin-induced pulmonary fibrosis in rats with S-allyl cysteine. *Molecules* 2017;22(4):543. PMID: 28353632. doi:10.3390/molecules22040543
 25. Kawasaki H, Nussbaum G. Therapeutic potential of garlic, aged garlic extract and garlic-derived compounds on pancreatic cancer (Review). *Biomed Rep* 2025;22(3):54. PMID: 39926043. doi:10.3892/br.2025.1932
+26. Hu J, Liu Y, et al. Eupatilin ameliorates hepatic fibrosis and hepatic stellate cell activation by suppressing β-catenin/PAI-1 pathway. *Int J Mol Sci* 2023;24(6):5933. PMID: 36983006. doi:10.3390/ijms24065933
+27. Bae SH, Zheng YF, et al. Stereoselective determination of ginsenosides Rg3 and Rh2 epimers in rat plasma by LC-MS/MS: application to a pharmacokinetic study. *J Sep Sci* 2013;36(11):1904-1912. PMID: 23559579. doi:10.1002/jssc.201300107
+28. Wu C, Li P, et al. Efficacy and safety of Shenyi capsule (ginsenoside Rg3) as adjuvant therapy for cancer: an overview of systematic reviews and meta-analyses. *Integr Cancer Ther* 2025;24:15347354251396519. PMID: 41342201. doi:10.1177/15347354251396519
+29. Anand P, Kunnumakkara AB, et al. Bioavailability of curcumin: problems and promises. *Mol Pharm* 2007;4(6):807-818. PMID: 17999464. doi:10.1021/mp700113r
 
 ---
 
 ## Supplementary
 - **Table S1** — full ABM parameter list with baseline values, units, perturbable flag, and literature grounding. See `S1_parameters.md` (24 parameters across global/tumor/myCAF/CD8/resistance groups + organ-context overrides).
+- **Table S2** — from food-medicine entities to defined drug products: each resolved active ingredient (SAC, eupatilin, 20(S)-Rg3, curcumin) scored on nine pharmaceutical-development attributes (active ingredient, extraction, standardized content, purity, stereochemistry, formulation, oral bioavailability, tissue distribution, batch consistency), the mapped model axis, and defined/partial/undefined status. See `S2_drug_products.md`.
 - **S3 Sensitivity analysis** — see `S3_sensitivity_draft.md` (resistance_cost sweep + OAT tornado; Fig. S3).
 - **Supplementary Data** — systematic survey queries, counts, and retrieved records (`docs/literature_search/`).
 
@@ -1079,4 +1104,5 @@ writing – original draft, writing – review & editing.
 - [x] Add CA19-9 observation model (interval, noise, lag, non-secretor, min-duration, safety); adaptive advantage survives but attenuates (Fig. S12)
 - [x] Add intermittent (clinical-approx q28) gemcitabine arm + same-agent schedule-only comparison (Fig. S13); reframe continuous as within-model reference
 - [x] Generalize GV1001 to "illustrative immune-priming agent" in main text; keep the GV1001 name + trial refs only in Fig. S4 caption
+- [x] Resolve food entities to defined APIs (garlic→SAC, mugwort→eupatilin, ginseng→20(S)-Rg3) + drug-product attribute table (Table S2, refs [26-29])
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)

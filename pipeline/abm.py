@@ -216,6 +216,23 @@ SUBSTANCES = {
                   "→ myCAF 축(k_caf_activate)에 매핑. **단 근거는 간·폐 섬유화이며 PDAC "
                   "myCAF 직접 작용은 미검증 가설**",
     ),
+    # 식품→표준화 API 해상도(drug product 정의): mugwort→eupatilin, ginseng→20(S)-Rg3
+    "eupatilin": dict(
+        label="Eupatilin (표준화 쑥/Artemisia argyi 활성성분)", evidence="moderate",
+        effects={"k_caf_activate": 0.45, "k_tumor_apoptosis": 1.25},
+        rationale="A. argyi 잎의 플라보노이드 API — 표준화 위장약(DA-9601)의 활성성분으로 "
+                  "규격·순도 관리 이력. **항섬유화**: 성상세포(HSC) 활성 억제(β-catenin/PAI-1↓) "
+                  "→ myofibroblast 비활성화(간 PMID 36983006). → myCAF 축에 매핑. "
+                  "**PDAC myCAF 직접 작용은 미검증 가설**",
+    ),
+    "rg3_20s": dict(
+        label="20(S)-ginsenoside Rg3 (표준화 홍삼 활성 입체이성질체)", evidence="moderate",
+        effects={"k_kill": 1.55, "k_prolif": 0.78},
+        rationale="홍삼 가공(증숙)으로 Rb1→Rg3 전환된 정의된 입체이성질체 — 20(S)가 20(R)보다 "
+                  "활성 우세, 경구 PK도 에피머별로 상이(PMID 23559579). 표준화 캡슐(Shenyi/Rg3)로 "
+                  "규격화·임상 사용 이력(PMID 41342201). PD-L1↓·PI3K/Akt↓ (PK 리뷰 PMID 42438288). "
+                  "**단 경구 생체이용률 낮아 제형 의존**",
+    ),
     "mugwort": dict(
         label="쑥 (Artesunate/DHA, Eupatilin)", evidence="strong",
         effects={"k_caf_activate": 0.40, "k_kill": 1.20, "k_prolif": 0.85},
@@ -302,6 +319,7 @@ TOXICITY = {
     "generic_cytotoxic": 0.80, "generic_immunostim": 0.30,
     "generic_antifibrotic": 0.20,
     "curcumin": 0.10, "ginsenoside_rg3": 0.15, "garlic": 0.10, "sac": 0.08, "mugwort": 0.20,
+    "eupatilin": 0.10, "rg3_20s": 0.12,
     "wild_ginseng": 0.15, "platycodon": 0.10, "sea_cucumber": 0.10,
     "deer_antler": 0.10, "danshen": 0.15, "milk_thistle": 0.10,
     "astragaloside": 0.10,
