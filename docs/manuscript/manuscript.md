@@ -705,8 +705,18 @@ immune-excluding stroma, immune-alone and anti-fibrotic-alone both failed, combi
 in any order roughly halved residual burden, and opening the barrier before adding
 immunotherapy was marginally better than the reverse (Fig. S16)—a modest but
 directionally consistent sequence effect (using both mechanisms matters more than their
-order). Together these are predictions about emergent geometry and timing that motivate
-measurable spatial biomarkers and scheduling hypotheses, moving the framework beyond a
+order). Fourth, these geometry effects are captured by a *measurable* spatial biomarker,
+not by abundance: across a panel of architectures (contained tissue thinned to varying
+degrees, plus diffuse), the peritumoral myCAF density (myCAF within 30 µm of tumor, per
+tumor cell) predicted immune-therapy efficacy strongly (|r| = 0.92), whereas total myCAF
+abundance predicted it only weakly (|r| = 0.56) and failed on the decisive contrast—the
+contained and diffuse tissues have *identical* myCAF abundance yet opposite immune
+outcomes, differing 7-fold in peritumoral density (Fig. S17). The actionable, testable
+prediction is thus a patient-stratification hypothesis: a peritumoral (rim) myCAF-density
+readout, not a bulk stromal-content measure, should identify the tumors in which
+immune-directed therapy is barrier-limited and would benefit from stromal opening.
+Together these are predictions about emergent geometry, timing, and measurable structure
+that motivate spatial biomarkers and scheduling hypotheses, moving the framework beyond a
 restatement of its inputs.
 
 ---
@@ -1113,6 +1123,19 @@ better than immune-first. The sequence effect is modest relative to the benefit 
 both mechanisms; no fixed schedule fully controls this aggressive regime. In silico.
 *(assets/predict_sequence.png)*
 
+**Figure S17. A measurable spatial biomarker—peritumoral myCAF density, not abundance—
+distinguishes the immune regime.** A panel of architectures (contained tissue with myCAF
+progressively thinned, plus diffuse), five seeds; each tissue's spatial biomarkers are
+measured and a fixed immune therapy is run. (a) Tumor burden under immune therapy versus
+total myCAF abundance: abundance predicts weakly (|r| = 0.56) and fails on the decisive
+contrast—contained and diffuse tissues share the same abundance but have opposite
+outcomes. (b) The same versus peritumoral myCAF density (within 30 µm of tumor, per tumor
+cell): a strong predictor (|r| = 0.92). (c) Biomarker map (peritumoral density × abundance)
+colored by immune outcome: response tracks the rim-density axis, not the abundance axis
+(green = immune-responsive, red = excluded). This yields a patient-stratification
+hypothesis: a peritumoral myCAF-density readout should flag barrier-limited,
+immune-excluded tumors. In silico. *(assets/predict_biomarker.png)*
+
 ---
 
 ## Declarations
@@ -1197,5 +1220,5 @@ writing – original draft, writing – review & editing.
 - [x] Generalize GV1001 to "illustrative immune-priming agent" in main text; keep the GV1001 name + trial refs only in Fig. S4 caption
 - [x] Resolve food entities to defined APIs (garlic→SAC, mugwort→eupatilin, ginseng→20(S)-Rg3) + drug-product attribute table (Table S2, refs [26-29])
 - [x] Monte Carlo epistemic uncertainty over compound assumptions (effect, exposure weight, bioavailability, synergy) on API regimens (Fig. S14); natural control collapses to 0-2% vs gem 96% — not robust to pharmacology uncertainty
-- [x] Non-trivial spatial predictions (§3.10): geometry changes immune-therapy efficacy ~12× at fixed abundance (Fig. S15a), CAF reduction widens invasion front more when confined (Fig. S15b), and open-first beats immune-first modestly (Fig. S16)
+- [x] Non-trivial spatial predictions (§3.10): geometry changes immune-therapy efficacy ~12× at fixed abundance (Fig. S15a), CAF reduction widens invasion front more when confined (Fig. S15b), open-first beats immune-first modestly (Fig. S16), and peritumoral myCAF density (|r|=0.92) — not abundance (|r|=0.56) — predicts the immune regime (Fig. S17)
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)
