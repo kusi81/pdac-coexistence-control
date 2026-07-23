@@ -495,6 +495,28 @@ regime, and the same anti-fibrotic that helps here would release confinement whe
 containment dominates. The balanced combination curcumin + garlic + ginsenoside-Rg3
 (0.0×, exposure 7, resistant 0.00) was carried forward for dose optimization (§3.7).
 
+**Multi-seed re-analysis and Pareto view (n = 30).** Because a single-seed ranking can be
+misleading, we re-ran the regimens over 30 seeds (varying both tissue architecture and
+simulation stochasticity, with combination synergy switched off) and summarized the
+progression-versus-exposure trade-off as a Pareto frontier with rank-stability
+statistics (Fig. S10). This tempers the single-seed picture in an important way. Only the
+adaptive *combinations* controlled the tumor in every seed—curcumin + garlic + Rg3
+(progression-free in 30/30; exposure 6, 95% interval [5–7]), garlic + mugwort (30/30;
+7 [7–8]), and ginseng + garlic + mugwort (30/30; 8 [7–9])—together with continuous
+gemcitabine (30/30) but at ~20× their exposure (128). Single garlic gave the lowest
+exposure of all (3 [3–4]) and the best median rank, but was less reliable (progression-
+free in 28/30). Critically, several single agents that scored well on one seed were *not*
+robust: wild ginseng controlled the tumor in only 1/30 seeds, and mugwort and curcumin in
+none, so their apparent single-seed advantage (above) does not survive replication. The
+anti-fibrotic pair danshen + astragaloside likewise failed to control across seeds
+(median final burden 1.23×), consistent with anti-fibrotic action helping only in the
+regimes the phase map identifies (§3.4) rather than universally. The robust, defensible
+reading is therefore narrow: adaptively scheduled low-exposure *combinations* can control
+this simulated tumor at a small fraction of the modeled exposure of continuous
+gemcitabine, whereas rankings among individual low-exposure agents are seed-sensitive and
+should not be over-interpreted. This multi-seed Pareto analysis supersedes the
+single-seed ordering of Fig. S8 for reliability.
+
 ### 3.7 Dose and drug-holiday optimization further lowers modeled exposure (illustrative)
 For the lead combination (curcumin + garlic + ginsenoside-Rg3), a seed-averaged grid
 search over dose intensity and off-threshold under adaptive scheduling (200 days;
@@ -718,13 +740,17 @@ single primary focus, and local burden is not a validated surrogate for survival
 clinically meaningful endpoints (local and distant progression-free survival, biliary-
 obstruction-free and pain-free survival, conversion to resectability, overall survival,
 and patient-reported quality of life) depend on systemic disease the model does not
-represent. **(vii) Stochastic and calibration limits.** Regimen rankings rest on
-three-seed means; a robust ranking needs many more seeds with medians, 95% intervals,
-and rank-stability checks, and the Sobol analysis is screening-level (§S7). Calibration
-and validation are not yet separated (no held-out patient cohort, posterior parameter
-distributions, or identifiability analysis), so the rankings are provisional. For the
-same reason we describe the patient-tissue runs as *patient-geometry initialized* rather
-than patient-calibrated (§3.9).
+represent. **(vii) Stochastic and calibration limits.** Most exploratory results use three-seed
+means; for the central compound comparison we therefore re-ran a 30-seed analysis with
+medians, 95% intervals, and rank-stability box plots, summarized as a
+progression-versus-exposure Pareto frontier (§3.6, Fig. S10). That re-analysis both
+supports a narrow robust claim (adaptive combinations control at a fraction of
+gemcitabine's exposure) and overturns several single-agent rankings that did not survive
+replication—so single-seed orderings elsewhere in the paper should be read as
+provisional. The Sobol analysis remains screening-level (§S7). Calibration and validation
+are still not separated (no held-out patient cohort, posterior parameter distributions,
+or identifiability analysis), and for the same reason we describe the patient-tissue runs
+as *patient-geometry initialized* rather than patient-calibrated (§3.9).
 
 ### 4.6 Future directions
 Several steps follow directly. Experimentally, the ranked regimens define a low-cost
@@ -855,6 +881,19 @@ Seed-averaged grid search over simulated dose fraction and off-threshold under a
 scheduling; the optimum near a 40% simulated dose fraction is a model-parameter value
 under the tested parameterization, not a clinical dose. *(assets/dose_band_optimization.png)*
 
+**Figure S10. Multi-seed re-analysis (n = 30): progression-vs-exposure Pareto frontier
+and ranking stability.** Each regimen was re-run over 30 seeds varying both tissue
+architecture and simulation stochasticity, with combination synergy off. (a) Median final
+tumor burden versus cumulative modeled exposure with 95% intervals on both axes; the
+dashed line is the Pareto frontier (lower-left is better), and untreated (exposure 0, high
+burden) sits on it trivially—illustrating why a single composite score that rewards low
+exposure is misleading. (b) Distribution of per-seed rank (rank 1 = controlled at lowest
+exposure) as box plots. Only the adaptive combinations (and continuous gemcitabine, at
+~20× the exposure) control the tumor in every seed; several single agents that looked
+strong on one seed (wild ginseng, curcumin, mugwort) are not robust, and the anti-fibrotic
+pair fails across seeds. In silico, under assigned exposure weights.
+*(assets/pareto_seeds.png)*
+
 ---
 
 ## Declarations
@@ -927,5 +966,5 @@ writing – original draft, writing – review & editing.
 - [x] Demote compound-ranking (→Fig S8) and dose-optimization (→Fig S9) to Supplement; promote molecular grounding to Fig 6; GV1001 caption softened
 - [x] Expand §4.5 limitations: confinement-encoded, caf_protumor=0/IL-6, CAF plasticity, CD8-only immunity, non-PDAC resistance, no observation model, local≠survival, seeds/calibration
 - [ ] Fig 3 / Fig 5 / Fig S8 minor glyph pass (unicode minus; replot from saved CSVs — cosmetic)
-- [ ] Consider recomputing key rankings with 20–50 seeds + Pareto frontier plot (compute; deferred)
+- [x] Recompute key rankings with 30 seeds + progression-vs-exposure Pareto frontier and rank-stability (Fig. S10; overturns several single-agent rankings)
 - [ ] CRTL definition footnote (§2.2) — confirm meaning from SCOTIA metadata (excluded from analysis)
