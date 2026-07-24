@@ -367,7 +367,9 @@ GSE274673; CosMx from Mendeley Data (doi:10.17632/kx6b69n3cb.1) [20]. All analys
 code is available at https://github.com/kusi81/pdac-coexistence-control and is archived as
 a version-tagged release on Zenodo (doi:10.5281/zenodo.21521806), so that every figure is
 reproducible from the exact commit, including per-figure generation scripts and the random
-seeds listed in §2.8.
+seeds listed in §2.8. A large language model was used as a coding and writing tool in
+preparing this work; its use, and the author's responsibility for all content, are
+disclosed in full under Declarations ("Use of AI-assisted technology").
 
 ---
 
@@ -1243,6 +1245,23 @@ human or animal experiments were performed. No ethical approval was required.
 software, formal analysis, investigation, data curation, visualization,
 writing – original draft, writing – review & editing.
 
+**Use of AI-assisted technology.** This work was carried out with substantial assistance
+from a large language model (Anthropic Claude, used through the Claude Code
+command-line interface) employed as a computational and writing tool. Specifically, the
+AI assistant was used to (i) implement, extend and refactor the analysis and simulation
+code—including the agent-based model's containment, pro-tumor and observation-model
+components and the sensitivity, uncertainty, ablation and figure-generation
+pipelines; (ii) execute literature searches through the NCBI E-utilities API and
+retrieve and format candidate references; and (iii) draft and revise portions of the
+manuscript text, figure captions and supplementary documents, including the ODD
+protocol. The author conceived the study, defined its objectives and scope, and made all
+scientific and interpretive decisions—including which analyses to run, how strongly to
+frame each claim, and which previously reported results to retract or downgrade when the
+evidence did not support them. The author reviewed and verified the code, analyses,
+figures and every cited reference. In line with ICMJE and publisher policy, the AI system
+is not an author and cannot be one, as it cannot take responsibility for the work; the
+author takes full responsibility for the integrity and accuracy of the entire manuscript.
+
 **Acknowledgments.** [optional]
 
 ---
@@ -1294,6 +1313,8 @@ writing – original draft, writing – review & editing.
 - [x] Build Supplementary Table S1 (parameters + citations) — S1_parameters.md
 - [x] Verify all in-text citation numbers against reference list — all 20 cited, all valid, no orphans
 - [x] Author/affiliation block, corresponding author, ORCID, repository URL (§2.9), license (MIT) — complete
+- [x] Zenodo DOI (10.5281/zenodo.21521806) recorded in §2.9, Data availability, cover letter, README badge/BibTeX, CITATION.cff
+- [x] AI-assisted-technology disclosure added (Declarations + §2.9 pointer + cover letter), per ICMJE/publisher policy
 - [ ] Decide Abstract numeric inclusion (3.4–3.6 values) per target journal word limit  *(journal-dependent)*
 - [ ] Target journal selection → convert citation style; fix figure numbering to house style  *(journal-dependent)*
 - [x] Reframe to condition-dependent stromal control; compounds demoted to case study (title, abstract, §1, §3.6–3.7, §4.7)
