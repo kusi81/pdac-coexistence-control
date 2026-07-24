@@ -35,7 +35,8 @@ favored only where physical confinement outweighs immunosuppression; where
 immunosuppression dominates, stromal reduction is preferred, making the optimal
 stromal state—not depletion or preservation per se—the central control target and the
 principal contribution of this work. A global (Sobol) sensitivity analysis identifies
-tumor proliferation and the immune-exclusion barrier as the dominant controls. As a
+tumor proliferation and cytotoxic T-cell killing as the dominant controls of tumor
+burden. As a
 hypothesis-generating application of the framework, we encode food-medicine-homology
 compounds (a case study, not an efficacy claim). The robust, agent-independent finding
 is that adaptive scheduling maintains control at a fraction of the modeled exposure of
@@ -872,11 +873,13 @@ was robust to ±50% parameter variation (§S3), outcomes were most sensitive to 
 proliferation and immune-barrier parameters, which therefore require empirical
 calibration, and control was not guaranteed under the most aggressive proliferation
 regimes. A variance-based global (Sobol) analysis over eight parameters concurs and
-sharpens this: tumor proliferation dominates the control outcome (total-order
-$S_T\approx0.93$), the immune-exclusion barrier is the next most influential and acts
-largely through interactions ($S_T\approx0.43\gg S_1\approx0.12$), and—consistent with
-the confinement-versus-immunosuppression framing—the physical-confinement strength and
-the resistance parameters have negligible global influence (Fig. S7); the wide
+sharpens this: for final tumor burden, tumor proliferation (total-order
+$S_T\approx0.73$) and cytotoxic T-cell killing ($S_T\approx0.61$) dominate, with killing
+acting substantially through interactions ($S_T\approx0.61$ vs $S_1\approx0.23$), whereas
+the barrier parameters—physical confinement and immune exclusion—and the resistance terms
+each contribute little to the *global* variance in burden ($S_T\lesssim0.12$; Fig. S7).
+The barrier parameters matter for *which stromal strategy* is optimal (§3.4) rather than
+for the overall level of burden, which is set by the tumor-versus-immune balance. The wide
 confidence intervals at this screening sample size mean the parameter *ranking*, not the
 precise indices, is the robust claim. Relatedly, the confinement-versus-immunosuppression trade-off that decides
 whether stroma should be preserved or reduced is governed by parameters (stromal
@@ -1090,16 +1093,17 @@ in both, while the quantitative dynamics differ by architecture. In silico.
 **Figure S7. Global (Sobol) sensitivity analysis complements the one-at-a-time sweep.**
 Variance-based first-order ($S_1$, main effect) and total-order ($S_T$, including
 interactions) Sobol indices for eight parameters spanning tumor kinetics, immunity,
-resistance, and the two barrier axes (immune exclusion, physical confinement), computed
-on the adaptive-therapy arm (Saltelli sampling, $D=8$, $N=32$; error bars are bootstrap
-95% confidence intervals; runaway-growth samples were capped at a fixed population for
-tractability, which only bounds already-progressing regimes and does not change their
-progression classification). (a) Control score and (b) final tumor burden. Tumor
-proliferation dominates both outcomes; the immune-exclusion barrier ($\alpha$) is the
-next most influential for control and acts predominantly through interactions
-($S_T\gg S_1$), whereas physical confinement and the resistance parameters have
-negligible global influence. Given the wide intervals at this screening sample size, the
-robust reading is the parameter ranking rather than the exact index values. In silico.
+resistance, and the two barrier axes (immune exclusion, physical confinement), for the
+outcome **final tumor burden** on the adaptive-therapy arm (Saltelli sampling, $D=8$,
+$N=32$; error bars are bootstrap 95% confidence intervals; runaway-growth samples were
+capped at a fixed population for tractability, which only bounds already-progressing
+regimes and does not change their progression classification). Tumor proliferation
+($S_T\approx0.73$) and cytotoxic T-cell killing ($S_T\approx0.61$) dominate; killing acts
+substantially through interactions ($S_T\gg S_1$). The barrier parameters and the
+resistance terms contribute little to the global variance in burden—they govern *which
+stromal strategy* is optimal (§3.4) rather than the overall burden level. Given the wide
+intervals at this screening sample size, the robust reading is the parameter ranking
+rather than the exact index values. In silico.
 *(assets/sobol.png)*
 
 **Figure S8. Single-seed exploratory regimen ranking (superseded).** Single agents and

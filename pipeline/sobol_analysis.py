@@ -174,5 +174,41 @@ def figure(results):
     print("wrote", out)
 
 
+def replot():
+    """저장된 지수 CSV에서 재작도 — 주 출력은 final tumor burden 하나만.
+    (composite control_score는 구조적 결함으로 본문에서 삭제했으므로 보고하지 않음)."""
+    import pandas as pd
+    df = pd.read_csv(os.path.join(ROOT, "data", "sobol_indices.csv"))
+    g = df[df.output == "final_frac"].set_index("param").loc[PROBLEM["names"]]
+    names = PROBLEM["names"]
+    order = np.argsort(g["ST"].values)
+    y = np.arange(len(names))
+    fig, ax = plt.subplots(figsize=(9.5, 5.6))
+    s1 = np.clip(g["S1"].values[order], 0, None)
+    st = np.clip(g["ST"].values[order], 0, None)
+    ax.barh(y + 0.18, st, height=0.34, color="#E67E22",
+            xerr=g["ST_conf"].values[order],
+            error_kw=dict(lw=0.8, ecolor="#7f5320"),
+            label="Total-order $S_T$ (incl. interactions)")
+    ax.barh(y - 0.18, s1, height=0.34, color="#2980B9",
+            xerr=g["S1_conf"].values[order],
+            error_kw=dict(lw=0.8, ecolor="#1b4f72"),
+            label="First-order $S_1$ (main effect)")
+    ax.set_yticks(y)
+    ax.set_yticklabels([PRETTY[names[j]] for j in order], fontsize=9)
+    ax.set_xlabel("Sobol sensitivity index")
+    ax.set_title("Global (Sobol) sensitivity of final tumor burden\n"
+                 f"D=8 parameters, Saltelli N={N}; bars are bootstrap 95% CIs",
+                 fontsize=11, fontweight="bold")
+    ax.legend(frameon=False, fontsize=9, loc="lower right")
+    fig.tight_layout()
+    out = os.path.join(ROOT, "assets", "sobol.png")
+    fig.savefig(out, dpi=118, bbox_inches="tight")
+    print("wrote", out)
+
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "replot":
+        replot()
+    else:
+        main()
