@@ -1,0 +1,39 @@
+{
+  "title": "Condition-dependent stromal control of pancreatic cancer in a spatially grounded agent-based model: analysis and modeling code",
+  "description": "<p>Analysis and modeling code accompanying the manuscript <em>Condition-dependent stromal control of pancreatic cancer in a spatially grounded agent-based model</em> (subtitle: <em>food-medicine-homology compounds as a hypothesis-generating application</em>).</p><p>The repository contains the spatial agent-based model (ABM) of the PDAC tumor&ndash;myCAF&ndash;immune ecosystem, the spatial-statistics pipeline for Xenium and CosMx data, and every figure-generation script. Included analyses: the confinement &times; immune-exclusion phase map with probabilistic phase uncertainty; global (Sobol) sensitivity analysis; a 30-seed progression-constrained Pareto evaluation of regimens; a Monte Carlo over compound effect, exposure weight, bioavailability and synergy (epistemic uncertainty); a CA19-9 observation model for the adaptive controller; patient-level spatial statistics; and spatial-necessity ablations including a well-mixed mean-field comparison. A full ODD-protocol specification of the ABM is provided in docs/manuscript/S3_ODD_protocol.md.</p><p>All analyzed datasets are public: Xenium PDAC (GEO GSE274673) and CosMx SMI PDAC (Mendeley Data doi:10.17632/kx6b69n3cb.1). In silico, hypothesis-generating study; outputs are testable hypotheses, not evidence of clinical efficacy or safety.</p>",
+  "upload_type": "software",
+  "license": "MIT",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Kim, Seung-Il",
+      "orcid": "0009-0007-5965-9212"
+    }
+  ],
+  "keywords": [
+    "pancreatic ductal adenocarcinoma",
+    "cancer-associated fibroblasts",
+    "myCAF",
+    "agent-based model",
+    "spatial transcriptomics",
+    "adaptive therapy",
+    "tumor coexistence",
+    "drug resistance",
+    "network pharmacology",
+    "food-medicine homology",
+    "computational oncology"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/kusi81/pdac-coexistence-control",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "10.17632/kx6b69n3cb.1",
+      "relation": "references",
+      "scheme": "doi"
+    }
+  ],
+  "language": "eng"
+}

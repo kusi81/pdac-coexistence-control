@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+title: "Condition-dependent stromal control of pancreatic cancer in a spatially grounded agent-based model: analysis and modeling code"
+abstract: >-
+  Spatial agent-based model (ABM) of the PDAC tumor-myCAF-immune ecosystem with a
+  physically implemented myCAF barrier (confinement versus immune exclusion and impaired
+  drug delivery), together with the spatial-statistics pipeline for Xenium and CosMx data
+  and all figure-generation scripts. Includes the phase map with probabilistic phase
+  uncertainty, global (Sobol) sensitivity analysis, a 30-seed progression-constrained
+  Pareto evaluation, a Monte Carlo over compound effect/exposure/bioavailability/synergy,
+  a CA19-9 observation model for the adaptive controller, patient-level spatial
+  statistics, and spatial-necessity ablations including a well-mixed comparison.
+  In silico, hypothesis-generating; outputs are testable hypotheses, not evidence of
+  clinical efficacy or safety.
+type: software
+authors:
+  - family-names: Kim
+    given-names: Seung-Il
+    orcid: "https://orcid.org/0009-0007-5965-9212"
+    email: kusi81kim@gmail.com
+    affiliation: "Independent Researcher"
+repository-code: "https://github.com/kusi81/pdac-coexistence-control"
+license: MIT
+version: "1.0.0"
+date-released: "2026-07-24"
+keywords:
+  - pancreatic ductal adenocarcinoma
+  - cancer-associated fibroblasts
+  - myCAF
+  - agent-based model
+  - spatial transcriptomics
+  - adaptive therapy
+  - tumor coexistence
+  - drug resistance
+  - network pharmacology
+  - food-medicine homology
+  - computational oncology
