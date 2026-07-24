@@ -20,6 +20,11 @@ authors:
     email: kusi81kim@gmail.com
     affiliation: "Independent Researcher"
 repository-code: "https://github.com/kusi81/pdac-coexistence-control"
+doi: "10.5281/zenodo.21521806"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21521806"
+    description: "Zenodo archive of the analysis and modeling code"
 license: MIT
 version: "1.0.0"
 date-released: "2026-07-24"

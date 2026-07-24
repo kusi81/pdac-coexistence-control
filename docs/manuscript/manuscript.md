@@ -364,10 +364,10 @@ The framework is implemented in Python (3.13) using scanpy/anndata, squidpy, pya
 NumPy/SciPy, and Matplotlib, with an interactive Streamlit dashboard exposing the
 spatial, simulation, optimization, and molecular-viewer modes. Spatial data: Xenium
 GSE274673; CosMx from Mendeley Data (doi:10.17632/kx6b69n3cb.1) [20]. All analysis
-code is available at https://github.com/kusi81/pdac-coexistence-control; a version-tagged
-release archived with a DOI (e.g., Zenodo) will accompany publication so that every figure
-is reproducible from the exact commit, including per-figure generation scripts and the
-random seeds listed in §2.8.
+code is available at https://github.com/kusi81/pdac-coexistence-control and is archived as
+a version-tagged release on Zenodo (doi:10.5281/zenodo.21521806), so that every figure is
+reproducible from the exact commit, including per-figure generation scripts and the random
+seeds listed in §2.8.
 
 ---
 
@@ -1229,7 +1229,8 @@ Spatial structure changes the selected strategy, not just the numbers. In silico
 **Data availability.** All datasets analyzed are from public repositories: Xenium
 PDAC (GEO GSE274673), CosMx SMI PDAC (Mendeley Data doi:10.17632/kx6b69n3cb.1). All
 analysis code and derived result tables are available at
-https://github.com/kusi81/pdac-coexistence-control.
+https://github.com/kusi81/pdac-coexistence-control and archived at Zenodo
+(doi:10.5281/zenodo.21521806).
 
 **Ethics.** This study used only publicly available, de-identified datasets; no new
 human or animal experiments were performed. No ethical approval was required.
