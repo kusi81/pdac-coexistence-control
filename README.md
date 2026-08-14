@@ -12,6 +12,9 @@ resource*.
 
 > **Status:** in-silico, hypothesis-generating research. Manuscript draft in
 > [`docs/manuscript/manuscript.md`](docs/manuscript/manuscript.md).
+> **Rebuilding elsewhere?** See [`docs/REBUILD_GUIDE.md`](docs/REBUILD_GUIDE.md) — a
+> clone-and-run + vibe-coding guide (module map, exact analysis settings, verification
+> targets, and an agent prompt).
 > **Author:** Seung-Il Kim (김승일) · ORCID [0009-0007-5965-9212](https://orcid.org/0009-0007-5965-9212) · Independent Researcher.
 
 ## What this is
