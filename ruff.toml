@@ -1,0 +1,10 @@
+# 정적 분석 — _shared/quality-gate 기준 규칙. 확실한 결함만 막는다:
+#   E4 import 위치 · E7 문장(람다 대입 · 모호한 이름 등) · E9 구문 오류 · F pyflakes(미사용 · 미정의 이름)
+# 스타일(줄 길이 · 따옴표)은 보지 않는다. 규칙은 _shared/quality-gate/template/ruff.toml 과 같이 둔다.
+target-version = "py312"
+
+[lint]
+select = ["E4", "E7", "E9", "F"]
+
+# 당장 못 고치는 파일은 여기에 이유와 함께 적는다(예: vendor 사본 — 원본 _shared 에서 고친다).
+[lint.per-file-ignores]

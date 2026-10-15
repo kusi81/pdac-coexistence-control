@@ -1,0 +1,46 @@
+# 품질 게이트 — 정적 분석 · 비밀값 스캔 · 테스트 (_shared/quality-gate 템플릿에서 생성)
+#
+# - lint: ruff.toml 의 규칙만(확실한 결함). 버전을 고정해 로컬과 결과가 같게 한다.
+#   지금은 경고만(continue-on-error) — 기존 지적을 정리한 뒤 false 로 바꿔 막는다.
+# - secrets: 전체 이력에서 비밀값 패턴. 값은 가린다(--redact). 테스트 픽스처의 가짜 값이 걸리면
+#   .gitleaks.toml 의 allowlist 에 경로를 적는다 — 규칙을 끄지 말 것.
+# - test: 이 저장소의 테스트 명령. 템플릿은 명령을 모른다 — apply.py --test 로 넣거나 직접 고친다.
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install ruff==0.16.10
+      - run: ruff check --output-format=github .
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.24.3 git /repo --redact -v
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install -r requirements.txt && python pipeline/smoke_test.py
