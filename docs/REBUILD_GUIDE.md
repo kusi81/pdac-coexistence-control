@@ -66,6 +66,7 @@ agent implements one module at a time and you verify against the numbers in §8.
 | `phase_map_dense.py` | Fig 4: 6×6 confinement×exclusion grid, P(keep) uncertainty | abm, synthetic |
 | `sobol_analysis.py` | Fig S7: global Sobol (SALib), output = final burden | abm, synthetic, SALib |
 | `pareto_seeds.py` | Fig S10: 30-seed progression-constrained Pareto | abm, synthetic |
+| `fair_2x2.py` | Fig S5: agent × schedule factorial, 300 seeds | abm, synthetic |
 | `mc_uncertainty.py` | Fig S14: Monte Carlo over compound assumptions | abm, synthetic |
 | `obs_model_analysis.py` | Fig S12: CA19-9 observation model | abm, synthetic |
 | `gem_schedule.py` | Fig S13: single-agent schedule comparison | abm, synthetic |
@@ -157,6 +158,7 @@ mutation_rate=0.003, resistant_immune_evasion=0.35`.
 | `phase_map_dense.py` | grid `caf_pressure∈{0,0.6,1.2,1.8,2.4,3.0}` × `cd8_barrier_alpha∈{0.2,0.6,1.0,1.4,1.8,2.4}`; sweep `k_caf_activate∈{0,0.06,0.12,0.20,0.30}`; **5 seeds/cell**; DAYS=90; CAP=2000; drug=`generic_cytotoxic@0.30`. Report **P(keep)** = fraction of seeds where argmin over myCAF is >0 and benefit>0.02. |
 | `sobol_analysis.py` | SALib Saltelli, **D=8**, **N=32**, `calc_second_order=False` ⇒ 320 evals; output = **final_frac** (adaptive arm); DAYS=130, CAP=1800, 1 seed, `max_tumor=4500`. Params/bounds: k_prolif[.075,.30], k_kill[.25,1], cd8_recruit[5,20], k_caf_activate[.05,.20], resistance_cost[.10,.40], resistant_immune_evasion[.20,.70], cd8_barrier_alpha[.5,3], caf_confine[.2,1.5]. |
 | `pareto_seeds.py` | **30 seeds** (tissue+sim varied together), **synergy=0**, DAYS=150, CAP=2500, adapt 1.1/0.7, `max_tumor=6000`. Rank by `(not censored, exposure)`; report median + 95% interval + per-seed rank + Pareto frontier. |
+| `fair_2x2.py` | {gemcitabine, natural combo (curcumin+garlic+ginsenoside_rg3)} × {continuous, adaptive 1.1/0.7}; **synergy=0**, DAYS=150; tissue fixed (`make_tissue('contained', seed=42)`), **sim seeds 1–300** (1,200 runs). Output `data/fair_2x2_seeds.csv` (one row per arm × seed); report mean ± 95% CI, median, seeds ≥0.5×, progression count, same-seed paired main effects. |
 | `mc_uncertainty.py` | **100 draws**; per draw sample per-compound effect×LogNormal(CV 0.35), exposure weight×LogNormal(CV 0.40), **bioavailability~Beta**: sac(9,1), eupatilin(5,3), rg3_20s(2,6), curcumin(1.5,10), gemcitabine(50,1); synergy~U[0,0.3]. Apply as `m'=1+(m-1)·(effCV·bioav)`; temporarily mutate module `SUBSTANCES`/`TOXICITY` per draw, **restore in finally**. DAYS=120, CAP=1500, `max_tumor=2800`. |
 | `obs_model_analysis.py` | arms: continuous, ideal adaptive, observed CA19-9, observed non-secretor; +interval sweep {14,28,56}d; 20 seeds; obs params as §6/ODD. |
 | `gem_schedule.py` | one agent (gemcitabine), fixed efficacy; schedules: continuous, intermittent q28 (3wk on/1wk off via `schedule=[{days:21,subs:GEM},{days:7,subs:[]}]`), ideal adaptive, observed CA19-9; 20 seeds. |
@@ -222,6 +224,7 @@ order, and whether `max_tumor` / `CAP` differ from the table in §5.
 python pipeline/phase_map_dense.py
 python pipeline/sobol_analysis.py
 python pipeline/pareto_seeds.py
+python pipeline/fair_2x2.py
 python pipeline/mc_uncertainty.py
 python pipeline/obs_model_analysis.py
 python pipeline/gem_schedule.py

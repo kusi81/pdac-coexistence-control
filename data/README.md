@@ -36,3 +36,4 @@ Download them here to reproduce the analyses. Small derived result tables
 - `data/sens_rcost.csv`, `data/sens_tornado.csv` — sensitivity analysis (Fig. S3).
 - `data/scotia/scotia_posctrl.csv` — myCAF positive control per sample (Fig. 2b).
 - `data/scotia/scotia_rim.csv` — peritumoral rim composition (Fig. 3).
+- `data/fair_2x2_seeds.csv` — fair 2×2 agent × schedule, one row per arm × seed, 300 seeds (Fig. S5).

@@ -350,7 +350,7 @@ each result:
 | Analysis | Figure | Replication |
 |---|---|---|
 | Exploratory sims, phase map | Figs 4, 5, S3, S8, S9 | 3 seeds |
-| Fair 2×2 (agent × schedule) | Fig. S5 | 5 seeds |
+| Fair 2×2 (agent × schedule) | Fig. S5 | 300 seeds |
 | GV1001-style barrier gating | Fig. S4 | (regime sweep) |
 | Global Sobol sensitivity | Fig. S7 | Saltelli N=32, 1 seed/run |
 | Multi-seed Pareto ranking | Fig. S10 | 30 seeds |
@@ -541,14 +541,22 @@ replaces any single composite metric throughout.
 
 **Separating schedule from agent (fair 2×2).** To avoid conflating adaptive scheduling
 with the choice of agent, we ran a factorial comparison—{gemcitabine, the lead natural
-combination} × {continuous, adaptive}, with compound synergy disabled (Fig. S5). All four
-arms controlled the tumor (final burden 0.00–0.17×); they differed chiefly in cumulative
-exposure. Adaptive scheduling was the robust, agent-independent lever: it cut exposure
-~6–7-fold for both agents (gemcitabine 128→20; natural 52→7) at a minor increase in
-residual tumor. The natural combination's lower exposure than gemcitabine at matched
+combination} × {continuous, adaptive}, with compound synergy disabled (Fig. S5; 300
+simulation seeds on a fixed tissue). All four arms controlled the tumor in the
+progression sense—no run reached 1.5× the initial burden within 150 days (0/1,200)—but
+they differed in residual tumor and, chiefly, in cumulative exposure. Continuous dosing of
+either agent cleared the tumor in every seed (final burden 0.00×), whereas adaptive
+scheduling left a residual that varied widely across seeds (gemcitabine mean 0.26×, 95% CI
+0.23–0.29, median 0.20×, 52/300 seeds ≥0.5×; natural combination mean 0.10×, 95% CI
+0.08–0.12, median 0.00×, 18/300 seeds ≥0.5×). Adaptive scheduling was the robust,
+agent-independent lever on exposure: it cut exposure ~6–7-fold for both agents
+(gemcitabine 128→20; natural 52→7), traded against this residual tumor rather than
+obtained for free. The natural combination's lower exposure than gemcitabine at matched
 schedule (52 vs 128 continuous; 7 vs 20 adaptive) follows largely from the assumed
-compound toxicity weights rather than a model-discovered efficacy difference, since tumor
-control was comparable across agents. The large gap between natural-adaptive and
+compound toxicity weights rather than a model-discovered efficacy difference. Its smaller
+adaptive residual (paired difference −0.16×, 95% CI −0.20 to −0.12) likewise rests on the
+assigned compound effects, which the Monte Carlo in §3.6 shows are not robust, so it is
+not evidence of superior efficacy. The large gap between natural-adaptive and
 continuous-gemcitabine therefore reflects the schedule effect plus the exposure weighting,
 not agent efficacy per se—an important caveat for interpreting §3.6.
 
@@ -1074,10 +1082,13 @@ illustration of barrier-gated immunotherapy within the model, not a clinical pre
 for GV1001. *(assets/gv1001_sequential.png)*
 
 **Figure S5. Fair 2×2 comparison—agent × schedule (synergy off).** {Gemcitabine, lead
-natural combination} × {continuous, adaptive}, five seeds. (a) Final tumor burden; (b)
-cumulative exposure. All arms control the tumor; adaptive scheduling cuts exposure
-~6–7-fold for both agents, and the natural agent's lower exposure at matched schedule
-reflects its assigned exposure weight rather than superior tumor control.
+natural combination} × {continuous, adaptive}, 300 simulation seeds on a fixed tissue;
+bars show mean ± 95% CI. (a) Final tumor burden, with each seed as a dot; the dashed line
+marks the 1.5× progression threshold, which no run reached. (b) Cumulative exposure.
+Continuous dosing clears the tumor; adaptive scheduling cuts exposure ~6–7-fold for both
+agents at the cost of a seed-variable residual (mean 0.26× gemcitabine, 0.10× natural).
+The natural agent's lower exposure at matched schedule reflects its assigned exposure
+weight rather than superior tumor control.
 *(assets/fair_2x2.png)*
 
 **Figure S6. Patient-geometry initialized simulation—the framework runs on real SCOTIA
