@@ -14,7 +14,7 @@ case study. In silico, hypothesis-generating; not a clinical predictor.
 - **Author:** Seung-Il Kim · ORCID 0009-0007-5965-9212 · Independent Researcher
 - **GitHub:** https://github.com/kusi81/pdac-coexistence-control (this is the backbone;
   clone it to continue — it carries full history and the `origin` remote)
-- **Zenodo archive:** doi:10.5281/zenodo.21521806
+- **Zenodo archive:** doi:10.5281/zenodo.24172240 (v1.1.0; all versions: doi:10.5281/zenodo.21521805; v1.0.0 at submission: doi:10.5281/zenodo.21521806)
 - **Manuscript (canonical):** `docs/manuscript/manuscript.md` (build Word with
   `python pipeline/build_docx.py`)
 

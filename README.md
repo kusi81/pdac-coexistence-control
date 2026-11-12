@@ -1,6 +1,6 @@
 # Coexistence-control of pancreatic cancer with food-medicine-homology compounds
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21521806.svg)](https://doi.org/10.5281/zenodo.21521806)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21521805.svg)](https://doi.org/10.5281/zenodo.21521805)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A spatially grounded **agent-based framework** that models the pancreatic ductal
@@ -100,17 +100,17 @@ Xenium PDAC (GEO GSE274673), and PDB structures (RCSB).
 If you use this code or framework, please cite the archived software release:
 
 > Kim, S.-I. *Condition-dependent stromal control of pancreatic cancer in a spatially
-> grounded agent-based model: analysis and modeling code* (v1.0.0). Zenodo (2026).
-> doi:[10.5281/zenodo.21521806](https://doi.org/10.5281/zenodo.21521806)
+> grounded agent-based model: analysis and modeling code* (v1.1.0). Zenodo (2026).
+> doi:[10.5281/zenodo.24172240](https://doi.org/10.5281/zenodo.24172240)
 
 ```bibtex
 @software{kim2026_pdac_coexistence,
   author  = {Kim, Seung-Il},
   title   = {Condition-dependent stromal control of pancreatic cancer in a
              spatially grounded agent-based model: analysis and modeling code},
-  version = {1.0.0},
+  version = {1.1.0},
   year    = {2026},
-  doi     = {10.5281/zenodo.21521806},
+  doi     = {10.5281/zenodo.24172240},
   url     = {https://github.com/kusi81/pdac-coexistence-control}
 }
 ```

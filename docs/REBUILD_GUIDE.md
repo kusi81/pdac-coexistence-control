@@ -268,4 +268,4 @@ then `docs/manuscript/S1_parameters.md`, then `docs/manuscript/S2_drug_products.
 ---
 
 *In silico, hypothesis-generating research. Outputs are testable hypotheses, not evidence
-of clinical efficacy or safety. Code archived at Zenodo doi:10.5281/zenodo.21521806.*
+of clinical efficacy or safety. Code archived at Zenodo doi:10.5281/zenodo.24172240.*

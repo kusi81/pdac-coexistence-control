@@ -366,7 +366,7 @@ NumPy/SciPy, and Matplotlib, with an interactive Streamlit dashboard exposing th
 spatial, simulation, optimization, and molecular-viewer modes. Spatial data: Xenium
 GSE274673; CosMx from Mendeley Data (doi:10.17632/kx6b69n3cb.1) [20]. All analysis
 code is available at https://github.com/kusi81/pdac-coexistence-control and is archived as
-a version-tagged release on Zenodo (doi:10.5281/zenodo.21521806), so that every figure is
+a version-tagged release on Zenodo (doi:10.5281/zenodo.24172240), so that every figure is
 reproducible from the exact commit, including per-figure generation scripts and the random
 seeds listed in §2.8. A large language model was used as a coding and writing tool in
 preparing this work; its use, and the author's responsibility for all content, are
@@ -1250,7 +1250,7 @@ Spatial structure changes the selected strategy, not just the numbers. In silico
 PDAC (GEO GSE274673), CosMx SMI PDAC (Mendeley Data doi:10.17632/kx6b69n3cb.1). All
 analysis code and derived result tables are available at
 https://github.com/kusi81/pdac-coexistence-control and archived at Zenodo
-(doi:10.5281/zenodo.21521806).
+(doi:10.5281/zenodo.24172240).
 
 **Ethics.** This study used only publicly available, de-identified datasets; no new
 human or animal experiments were performed. No ethical approval was required.
@@ -1331,7 +1331,7 @@ author takes full responsibility for the integrity and accuracy of the entire ma
 - [x] Build Supplementary Table S1 (parameters + citations) — S1_parameters.md
 - [x] Verify all in-text citation numbers against reference list — all 20 cited, all valid, no orphans
 - [x] Author/affiliation block, corresponding author, ORCID, repository URL (§2.9), license (MIT) — complete
-- [x] Zenodo DOI (10.5281/zenodo.21521806) recorded in §2.9, Data availability, cover letter, README badge/BibTeX, CITATION.cff
+- [x] Zenodo DOI (10.5281/zenodo.24172240, v1.1.0; concept 10.5281/zenodo.21521805) recorded in §2.9, Data availability, cover letter, README badge/BibTeX, CITATION.cff
 - [x] AI-assisted-technology disclosure added (Declarations + §2.9 pointer + cover letter), per ICMJE/publisher policy
 - [ ] Decide Abstract numeric inclusion (3.4–3.6 values) per target journal word limit  *(journal-dependent)*
 - [ ] Target journal selection → convert citation style; fix figure numbering to house style  *(journal-dependent)*
