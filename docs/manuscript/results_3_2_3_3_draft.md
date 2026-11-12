@@ -22,9 +22,11 @@ real data: myofibroblastic CAFs (myCAF) are reported to lie closer to malignant
 cells than inflammatory CAFs (iCAF) [3,20]. Using the author-annotated CosMx SMI
 dataset of Shiau et al. [20] (717,493 cells across 16 tumors), we applied our
 proximity test (median distance of each CAF subtype to the nearest malignant cell,
-with label-permutation nulls) per sample. myCAF was significantly closer to
-malignant cells than iCAF in 15 of 16 tumors (the single exception, U2-b, showed a
-0.2 µm difference, p = 0.279, i.e., a statistical tie rather than a reversal). The
+with label-permutation nulls) per sample. myCAF was closer to malignant cells than
+iCAF in 15 of 16 tumors, significantly so in 13 (p < 0.05; in U3-b and U6-a_1 the gap
+was below 0.4 µm, p = 0.99 and 0.36). The single exception, U2-b, showed a 0.2 µm
+difference in the opposite direction (p = 0.279, i.e., a statistical tie rather than
+a reversal). The
 effect was consistent across treatment groups and, notably, larger after therapy:
 the myCAF–iCAF proximity gap widened from −2.6 µm (untreated; myCAF 20.6 µm vs iCAF
 23.1 µm) to −18.8 µm (CRT; myCAF 42.1 µm vs iCAF 61.0 µm) (Fig. 2b). Thus, given

@@ -412,9 +412,11 @@ which the same cell counts are randomly intermixed (diffuse; z ≈ +0.9), confir
 that the matched-null construction responds to spatial *geometry* rather than
 abundance (Fig. 2a). We next tested a known biological positive control—myCAFs lie
 closer to malignant cells than iCAFs [3,20]—on the author-annotated CosMx dataset
-(717,493 cells across 16 tumors). myCAF was significantly closer to malignant cells
-than iCAF in 15 of 16 tumors (the single exception showed a 0.2 µm difference,
-p = 0.279, a tie), and the gap was larger in CRT-treated than untreated specimens
+(717,493 cells across 16 tumors). myCAF was closer to malignant cells than iCAF in
+15 of 16 tumors, significantly so in 13 (label-permutation p < 0.05; in the other two,
+U3-b and U6-a_1, the gap was below 0.4 µm, p = 0.99 and 0.36); the single exception
+showed a 0.2 µm difference in the opposite direction (p = 0.279, a tie). The gap was
+larger in CRT-treated than untreated specimens
 (−2.6 µm untreated vs −18.8 µm CRT; cross-sectional, not paired) (Fig. 2b). Given faithful
 annotations, our metric recovers the expected architecture.
 
@@ -810,7 +812,8 @@ best controls the tumor (§3.4, Fig. 4).
 
 ### 4.2 Biological plausibility
 Several results align with independent biology. On author-annotated CosMx data, our
-metric reproduced the myCAF-proximal/iCAF-distal architecture in 15 of 16 tumors and,
+metric reproduced the myCAF-proximal/iCAF-distal architecture in 15 of 16 tumors (13
+significantly) and,
 at the patient level, showed a rim-enriched myCAF barrier coincident with cytotoxic
 T-cell exclusion in *both* untreated and CRT specimens (§3.3); the untreated-versus-CRT
 differences trend as expected but are not statistically significant in this small cohort
@@ -1027,7 +1030,7 @@ our targeted search. *(assets/fig1_novelty.png)*
 **Figure 2. The containment metric is sound; annotation is the limiting factor.**
 (a) Synthetic contained (myCAF ring; barrier z = +22.3) vs diffuse (scattered; +0.9).
 (b) On author-annotated CosMx data the myCAF-proximal positive control passes in 15/16
-tumors (points left of 0 = correct). (c) The same metric fails on marker-annotated
+tumors (points left of 0 = correct; 13/16 significant at label-permutation p < 0.05). (c) The same metric fails on marker-annotated
 Xenium data (1/5), localizing the failure to annotation. *(assets/fig2_validation.png)*
 
 **Figure 3. Patient-level peritumoral composition, untreated (n=9) vs CRT (n=6) (CosMx

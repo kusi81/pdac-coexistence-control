@@ -34,7 +34,7 @@ intended to focus, not replace, experimental validation.
 ## Key results (see the manuscript)
 
 - The containment metric reproduces the myCAF-proximal positive control in **15/16**
-  author-annotated CosMx tumors; the same metric fails on targeted-panel Xenium module
+  author-annotated CosMx tumors (13 significant at p < 0.05); the same metric fails on targeted-panel Xenium module
   scores, localizing the problem to *annotation, not metric* (Fig. 2).
 - myCAFs form a tumor-adjacent barrier that **tightens under chemoradiation** while
   cytotoxic CD8⁺ T cells remain excluded (Fig. 3).
