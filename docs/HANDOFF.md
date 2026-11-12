@@ -41,7 +41,7 @@ The manuscript has been through a full external-review response. Done and commit
 - **Monte Carlo** over compound effect / exposure weight / bioavailability / synergy
   (`mc_uncertainty.py`) — natural-compound control collapses to 0–2% vs gemcitabine 96%.
 - **Sobol** global SA (`sobol_analysis.py`) — reports **final tumor burden** only
-  (k_prolif ≈0.79, k_kill ≈0.44 dominant); barrier params govern *which strategy*, not burden level.
+  (k_prolif ≈0.73, k_kill ≈0.61 dominant); barrier params govern *which strategy*, not burden level.
 - **CA19-9 observation model** (`obs_model_analysis.py`), **single-agent schedule**
   comparison (`gem_schedule.py`), **spatial predictions** (`predict_geometry.py`,
   `predict_sequence.py`, `predict_biomarker.py`), **well-mixed ablation**

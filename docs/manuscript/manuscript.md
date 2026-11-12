@@ -885,10 +885,10 @@ proliferation and immune-barrier parameters, which therefore require empirical
 calibration, and control was not guaranteed under the most aggressive proliferation
 regimes. A variance-based global (Sobol) analysis over eight parameters concurs and
 sharpens this: for final tumor burden, tumor proliferation (total-order
-$S_T\approx0.79$) and cytotoxic T-cell killing ($S_T\approx0.44$) dominate, with killing
-acting substantially through interactions ($S_T\approx0.44$ vs $S_1\approx0.13$), whereas
+$S_T\approx0.73$) and cytotoxic T-cell killing ($S_T\approx0.61$) dominate, with killing
+acting substantially through interactions ($S_T\approx0.61$ vs $S_1\approx0.23$), whereas
 the barrier parameters—physical confinement and immune exclusion—and the resistance terms
-each contribute little to the *global* variance in burden ($S_T\lesssim0.04$; Fig. S7).
+each contribute little to the *global* variance in burden ($S_T\lesssim0.12$; Fig. S7).
 The barrier parameters matter for *which stromal strategy* is optimal (§3.4) rather than
 for the overall level of burden, which is set by the tumor-versus-immune balance. The wide
 confidence intervals at this screening sample size mean the parameter *ranking*, not the
@@ -1112,7 +1112,7 @@ outcome **final tumor burden** on the adaptive-therapy arm (Saltelli sampling, $
 $N=32$; error bars are bootstrap 95% confidence intervals; runaway-growth samples were
 capped at a fixed population for tractability, which only bounds already-progressing
 regimes and does not change their progression classification). Tumor proliferation
-($S_T\approx0.79$) and cytotoxic T-cell killing ($S_T\approx0.44$) dominate; killing acts
+($S_T\approx0.73$) and cytotoxic T-cell killing ($S_T\approx0.61$) dominate; killing acts
 substantially through interactions ($S_T\gg S_1$). The barrier parameters and the
 resistance terms contribute little to the global variance in burden—they govern *which
 stromal strategy* is optimal (§3.4) rather than the overall burden level. Given the wide
