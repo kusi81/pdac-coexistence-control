@@ -201,7 +201,7 @@ A faithful rebuild should reproduce these to within seed noise:
 
 | Analysis | Expected |
 |---|---|
-| Sobol (final burden) | `k_prolif` S_T≈0.73 and `k_kill` S_T≈0.61 dominate; barrier/resistance terms S_T≲0.12 |
+| Sobol (final burden) | `k_prolif` S_T≈0.79 and `k_kill` S_T≈0.44 (S_1≈0.13) dominate; barrier/resistance terms S_T≲0.04 (SALib ≥1.4 samples are scrambled and unseeded, so re-runs move the values within the bootstrap CIs; the ranking is the robust reading) |
 | Dense phase map | keep-stroma robust (P≥0.8) at low immune-exclusion; ~20/36 cells P(keep)≥0.6 |
 | 30-seed Pareto | combinations 30/30 progression-free; single garlic 28/30; wild ginseng 1/30; mugwort/curcumin 0/30 |
 | Monte Carlo | natural-API regimens control in **0–2%** of draws; gemcitabine **96%** |
